@@ -1,5 +1,5 @@
 //
-//  SwiftNet.swift
+//  ANN.swift
 //  Swift-AI
 //
 //  Created by Collin Hundley on 11/14/15.
@@ -8,13 +8,13 @@
 
 import Accelerate
 
-enum SwiftNetError: ErrorType {
+enum ANNError: ErrorType {
     case InvalidInputsError(String)
     case InvalidAnswerError(String)
     case InvalidWeightsError(String)
 }
 
-final class SwiftNet {
+final class ANN {
     
     /// The number of input nodes to the network.
     private(set) var numInputs: Int
@@ -103,7 +103,7 @@ final class SwiftNet {
     /// Initialization with an optional array of weights.
     init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?) {
         if inputs < 1 || hidden < 1 || outputs < 1 || learningRate <= 0 {
-            print("Warning: Invalid arguments passed to SwiftNet initializer. Inputs, hidden, outputs and learningRate must all be positive and nonzero. Network will not perform correctly.")
+            print("Warning: Invalid arguments passed to ANN initializer. Inputs, hidden, outputs and learningRate must all be positive and nonzero. Network will not perform correctly.")
         }
         
         self.numHiddenWeights = (hidden * (inputs + 1))
@@ -150,7 +150,7 @@ final class SwiftNet {
         
         if weights != nil {
             guard weights!.count == numHiddenWeights + numOutputWeights else {
-                print("SwiftNet initialization error: Incorrect number of weights provided. Randomized weights will be used instead.")
+                print("ANN initialization error: Incorrect number of weights provided. Randomized weights will be used instead.")
                 self.randomizeWeights()
                 return
             }
@@ -167,7 +167,7 @@ final class SwiftNet {
     func update(inputs inputs: [Float]) throws -> [Float] {
         // Ensure that the correct number of inputs is given
         guard inputs.count == self.numInputs else {
-            throw SwiftNetError.InvalidAnswerError("Invalid number of inputs given: \(inputs.count). Expected: \(self.numInputs)")
+            throw ANNError.InvalidAnswerError("Invalid number of inputs given: \(inputs.count). Expected: \(self.numInputs)")
         }
 
         // Cache the inputs
@@ -213,7 +213,7 @@ final class SwiftNet {
     func backpropagate(answer answer: [Float]) throws -> Float {
         // Verify valid answer
         guard answer.count == self.numOutputs else {
-            throw SwiftNetError.InvalidAnswerError("Invalid number of outputs given in answer: \(answer.count). Expected: \(self.numOutputs)")
+            throw ANNError.InvalidAnswerError("Invalid number of outputs given in answer: \(answer.count). Expected: \(self.numOutputs)")
         }
         
         // Calculate output errors
@@ -266,7 +266,7 @@ final class SwiftNet {
     /// Inner array: A single set of outputs expected from the network. Outer array: The full set of output data to be used for training.
     /// - parameter errorThreshold: An optional `Float` indicating the maximum error allowed per epoch before the network is considered 'trained' and ceases its training process.
     /// - important : If an appropriate error threshold is unknown, a reasonable value is assigned based on the given data.
-    /// However, the ideal error threshold can vary widely based on the type of data and application requirements, so it should generally be provided by the user.
+    /// However, the ideal error threshold can vary widely based on the type of data and application requirements, so it should generally be determined by the user instead.
     func train(inputs inputs: [[Float]], answers: [[Float]], errorThreshold: Float?) throws -> [Float] {
         let start = NSDate()
         let answersMean = answers.reduce(0) { (sum, answerArray) -> Float in
@@ -296,7 +296,7 @@ final class SwiftNet {
     /// or the weights will be rejected.
     func resetWithWeights(weights: [Float]) throws {
         guard weights.count == self.numHiddenWeights + self.numOutputWeights else {
-            throw SwiftNetError.InvalidWeightsError("Invalid number of weights provided: \(weights.count). Expected: \(self.numHiddenWeights + self.numOutputWeights)")
+            throw ANNError.InvalidWeightsError("Invalid number of weights provided: \(weights.count). Expected: \(self.numHiddenWeights + self.numOutputWeights)")
         }
         self.hiddenWeights = Array(weights[0..<self.hiddenWeights.count])
         self.outputWeights = Array(weights[self.hiddenWeights.count..<weights.count])
