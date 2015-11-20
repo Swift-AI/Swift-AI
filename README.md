@@ -39,7 +39,7 @@ You must provide six parameters to the initializer:
 - `momentum`: Another constant applied during backpropagation. If you're not sure, try `0.4`.
 - `weights`: An optional array of `Float`s used to initialize the weights of the neural network. This allows you to 'clone' a pre-trained network, so that it's immediately prepared to solve problems without training first. When you're creating a new network from scratch, leave this parameter `nil` and random weights will calculated based on your input data.
 
-You interact with your neural net using these four methods:
+You interact with your neural net using these five methods:
 
 **update** - Accepts a single set of input data, and returns the resulting output as calculated by the neural net.
 ```
@@ -51,12 +51,22 @@ let output: [Float] = try network.update(inputs: imagePixels)
 let error: Float = try network.backpropagate(answer: correctAnswer)
 ```
 
-**train** - Initiates an automated training process on the neural network. Accepts all sets of inputs and corresponding answers to use during the training process, as well as an error threshold to determine when a sufficient solution has been found. Note: This method will block the calling thread until it is finished, but may safely be dispatched on a background queue.
+**train** - Initiates an automated training process on the neural network. Accepts all sets of inputs and corresponding answers to use during the training process, all sets of inputs and answers to be used for network validation, as well as an error threshold to determine when a sufficient solution has been found.
+
+The validation data (`testInputs` and `testAnswers`) will NOT be used to train the network, but will be used to test the network's progress periodically. Once the desired error threshold on the validation data has been reached, the training will stop. An appropriate error threshold should take into account the number of validation sets as well as their values, because error is accumulated over the entire set of validation data. Ideally, the validation data should be randomly selected and representative of the entire search space.
+
+Note: this method will block the calling thread until it is finished, but may safely be dispatched on a background queue.
+
 ```
-let weights = try network.train(inputs: allImages, answers: allAnswers, errorThreshold: 0.1)
+let weights = try network.train(inputs: allImages, answers: allAnswers, testInputs: validationImages, testAnswers: validationAnswers, errorThreshold: 0.2)
 ```
 
-**resetWithWeights** - Allows the user to reset the network with new specific weights.
+**getWeights** - Returns a serialized array of the network's current weights.
+```
+let weights = network.getWeights()
+```
+
+**resetWithWeights** - Allows the user to reset the network with new specific weights. Accepts a serialized array of weights, as returned by the `getWeights()` method.
 ```
 try network.resetWithWeights(preTrainedWeights)
 ```
