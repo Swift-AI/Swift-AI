@@ -22,10 +22,12 @@ In order to provide support for multiple platforms (Linux, Windows, etc.), alter
 Pick the files you need, drag them into your project. That was easy!
 
 
-#### ANN.swift: Feed-Forward Neural Network
+#### Feed-Forward Neural Network
+###### ANN.swift
 The `ANN` class contains a fully-connected, feed-forward neural network.  This neural net uses a standard backpropagation training algorithm, and is designed for flexibility and performance-critical applications.
+
 Put some instructions and examples here.
 
 
 ### Notes
-Compiler optimizations can greatly enhance the performance of Swift AI. Even the default 'Release' build settings can increase speed by up to 10x, but it is also recommended that Whole Module Optimization be enabled as this can provide an additional boost.
+Compiler optimizations can greatly enhance the performance of Swift AI. Even the default 'Release' build settings can increase speed by up to 10x, but it is also recommended that Whole Module Optimization be enabled for maximum performance.
