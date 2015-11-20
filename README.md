@@ -21,7 +21,9 @@ Pick the files you need, drag them into your project. That was easy!
 
 #### Multi-Layer Feed-Forward Neural Network
 ###### FFNN.swift
-The `FFNN` class contains a fully-connected, 3-layer feed-forward neural network.  This neural net uses standard backpropagation for its training algorithm (stochastic gradient descent), and is designed for flexibility and use in performance-critical applications.
+The `FFNN` class contains a fully-connected, 3-layer feed-forward neural network.  This neural net uses a standard backpropagation training algorithm (stochastic gradient descent), and is designed for flexibility and use in performance-critical applications.
+
+It's fast, lightweight and perfect for use in iOS and OS X applications!
 
 Creating an `FFNN` instance is easy...
 
@@ -35,9 +37,31 @@ You must provide six parameters to the initializer:
 - `outputs`: The number of output nodes. For classification problems (like recognizing handwritten digits), the number of outputs usually corresponds to the number of possible classifications. In this example, each output might correspond to one digit (0-9). The number of outputs depends entirely on the problem being applied.
 - `learningRate`: The 'learning rate' to apply during the backpropagation phase of training. If you're unsure what this means, `0.7` is probably a good number.
 - `momentum`: Another constant applied during backpropagation. If you're not sure, try `0.4`.
-- `weights`: An optional array of `Float`s used to initialize the weights of the neural network. This allows you to 'clone' a pre-trained network, so that it's immediately prepared to solve problems without training first. When you're creating a new network from scratch, leave this parameter `nil` and random weights will assigned based on your input data.
+- `weights`: An optional array of `Float`s used to initialize the weights of the neural network. This allows you to 'clone' a pre-trained network, so that it's immediately prepared to solve problems without training first. When you're creating a new network from scratch, leave this parameter `nil` and random weights will calculated based on your input data.
 
+You interact with your neural net using these four methods:
 
+**update** - Accepts a single set of input data, and returns the resulting output as calculated by the neural net.
+```
+let output: [Float] = try network.update(inputs: imagePixels)
+```
+
+**backpropagate** - Used to train the network manually. Accepts the single set of expected outputs (aka 'answers') corresponding to the most `update` call. Returns the total error, as calculated from the difference between the expected and actual outputs.
+```
+let error: Float = try network.backpropagate(answer: correctAnswer)
+```
+
+**train** - Initiates an automated training process on the neural network. Accepts all sets of inputs and corresponding answers to use during the training process, as well as an error threshold to determine when a sufficient solution has been found. Note: This method will block the calling thread until it is finished, but may safely be dispatched on a background queue.
+```
+let weights = try network.train(inputs: allImages, answers: allAnswers, errorThreshold: 0.1)
+```
+
+**resetWithWeights** - Allows the user to reset the network with new specific weights.
+```
+try network.resetWithWeights(preTrainedWeights)
+```
+
+Note: Further information about these methods can be found in the documentation.
 
 ### Compatibility
 Swift AI currently depends on Apple's Accelerate framework for vector/matrix calculations and digital signal processing. With Swift becoming open-source later this year, it remains to be seen if additional frameworks will be released as well.
