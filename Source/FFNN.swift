@@ -1,20 +1,19 @@
 //
-//  ANN.swift
+//  FFNN.swift
 //  Swift-AI
 //
 //  Created by Collin Hundley on 11/14/15.
-//  Copyright © 2015 Appsidian. All rights reserved.
 //
 
 import Accelerate
 
-enum ANNError: ErrorType {
+enum FFNNError: ErrorType {
     case InvalidInputsError(String)
     case InvalidAnswerError(String)
     case InvalidWeightsError(String)
 }
 
-final class ANN {
+final class FFNN {
     
     /// The number of input nodes to the network.
     private(set) var numInputs: Int
@@ -103,7 +102,7 @@ final class ANN {
     /// Initialization with an optional array of weights.
     init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?) {
         if inputs < 1 || hidden < 1 || outputs < 1 || learningRate <= 0 {
-            print("Warning: Invalid arguments passed to ANN initializer. Inputs, hidden, outputs and learningRate must all be positive and nonzero. Network will not perform correctly.")
+            print("Warning: Invalid arguments passed to FFNN initializer. Inputs, hidden, outputs and learningRate must all be positive and nonzero. Network will not perform correctly.")
         }
         
         self.numHiddenWeights = (hidden * (inputs + 1))
@@ -150,7 +149,7 @@ final class ANN {
         
         if weights != nil {
             guard weights!.count == numHiddenWeights + numOutputWeights else {
-                print("ANN initialization error: Incorrect number of weights provided. Randomized weights will be used instead.")
+                print("FFNN initialization error: Incorrect number of weights provided. Randomized weights will be used instead.")
                 self.randomizeWeights()
                 return
             }
@@ -167,7 +166,7 @@ final class ANN {
     func update(inputs inputs: [Float]) throws -> [Float] {
         // Ensure that the correct number of inputs is given
         guard inputs.count == self.numInputs else {
-            throw ANNError.InvalidAnswerError("Invalid number of inputs given: \(inputs.count). Expected: \(self.numInputs)")
+            throw FFNNError.InvalidAnswerError("Invalid number of inputs given: \(inputs.count). Expected: \(self.numInputs)")
         }
 
         // Cache the inputs
@@ -213,7 +212,7 @@ final class ANN {
     func backpropagate(answer answer: [Float]) throws -> Float {
         // Verify valid answer
         guard answer.count == self.numOutputs else {
-            throw ANNError.InvalidAnswerError("Invalid number of outputs given in answer: \(answer.count). Expected: \(self.numOutputs)")
+            throw FFNNError.InvalidAnswerError("Invalid number of outputs given in answer: \(answer.count). Expected: \(self.numOutputs)")
         }
         
         // Calculate output errors
@@ -264,28 +263,37 @@ final class ANN {
     /// Inner array: A single set of inputs for the network. Outer array: The full set of training data to be used for training.
     /// - parameter answers: A 2D array of `Float`s.
     /// Inner array: A single set of outputs expected from the network. Outer array: The full set of output data to be used for training.
-    /// - parameter errorThreshold: An optional `Float` indicating the maximum error allowed per epoch before the network is considered 'trained' and ceases its training process.
-    /// - important : If an appropriate error threshold is unknown, a reasonable value is assigned based on the given data.
-    /// However, the ideal error threshold can vary widely based on the type of data and application requirements, so it should generally be determined by the user instead.
-    func train(inputs inputs: [[Float]], answers: [[Float]], errorThreshold: Float?) throws -> [Float] {
-        let start = NSDate()
-        let answersMean = answers.reduce(0) { (sum, answerArray) -> Float in
-            return sum + answerArray.reduce(0, combine: {$0 + $1})
-        } / Float(answers.count * self.numOutputs)
-        let threshold = errorThreshold ?? answersMean / 2
+    /// - parameter testInputs: A set of validation data to be used for testing the network.
+    /// - This data will not used in the network's training, but will be used to determine when an acceptable solution has been found.
+    /// - parameter testAnswers: The set of expected outputs corresponding to `testInputs`.
+    /// - parameter errorThreshold: A `Float` indicating the maximum error allowed per epoch of validation data, before the network is considered 'trained' and ceases its training process.
+    /// - This value must be determined by the user, because it varies based on the type of data used and the desired accuracy.
+    /// - returns: The final calculated weights of the network after training has completed.
+    func train(inputs inputs: [[Float]], answers: [[Float]], testInputs: [[Float]], testAnswers: [[Float]], errorThreshold: Float) throws -> [Float] {
+        guard errorThreshold > 0 else {
+            throw FFNNError.InvalidInputsError("Error threshold must be greater than zero!")
+        }
         while true {
-            var errorSum: Float = 0
             for (index, input) in inputs.enumerate() {
                 try self.update(inputs: input)
-                errorSum += try self.backpropagate(answer: answers[index])
+                try self.backpropagate(answer: answers[index])
             }
-            if errorSum < threshold {
+            var errorSum: Float = 0
+            for (inputIndex, input) in testInputs.enumerate() {
+                let outputs = try self.update(inputs: input)
+                for (outputIndex, output) in outputs.enumerate() {
+                    errorSum += abs(output * (1 - output) * (testAnswers[inputIndex][outputIndex] - output))
+                }
+            }
+            if errorSum < errorThreshold {
                 break
             }
         }
-        print(NSDate().timeIntervalSinceDate(start))
-        self.randomizeWeights()
-        try self.train(inputs: inputs, answers: answers, errorThreshold: errorThreshold)
+        return self.hiddenWeights + self.outputWeights
+    }
+    
+    /// Returns a serialized array of the network's current weights.
+    func getWeights() -> [Float] {
         return self.hiddenWeights + self.outputWeights
     }
     
@@ -296,7 +304,7 @@ final class ANN {
     /// or the weights will be rejected.
     func resetWithWeights(weights: [Float]) throws {
         guard weights.count == self.numHiddenWeights + self.numOutputWeights else {
-            throw ANNError.InvalidWeightsError("Invalid number of weights provided: \(weights.count). Expected: \(self.numHiddenWeights + self.numOutputWeights)")
+            throw FFNNError.InvalidWeightsError("Invalid number of weights provided: \(weights.count). Expected: \(self.numHiddenWeights + self.numOutputWeights)")
         }
         self.hiddenWeights = Array(weights[0..<self.hiddenWeights.count])
         self.outputWeights = Array(weights[self.hiddenWeights.count..<weights.count])

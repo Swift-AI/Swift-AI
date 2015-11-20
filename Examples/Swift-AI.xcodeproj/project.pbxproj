@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F0CEE3201BFE966B00D15FC0 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CEE31F1BFE966B00D15FC0 /* main.swift */; };
-		F0CEE3271BFE97BD00D15FC0 /* ANN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CEE3261BFE97BD00D15FC0 /* ANN.swift */; };
+		F0CEE3271BFE97BD00D15FC0 /* FFNN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CEE3261BFE97BD00D15FC0 /* FFNN.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,7 +26,7 @@
 /* Begin PBXFileReference section */
 		F0CEE31C1BFE966B00D15FC0 /* Swift-AI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Swift-AI"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0CEE31F1BFE966B00D15FC0 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		F0CEE3261BFE97BD00D15FC0 /* ANN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ANN.swift; path = ../../Source/ANN.swift; sourceTree = "<group>"; };
+		F0CEE3261BFE97BD00D15FC0 /* FFNN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FFNN.swift; path = ../../Source/FFNN.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +68,7 @@
 		F0CEE3281BFE992300D15FC0 /* Neural Network */ = {
 			isa = PBXGroup;
 			children = (
-				F0CEE3261BFE97BD00D15FC0 /* ANN.swift */,
+				F0CEE3261BFE97BD00D15FC0 /* FFNN.swift */,
 			);
 			name = "Neural Network";
 			sourceTree = "<group>";
@@ -131,7 +131,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0CEE3201BFE966B00D15FC0 /* main.swift in Sources */,
-				F0CEE3271BFE97BD00D15FC0 /* ANN.swift in Sources */,
+				F0CEE3271BFE97BD00D15FC0 /* FFNN.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
