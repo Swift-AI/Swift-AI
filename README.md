@@ -16,7 +16,7 @@ This library is a work in progress and more features and improvements will be ad
 ### Compatibility
 Swift AI currently relies on Apple's Accelerate framework for vector/matrix calculations and digital signal processing. With Swift becoming open-source later this year, it remains to be seen if any frameworks will be released as well.
 
-In order to provide support for multiple platforms (Linux, Windows, etc.), alternative BLAS solutions are being considered. A vanilla Swift implementation is possible, but SIMD instructions are desirable for their significant performance boost.
+In order to provide support for multiple platforms (Linux, Windows, etc.), alternative BLAS solutions are being considered. A vanilla Swift implementation is possible, but SIMD instructions will be preferred for their significant performance boost.
 
 ### Usage
 Pick the files you need, drag them into your project. That was easy!
