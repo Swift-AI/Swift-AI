@@ -23,6 +23,8 @@ Pick the files you need, drag them into your project. That was easy!
 ###### FFNN.swift
 The `FFNN` class contains a fully-connected, 3-layer feed-forward neural network.  This neural net uses a standard backpropagation training algorithm (stochastic gradient descent), and is designed for flexibility and use in performance-critical applications.
 
+TODO: Sigmoid activations and normalized inputs
+
 It's fast, lightweight and perfect for use in iOS and OS X applications!
 
 Creating an `FFNN` instance is easy...
