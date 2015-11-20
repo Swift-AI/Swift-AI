@@ -6,8 +6,8 @@ Highly-optimized, multi-purpose Artificial Intelligence library written in Swift
 - [ ] Recurrent Neural Network
 - [ ] Convolutional Network
 - [ ] Genetic Algorithms (coming soon!)
-- [ ] Matrix Library
-- [ ] Fourier Transform Library
+- [ ] Fast Matrix Library
+- [ ] Fourier Transform Functions
 
 ### Compatibility
 Currently relies on Apple's Accelerate framework.
