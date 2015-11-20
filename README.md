@@ -3,7 +3,7 @@ A high-performance AI and Machine Learning library written entirely in Swift.
 These tools have been optimized for use in both iOS and OS X applications, with support for more platforms coming soon!
 
 ### Features
-- [x] Multi-Layer Feed-Forward Neural Network
+- [x] Feed-Forward Neural Network
 - [ ] Recurrent Neural Network
 - [ ] Convolutional Network
 - [ ] GPU-Accelerated Networks
@@ -19,5 +19,11 @@ In order to provide support for multiple platforms (Linux, Windows, etc.), alter
 ### Usage
 Pick the files you need, drag them into your project. That was easy!
 
-#### Feed-Forward Neural Network
+
+#### ANN.swift: Feed-Forward Neural Network
+The `ANN` class contains a fully-connected, feed-forward neural network.  This neural net uses a standard backpropagation training algorithm, and is designed for flexibility and performance-critical applications.
 Put some instructions and examples here.
+
+
+### Notes
+Compiler optimizations can greatly enhance the performance of Swift AI. Even the default 'Release' build settings can increase speed by up to 10x, but it is also recommended that Whole Module Optimization be enabled as this can provide an additional boost.
