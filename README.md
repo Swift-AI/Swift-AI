@@ -1,5 +1,6 @@
-# Swift-AI
-Highly optimized, multi-purpose Artificial Intelligence / Machine Learning library written in Swift.
+# Swift AI
+The only high-performance Artificial Intelligence / Machine Learning library written entirely in Swift.
+These tools are suitable for use in iOS and OS X applications, with support for more platforms coming soon!
 
 ### Features
 - [x] Feed-Forward Neural Network
