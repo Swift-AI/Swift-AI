@@ -8,7 +8,6 @@
 
 import Accelerate
 
-
 enum SwiftNetError: ErrorType {
     case InvalidInputsError(String)
     case InvalidAnswerError(String)
@@ -144,19 +143,20 @@ final class SwiftNet {
             self.inputIndices.append(weightIndex % self.numInputNodes)
         }
         
+        self.hiddenWeights = [Float](count: self.numHiddenWeights, repeatedValue: 0)
+        self.previousHiddenWeights = self.hiddenWeights
+        self.outputWeights = [Float](count: outputs * self.numHiddenNodes, repeatedValue: 0)
+        self.previousOutputWeights = self.outputWeights
+        
         if weights != nil {
-            if weights!.count != numHiddenWeights + numOutputWeights {
-                print("SwiftNet initialization error: Incorrect number of weights provided")
+            guard weights!.count == numHiddenWeights + numOutputWeights else {
+                print("SwiftNet initialization error: Incorrect number of weights provided. Randomized weights will be used instead.")
+                self.randomizeWeights()
+                return
             }
-            self.hiddenWeights = Array(weights![0..<numHiddenWeights])
-            self.previousHiddenWeights = [Float](count: numHiddenWeights, repeatedValue: 0)
-            self.outputWeights = Array(weights![numHiddenWeights..<weights!.count])
-            self.previousOutputWeights = [Float](count: numOutputWeights, repeatedValue: 0)
+            self.hiddenWeights = Array(weights![0..<self.numHiddenWeights])
+            self.outputWeights = Array(weights![self.numHiddenWeights..<weights!.count])
         } else {
-            self.hiddenWeights = [Float](count: hidden * self.numInputNodes, repeatedValue: 0)
-            self.previousHiddenWeights = self.hiddenWeights
-            self.outputWeights = [Float](count: outputs * self.numHiddenNodes, repeatedValue: 0)
-            self.previousOutputWeights = self.outputWeights
             self.randomizeWeights()
         }
     }
@@ -211,6 +211,7 @@ final class SwiftNet {
     /// - parameter answer: The 'correct' desired output for the most recent update to the network, as an array of `Float`s.
     /// - returns: The total calculated error from the most recent update.
     func backpropagate(answer answer: [Float]) throws -> Float {
+        // Verify valid answer
         guard answer.count == self.numOutputs else {
             throw SwiftNetError.InvalidAnswerError("Invalid number of outputs given in answer: \(answer.count). Expected: \(self.numOutputs)")
         }
@@ -225,7 +226,6 @@ final class SwiftNet {
             self.outputWeights, 1,
             &self.hiddenErrorSumsCache, 1,
             vDSP_Length(1), vDSP_Length(self.numHiddenNodes), vDSP_Length(self.numOutputs))
-        
         for (errorIndex, error) in self.hiddenErrorSumsCache.enumerate() {
             self.hiddenErrorsCache[errorIndex] = self.hiddenOutputCache[errorIndex] * (1 - self.hiddenOutputCache[errorIndex]) * error
         }
@@ -259,29 +259,34 @@ final class SwiftNet {
         })
     }
     
-    func train(inputs inputs: [[Float]], answers: [[Float]], errorThreshold: Float?) throws {
+    /// Trains the network using the given set of inputs and corresponding outputs.
+    /// - parameter inputs: A 2D array of `Float`s.
+    /// Inner array: A single set of inputs for the network. Outer array: The full set of training data to be used for training.
+    /// - parameter answers: A 2D array of `Float`s.
+    /// Inner array: A single set of outputs expected from the network. Outer array: The full set of output data to be used for training.
+    /// - parameter errorThreshold: An optional `Float` indicating the maximum error allowed per epoch before the network is considered 'trained' and ceases its training process.
+    /// - important : If an appropriate error threshold is unknown, a reasonable value is assigned based on the given data.
+    /// However, the ideal error threshold can vary widely based on the type of data and application requirements, so it should generally be provided by the user.
+    func train(inputs inputs: [[Float]], answers: [[Float]], errorThreshold: Float?) throws -> [Float] {
         let start = NSDate()
         let answersMean = answers.reduce(0) { (sum, answerArray) -> Float in
             return sum + answerArray.reduce(0, combine: {$0 + $1})
         } / Float(answers.count * self.numOutputs)
         let threshold = errorThreshold ?? answersMean / 2
-        do {
-            while true {
-                var errorSum: Float = 0
-                for (index, input) in inputs.enumerate() {
-                    try self.update(inputs: input)
-                    errorSum += try self.backpropagate(answer: answers[index])
-                }
-                if errorSum < threshold {
-                    break
-                }
+        while true {
+            var errorSum: Float = 0
+            for (index, input) in inputs.enumerate() {
+                try self.update(inputs: input)
+                errorSum += try self.backpropagate(answer: answers[index])
             }
-        } catch {
-            throw error
+            if errorSum < threshold {
+                break
+            }
         }
         print(NSDate().timeIntervalSinceDate(start))
         self.randomizeWeights()
         try self.train(inputs: inputs, answers: answers, errorThreshold: errorThreshold)
+        return self.hiddenWeights + self.outputWeights
     }
     
     /// Resets the network with the given weights (i.e. from a pre-trained network).
@@ -314,6 +319,8 @@ final class SwiftNet {
             self.outputWeights[i] = self.randomOutputWeight()
         }
     }
+    
+    // TODO: Generate random weights along a normal distribution, rather than a uniform distribution.
     
     /// Generates a random weight for a hidden layer node, based on the parameters set for the network.
     /// Will return a Float between +/- 1/sqrt(numInputNodes).
