@@ -71,7 +71,7 @@ let weights = network.getWeights()
 try network.resetWithWeights(preTrainedWeights)
 ```
 
-Note: Further information about these methods can be found in the documentation.
+Note: Further information regarding these methods can be found in the documentation.
 
 ### Compatibility
 Swift AI currently depends on Apple's Accelerate framework for vector/matrix calculations and digital signal processing. With Swift becoming open-source later this year, it remains to be seen if additional frameworks will be released as well.
