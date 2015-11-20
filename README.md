@@ -1,5 +1,5 @@
 # Swift-AI
-Highly-optimized, multi-purpose Artificial Intelligence library written in Swift.
+Highly optimized, multi-purpose Artificial Intelligence library written in Swift.
 
 ### Features
 - [x] Feed-Forward Neural Network
