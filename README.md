@@ -2,7 +2,7 @@
 A high-performance AI and Machine Learning library written entirely in Swift.
 These tools have been optimized for use in both iOS and OS X applications, with support for more platforms coming soon!
 
-This library is a work in progress and more features will be added as time permits.
+This library is a work in progress and more features and improvements will be added regularly.
 
 ### Features
 - [x] Feed-Forward Neural Network
