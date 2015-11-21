@@ -40,8 +40,6 @@ You must provide six parameters to the initializer:
 
 You interact with your neural net using these five methods:
 
-(More information in the docs as well)
-
 **update()** - Accepts a single set of input data, and returns the resulting output as calculated by the neural net.
 ```
 let output: [Float] = try network.update(inputs: imagePixels)
@@ -73,6 +71,8 @@ let weights = network.getWeights()
 ```
 try network.resetWithWeights(preTrainedWeights)
 ```
+
+More information can be found in the documentation.
 
 
 #### **Additional Information**
