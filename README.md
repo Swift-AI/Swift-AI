@@ -14,7 +14,7 @@ This library is a work in progress, so more features will be added shortly.
 - [ ] Fourier Transform Functions
 
 ## Installation
-Pick the files you need, drag them into your project. That was easy!
+Grab the files you need, drag them into your project. That was easy!
 
 ## Usage
 
