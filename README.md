@@ -42,17 +42,17 @@ You interact with your neural net using these five methods:
 
 (More information in the docs as well)
 
-**update** - Accepts a single set of input data, and returns the resulting output as calculated by the neural net.
+**update()** - Accepts a single set of input data, and returns the resulting output as calculated by the neural net.
 ```
 let output: [Float] = try network.update(inputs: imagePixels)
 ```
 
-**backpropagate** - Used to train the network manually. Accepts the single set of expected outputs (aka 'answers') corresponding to the most `update` call. Returns the total error, as calculated from the difference between the expected and actual outputs.
+**backpropagate()** - Used to train the network manually. Accepts the single set of expected outputs (aka 'answers') corresponding to the most `update` call. Returns the total error, as calculated from the difference between the expected and actual outputs.
 ```
 let error: Float = try network.backpropagate(answer: correctAnswer)
 ```
 
-**train** - Initiates an automated training process on the neural network. Accepts all sets of inputs and corresponding answers to use during the training process and all sets of inputs and answers to be used for network validation, as well as an error threshold to determine when a sufficient solution has been found.
+**train()** - Initiates an automated training process on the neural network. Accepts all sets of inputs and corresponding answers to use during the training process and all sets of inputs and answers to be used for network validation, as well as an error threshold to determine when a sufficient solution has been found.
 
 The validation data (`testInputs` and `testAnswers`) will NOT be used to train the network, but will be used to test the network's progress periodically. Once the desired error threshold on the validation data has been reached, the training will stop. An appropriate error threshold should take into account the number of validation sets, as error is accumulated over all sets of data. Ideally, the validation data should be randomly selected and representative of the entire search space.
 
@@ -64,12 +64,12 @@ let weights = try network.train(inputs: allImages, answers: allAnswers,
               errorThreshold: 0.2)
 ```
 
-**getWeights** - Returns a serialized array of the network's current weights.
+**getWeights()** - Returns a serialized array of the network's current weights.
 ```
 let weights = network.getWeights()
 ```
 
-**resetWithWeights** - Allows the user to reset the network with new specific weights. Accepts a serialized array of weights, as returned by the `getWeights()` method.
+**resetWithWeights()** - Allows the user to reset the network with new specific weights. Accepts a serialized array of weights, as returned by the `getWeights()` method.
 ```
 try network.resetWithWeights(preTrainedWeights)
 ```
