@@ -39,7 +39,8 @@ You must provide six parameters to the initializer:
 - `weights`: An optional array of `Float`s used to initialize the weights of the neural network. This allows you to 'clone' a pre-trained network, so that it's immediately prepared to solve problems without training first. When you're creating a new network from scratch, leave this parameter `nil` and random weights will calculated based on your input data.
 
 You interact with your neural net using these five methods:
-(More information can be found in the documentation as well)
+
+(More information in the docs as well)
 
 **update** - Accepts a single set of input data, and returns the resulting output as calculated by the neural net.
 ```
