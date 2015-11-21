@@ -7,7 +7,7 @@
 
 import Accelerate
 
-public enum FFNNError: ErrorType {
+enum FFNNError: ErrorType {
     case InvalidInputsError(String)
     case InvalidAnswerError(String)
     case InvalidWeightsError(String)
@@ -15,12 +15,12 @@ public enum FFNNError: ErrorType {
 
 public final class FFNN {
     
-    /// The number of input nodes to the network (read only).
-    let numInputs: Int
-    /// The number of hidden nodes in the network (read only).
-    let numHidden: Int
-    /// The number of output nodes from the network (read only).
-    let numOutputs: Int
+    /// The number of input nodes to the network.
+    private(set) var numInputs: Int
+    /// The number of hidden nodes in the network.
+    private(set) var numHidden: Int
+    /// The number of output nodes from the network.
+    private(set) var numOutputs: Int
     
     /// The 'learning rate' parameter to apply during backpropagation.
     /// This parameter may be safely tuned at any time, except for during a backpropagation cycle.
@@ -40,7 +40,7 @@ public final class FFNN {
     /**
      The following private properties are allocated once during initializtion, in order to prevent frequent
      memory allocations for temporary variables during the update and backpropagation cycles.
-     Some known properties are computed in advance in order to to avoid casting, integer division
+     Some known properties are computed in advance, in order to to avoid casting, integer division
      and modulus operations inside loops.
     */
     
@@ -184,6 +184,7 @@ public final class FFNN {
         
         // Apply the activation function to the hidden layer nodes
         // Note: Array elements are shifted one index to the right, in order to efficiently insert the bias node at index 0
+        // TODO: Try applying the activation function using BLAS
         for (var i = self.numHidden; i > 0; --i) {
             self.hiddenOutputCache[i] = self.activation(self.hiddenOutputCache[i - 1])
         }
@@ -196,6 +197,7 @@ public final class FFNN {
             vDSP_Length(self.numOutputs), vDSP_Length(1), vDSP_Length(self.numHiddenNodes))
         
         // Apply the activation function to the output layer nodes
+        // TODO: Try applying the activation function using BLAS
         for i in 0..<self.numOutputs {
             self.outputCache[i] = self.activation(self.outputCache[i])
         }
