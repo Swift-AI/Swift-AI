@@ -13,11 +13,10 @@ This library is a work in progress, so more features will be added shortly.
 - [ ] Fast Matrix Library
 - [ ] Fourier Transform Functions
 
-
-
-### Usage
+## Installation
 Pick the files you need, drag them into your project. That was easy!
 
+## Usage
 
 #### Multi-Layer Feed-Forward Neural Network
 ###### FFNN.swift
@@ -80,10 +79,10 @@ try network.resetWithWeights(preTrainedWeights)
 - When providing 'answers' for backpropagation, this data must be scaled in reverse so that all outputs also reside in the range (0, 1).
 
 
-### Compatibility
+## Compatibility
 Swift AI currently depends on Apple's Accelerate framework for vector/matrix calculations and digital signal processing. With Swift becoming open-source later this year, it remains to be seen if additional frameworks will be released as well.
 
 In order to provide support for multiple platforms (Linux, Windows, etc.), alternative BLAS solutions are being considered. A vanilla Swift implementation is possible, but SIMD instructions will be preferred for their significant performance boost.
 
-### Notes
+## Notes
 Compiler optimizations can greatly enhance the performance of Swift AI. Even the default 'Release' build settings can increase speed by up to 10x, but it is also recommended that Whole Module Optimization be enabled for maximum efficiency.
