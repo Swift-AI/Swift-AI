@@ -81,6 +81,8 @@ To achieve nonlinearity, `FFNN` uses the [sigmoid](https://en.wikipedia.org/wiki
 - Outputs will always reside in the range (0, 1). For regression problems, a wider range is often needed and thus the outputs must be scaled accordingly.
 - When providing 'answers' for backpropagation, this data must be scaled in reverse so that all outputs also reside in the range (0, 1).
 
+[Softmax](https://en.wikipedia.org/wiki/Softmax_function) activation will be added soon.
+
 
 ## Compatibility
 Swift AI currently depends on Apple's Accelerate framework for vector/matrix calculations and digital signal processing. With Swift becoming open-source later this year, it remains to be seen if additional frameworks will be released as well.
