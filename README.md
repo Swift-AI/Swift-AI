@@ -1,11 +1,11 @@
 # Swift AI
-A high-performance AI and Machine Learning library written entirely in Swift.
+Swift AI is a high-performance AI and Machine Learning library written entirely in Swift.
 These tools have been optimized for use in both iOS and OS X applications, with support for more platforms coming soon!
 
-This library is a work in progress, and more features will be added shortly.
+This library is a work in progress, so more features will be added shortly.
 
 ### Features
-- [x] Feed-Forward Neural Network
+- [x] [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/blob/master/README.md#multi-layer-feed-forward-neural-network)
 - [ ] Recurrent Neural Network
 - [ ] Convolutional Network
 - [ ] GPU-Accelerated Networks
@@ -13,13 +13,12 @@ This library is a work in progress, and more features will be added shortly.
 - [ ] Fast Matrix Library
 - [ ] Fourier Transform Functions
 
+## Installation
+Grab the files you need, drag them into your project. That was easy!
 
+## Usage
 
-### Usage
-Pick the files you need, drag them into your project. That was easy!
-
-
-#### Multi-Layer Feed-Forward Neural Network
+### Multi-Layer Feed-Forward Neural Network
 ###### FFNN.swift
 The `FFNN` class contains a fully-connected, 3-layer feed-forward neural network.  This neural net uses a standard backpropagation training algorithm (stochastic gradient descent), and is designed for flexibility and use in performance-critical applications.
 
@@ -40,7 +39,6 @@ You must provide six parameters to the initializer:
 - `weights`: An optional array of `Float`s used to initialize the weights of the neural network. This allows you to 'clone' a pre-trained network, so that it's immediately prepared to solve problems without training first. When you're creating a new network from scratch, leave this parameter `nil` and random weights will calculated based on your input data.
 
 You interact with your neural net using these five methods:
-(More information can be found in the documentation as well)
 
 **update** - Accepts a single set of input data, and returns the resulting output as calculated by the neural net.
 ```
@@ -74,16 +72,22 @@ let weights = network.getWeights()
 try network.resetWithWeights(preTrainedWeights)
 ```
 
-**Additional Information:** To achieve nonlinearity, `FFNN` uses a [sigmoid](https://en.wikipedia.org/wiki/Sigmoid_function) activation function for hidden and output nodes. Because of this property, you will achieve better results if the following points are taken into consideration:
+More information can be found in the documentation.
+
+
+#### **Additional Information**
+To achieve nonlinearity, `FFNN` uses the [sigmoid](https://en.wikipedia.org/wiki/Sigmoid_function) activation function for hidden and output nodes. Because of this property, you will achieve better results if the following points are taken into consideration:
 - Input data should be [normalized](https://visualstudiomagazine.com/articles/2014/01/01/how-to-standardize-data-for-neural-networks.aspx) to have a mean of `0` and standard deviation of `1`.
 - Outputs will always reside in the range (0, 1). For regression problems, a wider range is often needed and thus the outputs must be scaled accordingly.
 - When providing 'answers' for backpropagation, this data must be scaled in reverse so that all outputs also reside in the range (0, 1).
 
+[Softmax](https://en.wikipedia.org/wiki/Softmax_function) activation will be added soon.
 
-### Compatibility
+
+## Compatibility
 Swift AI currently depends on Apple's Accelerate framework for vector/matrix calculations and digital signal processing. With Swift becoming open-source later this year, it remains to be seen if additional frameworks will be released as well.
 
 In order to provide support for multiple platforms (Linux, Windows, etc.), alternative BLAS solutions are being considered. A vanilla Swift implementation is possible, but SIMD instructions will be preferred for their significant performance boost.
 
-### Notes
+## Notes
 Compiler optimizations can greatly enhance the performance of Swift AI. Even the default 'Release' build settings can increase speed by up to 10x, but it is also recommended that Whole Module Optimization be enabled for maximum efficiency.
