@@ -73,7 +73,8 @@ let weights = network.getWeights()
 try network.resetWithWeights(preTrainedWeights)
 ```
 
-**Additional Information:** To achieve nonlinearity, `FFNN` uses a [sigmoid](https://en.wikipedia.org/wiki/Sigmoid_function) activation function for hidden and output nodes. Because of this property, you will achieve better results if the following points are taken into consideration:
+##### Additional Information:
+To achieve nonlinearity, `FFNN` uses the [sigmoid](https://en.wikipedia.org/wiki/Sigmoid_function) activation function for hidden and output nodes. Because of this property, you will achieve better results if the following points are taken into consideration:
 - Input data should be [normalized](https://visualstudiomagazine.com/articles/2014/01/01/how-to-standardize-data-for-neural-networks.aspx) to have a mean of `0` and standard deviation of `1`.
 - Outputs will always reside in the range (0, 1). For regression problems, a wider range is often needed and thus the outputs must be scaled accordingly.
 - When providing 'answers' for backpropagation, this data must be scaled in reverse so that all outputs also reside in the range (0, 1).
