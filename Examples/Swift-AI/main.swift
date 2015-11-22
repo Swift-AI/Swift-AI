@@ -7,11 +7,9 @@
 
 /// A simple example of training a feed-forward neural network to function as an XOR gate.
 func xorTwoWay() {
-    
     // Initialize network
 	let network = FFNN(inputs: 2, hidden: 2, outputs: 1,
 		learningRate: 0.1, momentum: 0.1, weights: nil)
-	
     // Create training data
 	let inputs: [[Float]] = [
 		[0, 0],
@@ -19,7 +17,6 @@ func xorTwoWay() {
 		[1, 0],
 		[1, 1]
 	]
-	
     // Define answers for training data
 	let answers: [[Float]] = [
 		[0],
@@ -27,7 +24,6 @@ func xorTwoWay() {
 		[0],
 		[1]
 	]
-	
     // Train the network
     // Note: Here we use `inputs` and `answers` as validation data as well, since there are only 4 possible inputs for XOR.
 	print("Weights before training: \(network.getWeights())")
@@ -35,7 +31,6 @@ func xorTwoWay() {
         testInputs: inputs, testAnswers: answers,
         errorThreshold: 0.001)
 	print("Weights after training: \(network.getWeights())")
-	
     // Print the result
 	let v0 = try! network.update(inputs: inputs[0])
 	let v1 = try! network.update(inputs: inputs[1])
