@@ -98,6 +98,17 @@ extension Builder {
 		append([1, 1, 0], [0])
 		append([1, 1, 1], [1])
 	}
+	
+	func sinus() {
+		name = "Mimic the Sinus function"
+		let n = 19
+		for i in 0...n {
+			let input: Float = Float(i) / Float(n)
+			let rad: Float = Float(M_PI * 2) * input
+			let output: Float = (sin(rad) + 1) / 2
+			append([input], [output])
+		}
+	}
 }
 
 class SimpleTest: XCTestCase {
@@ -136,6 +147,24 @@ class SimpleTest: XCTestCase {
 		b.prettyPrint()
 		
 		XCTAssertLessThan(b.absoluteError, 0.1)
+	}
+	
+	func testSinus() {
+		let network = FFNN(inputs: 1, hidden: 10, outputs: 1, learningRate: 0.2, momentum: 0.1, weights: nil)
+		
+		let b = Builder()
+		b.sinus()
+		
+		try! network.train(inputs: b.inputs, answers: b.answers,
+			testInputs: b.inputs, testAnswers: b.answers,
+			errorThreshold: 0.1)
+		
+		for row in b.rows {
+			row.actualAnswer = try! network.update(inputs: row.input)
+		}
+		b.prettyPrint()
+		
+		XCTAssertLessThan(b.absoluteError, 0.9)
 	}
 	
 }
