@@ -7,9 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		42DB3A1F1C01055100D7FDB5 /* SimpleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB3A1E1C01055100D7FDB5 /* SimpleTest.swift */; };
+		42DB3A261C01077600D7FDB5 /* FFNN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CEE3261BFE97BD00D15FC0 /* FFNN.swift */; };
 		F0CEE3201BFE966B00D15FC0 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CEE31F1BFE966B00D15FC0 /* main.swift */; };
 		F0CEE3271BFE97BD00D15FC0 /* FFNN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CEE3261BFE97BD00D15FC0 /* FFNN.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		42DB3A241C0106C200D7FDB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0CEE3141BFE966B00D15FC0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F0CEE31B1BFE966B00D15FC0;
+			remoteInfo = "Swift-AI";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		F0CEE31A1BFE966B00D15FC0 /* CopyFiles */ = {
@@ -24,12 +36,22 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		42DB3A1C1C01055100D7FDB5 /* SimpleTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		42DB3A1E1C01055100D7FDB5 /* SimpleTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTest.swift; sourceTree = "<group>"; };
+		42DB3A201C01055100D7FDB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F0CEE31C1BFE966B00D15FC0 /* Swift-AI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Swift-AI"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0CEE31F1BFE966B00D15FC0 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		F0CEE3261BFE97BD00D15FC0 /* FFNN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FFNN.swift; path = ../../Source/FFNN.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		42DB3A191C01055100D7FDB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F0CEE3191BFE966B00D15FC0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -40,10 +62,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		42DB3A1D1C01055100D7FDB5 /* SimpleTest */ = {
+			isa = PBXGroup;
+			children = (
+				42DB3A1E1C01055100D7FDB5 /* SimpleTest.swift */,
+				42DB3A201C01055100D7FDB5 /* Info.plist */,
+			);
+			path = SimpleTest;
+			sourceTree = "<group>";
+		};
 		F0CEE3131BFE966B00D15FC0 = {
 			isa = PBXGroup;
 			children = (
 				F0CEE31E1BFE966B00D15FC0 /* Swift-AI */,
+				42DB3A1D1C01055100D7FDB5 /* SimpleTest */,
 				F0CEE31D1BFE966B00D15FC0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				F0CEE31C1BFE966B00D15FC0 /* Swift-AI */,
+				42DB3A1C1C01055100D7FDB5 /* SimpleTest.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,6 +109,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		42DB3A1B1C01055100D7FDB5 /* SimpleTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42DB3A231C01055100D7FDB5 /* Build configuration list for PBXNativeTarget "SimpleTest" */;
+			buildPhases = (
+				42DB3A181C01055100D7FDB5 /* Sources */,
+				42DB3A191C01055100D7FDB5 /* Frameworks */,
+				42DB3A1A1C01055100D7FDB5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42DB3A251C0106C200D7FDB5 /* PBXTargetDependency */,
+			);
+			name = SimpleTest;
+			productName = SimpleTest;
+			productReference = 42DB3A1C1C01055100D7FDB5 /* SimpleTest.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F0CEE31B1BFE966B00D15FC0 /* Swift-AI */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F0CEE3231BFE966B00D15FC0 /* Build configuration list for PBXNativeTarget "Swift-AI" */;
@@ -99,10 +150,13 @@
 		F0CEE3141BFE966B00D15FC0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Appsidian;
 				TargetAttributes = {
+					42DB3A1B1C01055100D7FDB5 = {
+						CreatedOnToolsVersion = 7.2;
+					};
 					F0CEE31B1BFE966B00D15FC0 = {
 						CreatedOnToolsVersion = 7.1;
 					};
@@ -121,11 +175,31 @@
 			projectRoot = "";
 			targets = (
 				F0CEE31B1BFE966B00D15FC0 /* Swift-AI */,
+				42DB3A1B1C01055100D7FDB5 /* SimpleTest */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		42DB3A1A1C01055100D7FDB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		42DB3A181C01055100D7FDB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42DB3A1F1C01055100D7FDB5 /* SimpleTest.swift in Sources */,
+				42DB3A261C01077600D7FDB5 /* FFNN.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F0CEE3181BFE966B00D15FC0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -137,7 +211,37 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		42DB3A251C0106C200D7FDB5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F0CEE31B1BFE966B00D15FC0 /* Swift-AI */;
+			targetProxy = 42DB3A241C0106C200D7FDB5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		42DB3A211C01055100D7FDB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SimpleTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = neoneye.SimpleTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		42DB3A221C01055100D7FDB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SimpleTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = neoneye.SimpleTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		F0CEE3211BFE966B00D15FC0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -237,6 +341,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		42DB3A231C01055100D7FDB5 /* Build configuration list for PBXNativeTarget "SimpleTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42DB3A211C01055100D7FDB5 /* Debug */,
+				42DB3A221C01055100D7FDB5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		F0CEE3171BFE966B00D15FC0 /* Build configuration list for PBXProject "Swift-AI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
