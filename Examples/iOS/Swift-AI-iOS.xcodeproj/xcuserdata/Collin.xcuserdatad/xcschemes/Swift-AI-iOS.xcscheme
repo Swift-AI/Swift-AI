@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F0CEE31B1BFE966B00D15FC0"
-               BuildableName = "Swift-AI"
-               BlueprintName = "Swift-AI"
-               ReferencedContainer = "container:Swift-AI.xcodeproj">
+               BlueprintIdentifier = "F02FD2071C02B93400A137C2"
+               BuildableName = "Swift-AI-iOS.app"
+               BlueprintName = "Swift-AI-iOS"
+               ReferencedContainer = "container:Swift-AI-iOS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,19 +32,19 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F0CEE31B1BFE966B00D15FC0"
-            BuildableName = "Swift-AI"
-            BlueprintName = "Swift-AI"
-            ReferencedContainer = "container:Swift-AI.xcodeproj">
+            BlueprintIdentifier = "F02FD2071C02B93400A137C2"
+            BuildableName = "Swift-AI-iOS.app"
+            BlueprintName = "Swift-AI-iOS"
+            ReferencedContainer = "container:Swift-AI-iOS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
-      selectedDebuggerIdentifier = ""
-      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -55,10 +55,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F0CEE31B1BFE966B00D15FC0"
-            BuildableName = "Swift-AI"
-            BlueprintName = "Swift-AI"
-            ReferencedContainer = "container:Swift-AI.xcodeproj">
+            BlueprintIdentifier = "F02FD2071C02B93400A137C2"
+            BuildableName = "Swift-AI-iOS.app"
+            BlueprintName = "Swift-AI-iOS"
+            ReferencedContainer = "container:Swift-AI-iOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -74,10 +74,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F0CEE31B1BFE966B00D15FC0"
-            BuildableName = "Swift-AI"
-            BlueprintName = "Swift-AI"
-            ReferencedContainer = "container:Swift-AI.xcodeproj">
+            BlueprintIdentifier = "F02FD2071C02B93400A137C2"
+            BuildableName = "Swift-AI-iOS.app"
+            BlueprintName = "Swift-AI-iOS"
+            ReferencedContainer = "container:Swift-AI-iOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

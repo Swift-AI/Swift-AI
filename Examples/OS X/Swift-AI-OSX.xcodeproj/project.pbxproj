@@ -1,0 +1,290 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F02FD22F1C02D38100A137C2 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD22E1C02D38100A137C2 /* main.swift */; };
+		F02FD2391C02D3BB00A137C2 /* SineWave.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2371C02D3BB00A137C2 /* SineWave.swift */; };
+		F02FD23A1C02D3BB00A137C2 /* XOR-Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2381C02D3BB00A137C2 /* XOR-Example.swift */; };
+		F02FD23F1C02D4DA00A137C2 /* FFNN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD23E1C02D4DA00A137C2 /* FFNN.swift */; };
+		F02FD2421C02D4EC00A137C2 /* SimpleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2411C02D4EC00A137C2 /* SimpleTest.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F02FD2291C02D38100A137C2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F02FD22B1C02D38100A137C2 /* Swift-AI-OSX */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Swift-AI-OSX"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F02FD22E1C02D38100A137C2 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		F02FD2371C02D3BB00A137C2 /* SineWave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SineWave.swift; sourceTree = "<group>"; };
+		F02FD2381C02D3BB00A137C2 /* XOR-Example.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XOR-Example.swift"; sourceTree = "<group>"; };
+		F02FD23E1C02D4DA00A137C2 /* FFNN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FFNN.swift; path = ../../../Source/FFNN.swift; sourceTree = "<group>"; };
+		F02FD2401C02D4EC00A137C2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SimpleTest/Info.plist; sourceTree = SOURCE_ROOT; };
+		F02FD2411C02D4EC00A137C2 /* SimpleTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SimpleTest.swift; path = SimpleTest/SimpleTest.swift; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F02FD2281C02D38100A137C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F02FD2221C02D38100A137C2 = {
+			isa = PBXGroup;
+			children = (
+				F02FD22D1C02D38100A137C2 /* Swift-AI-OSX */,
+				F02FD23D1C02D40600A137C2 /* Tests */,
+				F02FD22C1C02D38100A137C2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F02FD22C1C02D38100A137C2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F02FD22B1C02D38100A137C2 /* Swift-AI-OSX */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F02FD22D1C02D38100A137C2 /* Swift-AI-OSX */ = {
+			isa = PBXGroup;
+			children = (
+				F02FD22E1C02D38100A137C2 /* main.swift */,
+				F02FD2351C02D39900A137C2 /* Examples */,
+				F02FD2361C02D3A300A137C2 /* Sources */,
+			);
+			path = "Swift-AI-OSX";
+			sourceTree = "<group>";
+		};
+		F02FD2351C02D39900A137C2 /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				F02FD2381C02D3BB00A137C2 /* XOR-Example.swift */,
+				F02FD2371C02D3BB00A137C2 /* SineWave.swift */,
+			);
+			name = Examples;
+			sourceTree = "<group>";
+		};
+		F02FD2361C02D3A300A137C2 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				F02FD23E1C02D4DA00A137C2 /* FFNN.swift */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		F02FD23D1C02D40600A137C2 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F02FD2401C02D4EC00A137C2 /* Info.plist */,
+				F02FD2411C02D4EC00A137C2 /* SimpleTest.swift */,
+			);
+			name = Tests;
+			path = "Swift-AI-OSX";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F02FD22A1C02D38100A137C2 /* Swift-AI-OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F02FD2321C02D38100A137C2 /* Build configuration list for PBXNativeTarget "Swift-AI-OSX" */;
+			buildPhases = (
+				F02FD2271C02D38100A137C2 /* Sources */,
+				F02FD2281C02D38100A137C2 /* Frameworks */,
+				F02FD2291C02D38100A137C2 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Swift-AI-OSX";
+			productName = "Swift-AI-OSX";
+			productReference = F02FD22B1C02D38100A137C2 /* Swift-AI-OSX */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F02FD2231C02D38100A137C2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0710;
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = Appsidian;
+				TargetAttributes = {
+					F02FD22A1C02D38100A137C2 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+				};
+			};
+			buildConfigurationList = F02FD2261C02D38100A137C2 /* Build configuration list for PBXProject "Swift-AI-OSX" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = F02FD2221C02D38100A137C2;
+			productRefGroup = F02FD22C1C02D38100A137C2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F02FD22A1C02D38100A137C2 /* Swift-AI-OSX */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F02FD2271C02D38100A137C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F02FD23A1C02D3BB00A137C2 /* XOR-Example.swift in Sources */,
+				F02FD2421C02D4EC00A137C2 /* SimpleTest.swift in Sources */,
+				F02FD23F1C02D4DA00A137C2 /* FFNN.swift in Sources */,
+				F02FD22F1C02D38100A137C2 /* main.swift in Sources */,
+				F02FD2391C02D3BB00A137C2 /* SineWave.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F02FD2301C02D38100A137C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F02FD2311C02D38100A137C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F02FD2331C02D38100A137C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F02FD2341C02D38100A137C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F02FD2261C02D38100A137C2 /* Build configuration list for PBXProject "Swift-AI-OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F02FD2301C02D38100A137C2 /* Debug */,
+				F02FD2311C02D38100A137C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F02FD2321C02D38100A137C2 /* Build configuration list for PBXNativeTarget "Swift-AI-OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F02FD2331C02D38100A137C2 /* Debug */,
+				F02FD2341C02D38100A137C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F02FD2231C02D38100A137C2 /* Project object */;
+}
