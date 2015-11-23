@@ -32,11 +32,11 @@ Creating an `FFNN` instance is easy...
 ```
 You must provide six parameters to the initializer:
 - `inputs`: The number of input nodes (aka, 'neurons'). This number corresponds to the dimensionality of the data that you plan to feed the network. If the above example were to be used for handwriting recognition, `100` might be the number of pixels in each image being processed.
-- `hidden`: The number of nodes in the hidden layer. The ideal number of hidden nodes depends heavily on the application, and should be determined by testing. If you're completely unsure, [(inputs * 2/3) + outputs] may be a good place to start.
+- `hidden`: The number of nodes in the hidden layer. The ideal number of hidden nodes depends heavily on the application, and should be determined by testing. If you're completely unsure, [(inputs * 2/3) + outputs] might be a good place to start.
 - `outputs`: The number of output nodes. For classification problems (like recognizing handwritten digits), the number of outputs usually corresponds to the number of possible classifications. In this example, each output might correspond to one digit (0-9). The number of outputs depends entirely on the problem being applied.
 - `learningRate`: The 'learning rate' to apply during the backpropagation phase of training. If you're unsure what this means, `0.7` is probably a good number.
 - `momentum`: Another constant applied during backpropagation. If you're not sure, try `0.4`.
-- `weights`: An optional array of `Float`s used to initialize the weights of the neural network. This allows you to 'clone' a pre-trained network, so that it's immediately prepared to solve problems without training first. When you're creating a new network from scratch, leave this parameter `nil` and random weights will calculated based on your input data.
+- `weights`: An optional array of `Float`s used to initialize the weights of the neural network. This allows you to 'clone' a pre-trained network, and begin solving problems without training first. When you're creating a new network from scratch, leave this parameter `nil` and random weights will calculated based on your input data.
 
 You interact with your neural net using these five methods:
 
@@ -45,7 +45,7 @@ You interact with your neural net using these five methods:
 let output: [Float] = try network.update(inputs: imagePixels)
 ```
 
-**backpropagate** - Used to train the network manually. Accepts the single set of expected outputs (aka 'answers') corresponding to the most `update` call. Returns the total error, as calculated from the difference between the expected and actual outputs.
+**backpropagate** - Used to train the network manually. Accepts the single set of expected outputs (aka 'answers') corresponding to the most recent `update` call. Returns the total error, as calculated from the difference between the expected and actual outputs.
 ```
 let error: Float = try network.backpropagate(answer: correctAnswer)
 ```
@@ -67,7 +67,7 @@ let weights = try network.train(inputs: allImages, answers: allAnswers,
 let weights = network.getWeights()
 ```
 
-**resetWithWeights** - Allows the user to reset the network with new specific weights. Accepts a serialized array of weights, as returned by the `getWeights()` method.
+**resetWithWeights** - Allows the user to reset the network with specified weights. Accepts a serialized array of weights, as returned by the `getWeights()` method.
 ```
 try network.resetWithWeights(preTrainedWeights)
 ```
