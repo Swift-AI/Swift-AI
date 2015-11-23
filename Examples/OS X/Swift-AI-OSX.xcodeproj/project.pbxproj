@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		422046ED1C0352E0005F5AAD /* FFNN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD23E1C02D4DA00A137C2 /* FFNN.swift */; };
+		4258CD7D1C035289004A2682 /* SimpleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4258CD7C1C035289004A2682 /* SimpleTest.swift */; };
 		F02FD22F1C02D38100A137C2 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD22E1C02D38100A137C2 /* main.swift */; };
 		F02FD2391C02D3BB00A137C2 /* SineWave.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2371C02D3BB00A137C2 /* SineWave.swift */; };
 		F02FD23A1C02D3BB00A137C2 /* XOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2381C02D3BB00A137C2 /* XOR.swift */; };
@@ -26,6 +28,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4258CD7A1C035289004A2682 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4258CD7C1C035289004A2682 /* SimpleTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTest.swift; sourceTree = "<group>"; };
+		4258CD7E1C035289004A2682 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F02FD22B1C02D38100A137C2 /* Swift-AI-OSX */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Swift-AI-OSX"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F02FD22E1C02D38100A137C2 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		F02FD2371C02D3BB00A137C2 /* SineWave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SineWave.swift; sourceTree = "<group>"; };
@@ -34,6 +39,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4258CD771C035289004A2682 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F02FD2281C02D38100A137C2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -44,11 +56,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4258CD7B1C035289004A2682 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				4258CD7C1C035289004A2682 /* SimpleTest.swift */,
+				4258CD7E1C035289004A2682 /* Info.plist */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		F02FD2221C02D38100A137C2 = {
 			isa = PBXGroup;
 			children = (
 				F02FD22D1C02D38100A137C2 /* Swift-AI-OSX */,
-				F02FD23D1C02D40600A137C2 /* Tests */,
+				4258CD7B1C035289004A2682 /* Tests */,
 				F02FD22C1C02D38100A137C2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -57,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				F02FD22B1C02D38100A137C2 /* Swift-AI-OSX */,
+				4258CD7A1C035289004A2682 /* Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -88,17 +110,26 @@
 			name = Sources;
 			sourceTree = "<group>";
 		};
-		F02FD23D1C02D40600A137C2 /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Tests;
-			path = "Swift-AI-OSX";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4258CD791C035289004A2682 /* Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4258CD811C035289004A2682 /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildPhases = (
+				4258CD761C035289004A2682 /* Sources */,
+				4258CD771C035289004A2682 /* Frameworks */,
+				4258CD781C035289004A2682 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tests;
+			productName = SimpleTest;
+			productReference = 4258CD7A1C035289004A2682 /* Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F02FD22A1C02D38100A137C2 /* Swift-AI-OSX */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F02FD2321C02D38100A137C2 /* Build configuration list for PBXNativeTarget "Swift-AI-OSX" */;
@@ -126,6 +157,9 @@
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = Appsidian;
 				TargetAttributes = {
+					4258CD791C035289004A2682 = {
+						CreatedOnToolsVersion = 7.1;
+					};
 					F02FD22A1C02D38100A137C2 = {
 						CreatedOnToolsVersion = 7.1;
 					};
@@ -144,11 +178,31 @@
 			projectRoot = "";
 			targets = (
 				F02FD22A1C02D38100A137C2 /* Swift-AI-OSX */,
+				4258CD791C035289004A2682 /* Tests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		4258CD781C035289004A2682 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		4258CD761C035289004A2682 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4258CD7D1C035289004A2682 /* SimpleTest.swift in Sources */,
+				422046ED1C0352E0005F5AAD /* FFNN.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F02FD2271C02D38100A137C2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -163,6 +217,28 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		4258CD7F1C035289004A2682 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = appsidian.SimpleTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4258CD801C035289004A2682 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = appsidian.SimpleTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		F02FD2301C02D38100A137C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -260,6 +336,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4258CD811C035289004A2682 /* Build configuration list for PBXNativeTarget "Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4258CD7F1C035289004A2682 /* Debug */,
+				4258CD801C035289004A2682 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F02FD2261C02D38100A137C2 /* Build configuration list for PBXProject "Swift-AI-OSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
