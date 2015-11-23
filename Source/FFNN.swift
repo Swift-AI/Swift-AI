@@ -13,6 +13,134 @@ public enum FFNNError: ErrorType {
     case InvalidWeightsError(String)
 }
 
+
+/// This enum will hold all the supported Activation Functions
+public enum ActivationFunction {
+    
+    case None
+    case Sigmoid
+    case Linear
+    case Gaussian
+    case RationalSigmoid
+    case HyperbolicTangent
+    
+}
+
+///Struct that evaluates an activation function
+public struct ActivationFunctionEvaluator {
+    
+    /// evaluate an activation function with the specific input
+    /// - Parameters:
+    ///     - aFunc: is the Transfer function to be excuted
+    ///     - input: the input of the activation function
+    static func evaluate(aFunc: ActivationFunction, input:Float) -> Float {
+        
+        switch aFunc {
+            
+        case .None :
+            return 0.0
+        case .Linear:
+            return linear(input)
+        case .Sigmoid:
+            return sigmoid(input)
+        case .Gaussian:
+            return gaussian(input)
+        case .RationalSigmoid:
+            return rationalSigmoid(input)
+        case .HyperbolicTangent:
+            return hyperbolicTangent(input)
+            
+        }
+    }
+    
+    
+    
+    /// evaluate the derivative of an activation function with the specific input
+    /// - Parameters:
+    ///     - aFunc: is the Transfer function to be excuted
+    ///     - input: the input of the activation function
+    static func evaluateDerivative(aFunc: ActivationFunction, input:Float) -> Float {
+        
+        
+        switch aFunc {
+            
+        case .None :
+            return 0.0
+        case .Linear:
+            return linearDerivative(input)
+        case .Sigmoid:
+            return sigmoidDerivative(input)
+        case .Gaussian:
+            return gaussianDerivative(input)
+        case .RationalSigmoid:
+            return rationalSigmoidDerivative(input)
+        case .HyperbolicTangent:
+            return hyperbolicTangentDerivative(input)
+        }
+    }
+    
+    
+    /*Transfer function and definitions */
+    
+    static private func sigmoid(x:Float) -> Float {
+        
+        return 1 / (1 + exp(-x))
+    }
+    
+    static private func sigmoidDerivative(x:Float) -> Float {
+        
+        return sigmoid(x) * (1 - sigmoid(x))
+    }
+    
+    
+    static private func linear(x:Float) -> Float {
+        
+        return x
+    }
+    
+    static private func linearDerivative(x:Float) -> Float {
+        
+        return 1.0
+    }
+    
+    
+    static private func gaussian(x:Float) -> Float {
+        
+        return exp(-pow(x, 2.0))
+    }
+    
+    
+    static private func gaussianDerivative(x:Float) -> Float {
+        
+        return -2.0 * gaussian(x) * x
+    }
+    
+    static private func rationalSigmoid(x:Float) -> Float {
+        
+        return x / (1.0 + sqrt(1.0 + x * x))
+    }
+    
+    
+    static private func rationalSigmoidDerivative(x:Float) -> Float {
+        
+        let val = sqrt(1.0 + x * x)
+        
+        return 1.0 / (val * (1.0 + val))
+    }
+    
+    static private func hyperbolicTangent(x:Float) -> Float {
+        
+        return tanh(x)//(1 - exp(-2 * x))/(1 + exp(-2 * x))
+    }
+    
+    
+    static private func hyperbolicTangentDerivative(x:Float) -> Float {
+        
+        return 1.0 / pow(cosh(x), 2.0)
+    }
+}
+
+
 public final class FFNN {
     
     /// The number of input nodes to the network (read only).
@@ -99,8 +227,11 @@ public final class FFNN {
     /// The input indices corresponding to each hidden weight.
     private var inputIndices = [Int]()
     
+    /// The Activation func type
+    private var activationFunction : ActivationFunction = .Sigmoid
+    
     /// Initialization with an optional array of weights.
-    public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?) {
+    public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?, activationFunction : ActivationFunction) {
         if inputs < 1 || hidden < 1 || outputs < 1 || learningRate <= 0 {
             print("Warning: Invalid arguments passed to FFNN initializer. Inputs, hidden, outputs and learningRate must all be positive and nonzero. Network will not perform correctly.")
         }
@@ -132,6 +263,9 @@ public final class FFNN {
         self.hiddenWeightsCount = Int32(self.numHiddenWeights)
         self.outputWeightsCount = Int32(self.numOutputWeights)
         
+        
+        self.activationFunction = activationFunction
+        
         for weightIndex in 0..<self.numOutputWeights {
             self.outputErrorIndices.append(weightIndex / self.numHiddenNodes)
             self.hiddenOutputIndices.append(weightIndex % self.numHiddenNodes)
@@ -158,6 +292,7 @@ public final class FFNN {
         } else {
             self.randomizeWeights()
         }
+        
     }
     
     /// Propagates the given inputs through the neural network, returning the network's output.
@@ -315,7 +450,8 @@ public final class FFNN {
     
     /// Applies the activation function (sigmoid) to the input.
     private func activation(input: Float) -> Float {
-        return 1 / (1 + exp(-input))
+        
+        return ActivationFunctionEvaluator.evaluate(self.activationFunction, input: input)
     }
     
     /// Randomizes all of the network's weights, from each layer.
