@@ -13,7 +13,28 @@ public enum FFNNError: ErrorType {
     case InvalidWeightsError(String)
 }
 
-public final class FFNN {
+/// Abstracts a value that can be represented as a Float
+public protocol FloatConvertible {
+  /// The Float representation of this value
+  var floatValue: Float { get }
+}
+
+extension Float: FloatConvertible {
+  /// The value itself
+  public var floatValue: Float { return self }
+}
+
+extension Int: FloatConvertible {
+  /// The Float representation of this value
+  public var floatValue: Float { return Float(self) }
+}
+
+extension Double: FloatConvertible {
+  /// The Float representation of this value
+  public var floatValue: Float { return Float(self) }
+}
+
+public final class FFNN<T: FloatConvertible> {
     
     /// The number of input nodes to the network (read only).
     let numInputs: Int
@@ -161,9 +182,9 @@ public final class FFNN {
     }
     
     /// Propagates the given inputs through the neural network, returning the network's output.
-    /// - parameter inputs: An array of `Float`s, each element corresponding to one input node.
+    /// - parameter inputs: An array of `T`s (input type), each element corresponding to one input node.
     /// - returns: The network's output after applying the given inputs, as an array of `Float`s.
-    public func update(inputs inputs: [Float]) throws -> [Float] {
+    public func update(inputs inputs: [T]) throws -> [Float] {
         // Ensure that the correct number of inputs is given
         guard inputs.count == self.numInputs else {
             throw FFNNError.InvalidAnswerError("Invalid number of inputs given: \(inputs.count). Expected: \(self.numInputs)")
@@ -173,7 +194,7 @@ public final class FFNN {
         // Note: A bias node is inserted at index 0, followed by each of the given inputs
         self.inputCache[0] = 1.0
         for i in 1..<self.numInputNodes {
-            self.inputCache[i] = inputs[i - 1]
+            self.inputCache[i] = inputs[i - 1].floatValue
         }
         
         // Calculate the weighted sums for the hidden layer
@@ -257,7 +278,7 @@ public final class FFNN {
     }
     
     /// Trains the network using the given set of inputs and corresponding outputs.
-    /// - parameter inputs: A 2D array of `Float`s.
+    /// - parameter inputs: A 2D array of `T`s (input type).
     /// Inner array: A single set of inputs for the network. Outer array: The full set of training data to be used for training.
     /// - parameter answers: A 2D array of `Float`s.
     /// Inner array: A single set of outputs expected from the network. Outer array: The full set of output data to be used for training.
@@ -267,7 +288,7 @@ public final class FFNN {
     /// - parameter errorThreshold: A `Float` indicating the maximum error allowed per epoch of validation data, before the network is considered 'trained' and ceases its training process.
     /// - This value must be determined by the user, because it varies based on the type of data used and the desired accuracy.
     /// - returns: The final calculated weights of the network after training has completed.
-    public func train(inputs inputs: [[Float]], answers: [[Float]], testInputs: [[Float]], testAnswers: [[Float]], errorThreshold: Float) throws -> [Float] {
+    public func train(inputs inputs: [[T]], answers: [[Float]], testInputs: [[T]], testAnswers: [[Float]], errorThreshold: Float) throws -> [Float] {
         guard errorThreshold > 0 else {
             throw FFNNError.InvalidInputsError("Error threshold must be greater than zero!")
         }
