@@ -28,7 +28,7 @@ Creating an `FFNN` instance is easy...
 
 ```
   let network = FFNN(inputs: 100, hidden: 64, outputs: 10,
-                learningRate: 0.7, momentum: 0.4, weights: nil)
+                learningRate: 0.7, momentum: 0.4, weights: nil, activationFunction : .Sigmoid)
 ```
 You must provide six parameters to the initializer:
 - `inputs`: The number of input nodes (aka, 'neurons'). This number corresponds to the dimensionality of the data that you plan to feed the network. If the above example were to be used for handwriting recognition, `100` might be the number of pixels in each image being processed.
@@ -37,8 +37,7 @@ You must provide six parameters to the initializer:
 - `learningRate`: The 'learning rate' to apply during the backpropagation phase of training. If you're unsure what this means, `0.7` is probably a good number.
 - `momentum`: Another constant applied during backpropagation. If you're not sure, try `0.4`.
 - `weights`: An optional array of `Float`s used to initialize the weights of the neural network. This allows you to 'clone' a pre-trained network, and begin solving problems without training first. When you're creating a new network from scratch, leave this parameter `nil` and random weights will calculated based on your input data.
-
-You interact with your neural net using these five methods:
+- `activationFunction`: one of the supported activation fuction take look at ActivationFunction enum.
 
 **update** - Accepts a single set of input data, and returns the resulting output as calculated by the neural net.
 ```
