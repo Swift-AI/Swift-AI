@@ -320,6 +320,7 @@ public final class FFNN {
         guard weights.count == self.numHiddenWeights + self.numOutputWeights else {
             throw FFNNError.InvalidWeightsError("Invalid number of weights provided: \(weights.count). Expected: \(self.numHiddenWeights + self.numOutputWeights)")
         }
+    
         self.hiddenWeights = Array(weights[0..<self.hiddenWeights.count])
         self.outputWeights = Array(weights[self.hiddenWeights.count..<weights.count])
     }
@@ -335,33 +336,13 @@ public final class FFNN {
     /// Randomizes all of the network's weights, from each layer.
     private func randomizeWeights() {
         for i in 0..<self.numHiddenWeights {
-            self.hiddenWeights[i] = self.randomHiddenWeight()
+            self.hiddenWeights[i] = randomWeight(numInputNodes: self.numInputNodes)
         }
         for i in 0..<self.numOutputWeights {
-            self.outputWeights[i] = self.randomOutputWeight()
+            self.outputWeights[i] = randomWeight(numInputNodes: self.numHiddenNodes)
         }
     }
-    
-    // TODO: Generate random weights along a normal distribution, rather than a uniform distribution.
-    
-    /// Generates a random weight for a hidden layer node, based on the parameters set for the network.
-    /// Will return a Float between +/- 1/sqrt(numInputNodes).
-    private func randomHiddenWeight() -> Float {
-        let range = 1 / sqrt(Float(self.numInputNodes))
-        let rangeInt = UInt32(2_000_000 * range)
-        let randomFloat = Float(arc4random_uniform(rangeInt)) - Float(rangeInt / 2)
-        return randomFloat / 1_000_000
-    }
-    
-    /// Generates a random weight for an output layer node, based on the parameters set for the network.
-    /// Will return a Float between +/- 1/sqrt(numHiddenNodes).
-    private func randomOutputWeight() -> Float {
-        let range = 1 / sqrt(Float(self.numHiddenNodes))
-        let rangeInt = UInt32(2_000_000 * range)
-        let randomFloat = Float(arc4random_uniform(rangeInt)) - Float(rangeInt / 2)
-        return randomFloat / 1_000_000
-    }
-    
+  
 }
 
 /// An enum containing all supported activation functions.
@@ -483,5 +464,17 @@ private struct ActivationFunctionEvaluator {
     static private func hyperbolicTangentDerivative(x:Float) -> Float {
         return 1.0 / (cosh(x) * cosh(x))
     }
-    
+
+}
+
+
+// TODO: Generate random weights along a normal distribution, rather than a uniform distribution.
+
+/// Generates a random weight for a layer node, based on the parameters set for the network.
+/// Will return a Float between +/- 1/sqrt(numInputNodes).
+private func randomWeight(numInputNodes numInputNodes: Int) -> Float {
+    let range = 1 / sqrt(Float(numInputNodes))
+    let rangeInt = UInt32(2_000_000 * range)
+    let randomFloat = Float(arc4random_uniform(rangeInt)) - Float(rangeInt / 2)
+    return randomFloat / 1_000_000
 }
