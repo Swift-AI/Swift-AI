@@ -361,6 +361,7 @@ public final class FFNN {
         let randomFloat = Float(arc4random_uniform(rangeInt)) - Float(rangeInt / 2)
         return randomFloat / 1_000_000
     }
+    
 }
 
 /// An enum containing all supported activation functions.
