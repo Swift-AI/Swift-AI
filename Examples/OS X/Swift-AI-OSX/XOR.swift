@@ -11,7 +11,7 @@ func xorTwoWay() {
     print("******** Feed-Forward Neural Network: Two-Input XOR Example ********")
     
     // Initialize network
-    let network = FFNN(inputs: 2, hidden: 2, outputs: 1,
+    let network = FFNN<Float>(inputs: 2, hidden: 2, outputs: 1,
         learningRate: 0.2, momentum: 0.1, weights: nil)
     
     // Create training data
