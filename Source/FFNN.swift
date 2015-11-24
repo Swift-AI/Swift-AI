@@ -442,7 +442,7 @@ private func gaussian(x: Float) -> Float {
 // x = +/- sqrt(log(1 / y))  - impossible to determine x?
 /// Derivative for the Gaussian activation function
 private func gaussianDerivative(y: Float) -> Float {
-    let x = sqrt(log(1 / y))
+    let x = sqrt(log(1 / y)) // This is only correct for x >= 0
     return -2 * x * y
 }
 
