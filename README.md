@@ -37,7 +37,7 @@ You must provide six parameters to the initializer:
 - `learningRate`: The 'learning rate' to apply during the backpropagation phase of training. If you're unsure what this means, `0.7` is probably a good number.
 - `momentum`: Another constant applied during backpropagation. If you're not sure, try `0.4`.
 - `weights`: An optional array of `Float`s used to initialize the weights of the neural network. This allows you to 'clone' a pre-trained network, and begin solving problems without training first. When you're creating a new network from scratch, leave this parameter `nil` and random weights will calculated based on your input data.
-- `activationFunction`: one of the supported activation fuction take look at ActivationFunction enum.
+- `activationFunction`: One of the supported `ActivationFunction`s to apply to the hidden and output nodes.
 
 **update** - Accepts a single set of input data, and returns the resulting output as calculated by the neural net.
 ```
@@ -75,10 +75,10 @@ More information can be found in the documentation.
 
 
 #### **Additional Information**
-To achieve nonlinearity, `FFNN` uses the [sigmoid](https://en.wikipedia.org/wiki/Sigmoid_function) activation function for hidden and output nodes. Because of this property, you will achieve better results if the following points are taken into consideration:
-- Input data should be [normalized](https://visualstudiomagazine.com/articles/2014/01/01/how-to-standardize-data-for-neural-networks.aspx) to have a mean of `0` and standard deviation of `1`.
-- Outputs will always reside in the range (0, 1). For regression problems, a wider range is often needed and thus the outputs must be scaled accordingly.
-- When providing 'answers' for backpropagation, this data must be scaled in reverse so that all outputs also reside in the range (0, 1).
+To achieve nonlinearity, `FFNN` uses a one of several activation functions for hidden and output nodes, as configured during initialization. Because of this property, you will achieve better results if the following points are taken into consideration:
+- Input data should generally be [normalized](https://visualstudiomagazine.com/articles/2014/01/01/how-to-standardize-data-for-neural-networks.aspx) to have a mean of `0` and standard deviation of `1`.
+- Except in the case of Linear activation, outputs will always reside in the range (0, 1). For regression problems, a wider range is often needed and thus the outputs must be scaled accordingly.
+- When providing 'answers' for backpropagation, this data must be scaled in reverse so that all outputs also reside in the range (0, 1).  Again, this does not apply to networks using linear activation functions.
 
 [Softmax](https://en.wikipedia.org/wiki/Softmax_function) activation will be added soon.
 
