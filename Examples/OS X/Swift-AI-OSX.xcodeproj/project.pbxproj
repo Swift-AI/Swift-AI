@@ -36,6 +36,7 @@
 		F02FD2371C02D3BB00A137C2 /* SineWave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SineWave.swift; sourceTree = "<group>"; };
 		F02FD2381C02D3BB00A137C2 /* XOR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XOR.swift; sourceTree = "<group>"; };
 		F02FD23E1C02D4DA00A137C2 /* FFNN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FFNN.swift; path = ../../../Source/FFNN.swift; sourceTree = "<group>"; };
+		F0BAD9641C03D039001AD2AE /* Swift-AI-Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = "Swift-AI-Playground.playground"; path = "../../Swift-AI-Playground.playground"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +97,7 @@
 		F02FD2351C02D39900A137C2 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				F0BAD9641C03D039001AD2AE /* Swift-AI-Playground.playground */,
 				F02FD2381C02D3BB00A137C2 /* XOR.swift */,
 				F02FD2371C02D3BB00A137C2 /* SineWave.swift */,
 			);

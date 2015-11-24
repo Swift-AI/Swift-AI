@@ -7,10 +7,29 @@
 
 import Accelerate
 
+/// An enum containing all errors that may be thrown by FFNN.
 public enum FFNNError: ErrorType {
     case InvalidInputsError(String)
     case InvalidAnswerError(String)
     case InvalidWeightsError(String)
+}
+
+/// An enum containing all supported activation functions.
+public enum ActivationFunction {
+    /// No activation function (returns zero)
+    case None
+    /// Default activation function (sigmoid)
+    case Default
+    /// Linear activation function (raw sum)
+    case Linear
+    /// Sigmoid activation function
+    case Sigmoid
+    /// Gaussian activation function
+    case Gaussian
+    /// Rational sigmoid activation function
+    case RationalSigmoid
+    /// Hyperbolic tangent activation function
+    case HyperbolicTangent
 }
 
 /// A 3-Layer Feed-Forward Artificial Neural Network
@@ -138,7 +157,6 @@ public final class FFNN {
         self.hiddenWeightsCount = Int32(self.numHiddenWeights)
         self.outputWeightsCount = Int32(self.numOutputWeights)
         
-        
         self.activationFunction = activationFunction
         
         for weightIndex in 0..<self.numOutputWeights {
@@ -225,7 +243,7 @@ public final class FFNN {
         
         // Calculate output errors
         for (outputIndex, output) in self.outputCache.enumerate() {
-            self.outputErrorsCache[outputIndex] = output * (1 - output) * (answer[outputIndex] - output)
+            self.outputErrorsCache[outputIndex] = self.activationDerivative(output) * (answer[outputIndex] - output)
         }
         
         // Calculate hidden errors
@@ -234,7 +252,7 @@ public final class FFNN {
             &self.hiddenErrorSumsCache, 1,
             vDSP_Length(1), vDSP_Length(self.numHiddenNodes), vDSP_Length(self.numOutputs))
         for (errorIndex, error) in self.hiddenErrorSumsCache.enumerate() {
-            self.hiddenErrorsCache[errorIndex] = self.hiddenOutputCache[errorIndex] * (1 - self.hiddenOutputCache[errorIndex]) * error
+            self.hiddenErrorsCache[errorIndex] = self.activationDerivative(self.hiddenOutputCache[errorIndex]) * error
         }
         
         // Update output weights
@@ -296,12 +314,13 @@ public final class FFNN {
             for (inputIndex, input) in testInputs.enumerate() {
                 let outputs = try self.update(inputs: input)
                 for (outputIndex, output) in outputs.enumerate() {
-                    errorSum += abs(output * (1 - output) * (testAnswers[inputIndex][outputIndex] - output))
+                    errorSum += abs(self.activationDerivative(output) * (testAnswers[inputIndex][outputIndex] - output))
                 }
             }
             if errorSum < errorThreshold {
                 break
             }
+            print(errorSum)
         }
         return self.hiddenWeights + self.outputWeights
     }
@@ -324,54 +343,14 @@ public final class FFNN {
         self.hiddenWeights = Array(weights[0..<self.hiddenWeights.count])
         self.outputWeights = Array(weights[self.hiddenWeights.count..<weights.count])
     }
-    
-    
-    // MARK:- Private methods
+}
+
+/// FFNN private methods
+private extension FFNN {
     
     /// Applies the activation function (sigmoid) to the input.
     private func activation(input: Float) -> Float {
-        return ActivationFunctionEvaluator.evaluate(self.activationFunction, input: input)
-    }
-    
-    /// Randomizes all of the network's weights, from each layer.
-    private func randomizeWeights() {
-        for i in 0..<self.numHiddenWeights {
-            self.hiddenWeights[i] = randomWeight(numInputNodes: self.numInputNodes)
-        }
-        for i in 0..<self.numOutputWeights {
-            self.outputWeights[i] = randomWeight(numInputNodes: self.numHiddenNodes)
-        }
-    }
-  
-}
-
-/// An enum containing all supported activation functions.
-public enum ActivationFunction {
-    /// No activation function (returns zero)
-    case None
-    /// Default activation function (sigmoid)
-    case Default
-    /// Linear activation function (raw sum)
-    case Linear
-    /// Sigmoid activation function
-    case Sigmoid
-    /// Gaussian activation function
-    case Gaussian
-    /// Rational sigmoid activation function
-    case RationalSigmoid
-    /// Hyperbolic tangent activation function
-    case HyperbolicTangent
-}
-
-/// Struct that evaluates an activation function
-private struct ActivationFunctionEvaluator {
-    
-    /// Evaluates an activation function with the specific input.
-    /// - Parameters:
-    ///     - aFunc: The activation function to be excuted.
-    ///     - input: The input of the activation function.
-    static func evaluate(aFunc: ActivationFunction, input:Float) -> Float {
-        switch aFunc {
+        switch self.activationFunction {
         case .None:
             return 0.0
         case .Default:
@@ -389,86 +368,39 @@ private struct ActivationFunctionEvaluator {
         }
     }
     
-    /// Evaluates the derivative of an activation function with the specific input.
-    /// - Parameters:
-    ///     - aFunc: The desired activation function.
-    ///     - input: The value at which to calculate the activation function's derivative.
-    static func evaluateDerivative(aFunc: ActivationFunction, input:Float) -> Float {
-        switch aFunc {
+    private func activationDerivative(output: Float) -> Float {
+        switch self.activationFunction {
         case .None:
             return 0.0
         case .Default:
-            return sigmoidDerivative(input)
+            return sigmoidDerivative(output)
         case .Linear:
-            return linearDerivative(input)
+            return linearDerivative(output)
         case .Sigmoid:
-            return sigmoidDerivative(input)
+            return sigmoidDerivative(output)
         case .Gaussian:
-            return gaussianDerivative(input)
+            return gaussianDerivative(output)
         case .RationalSigmoid:
-            return rationalSigmoidDerivative(input)
+            return rationalSigmoidDerivative(output)
         case .HyperbolicTangent:
-            return hyperbolicTangentDerivative(input)
+            return hyperbolicTangentDerivative(output)
         }
     }
     
-    
-    // MARK: Activation Functions and Derivatives
-    
-    /// Sigmoid activation function
-    static private func sigmoid(x:Float) -> Float {
-        return 1 / (1 + exp(-x))
-    }
-    /// Derivative for the sigmoid activation function
-    static private func sigmoidDerivative(x:Float) -> Float {
-        return sigmoid(x) * (1 - sigmoid(x))
-    }
-    
-    /// Linear activation function (raw sum)
-    static private func linear(x:Float) -> Float {
-        return x
-    }
-    
-    /// Derivative for the linear activation function
-    static private func linearDerivative(x:Float) -> Float {
-        return 1.0
-    }
-    
-    /// Gaussian activation function
-    static private func gaussian(x:Float) -> Float {
-        return exp(-(x * x))
-    }
-    
-    /// Derivative for the Gaussian activation function
-    static private func gaussianDerivative(x:Float) -> Float {
-        return -2.0 * gaussian(x) * x
-    }
-    
-    /// Rational sigmoid activation function
-    static private func rationalSigmoid(x:Float) -> Float {
-        return x / (1.0 + sqrt(1.0 + x * x))
-    }
-
-    /// Derivative for the rational sigmoid activation function
-    static private func rationalSigmoidDerivative(x:Float) -> Float {
-        let val = sqrt(1.0 + x * x)
-        return 1.0 / (val * (1.0 + val))
-    }
-    
-    /// Hyperbolic tangen activation function
-    static private func hyperbolicTangent(x:Float) -> Float {
-        return tanh(x)//(1 - exp(-2 * x))/(1 + exp(-2 * x))
-    }
-    
-    /// Derivative for the hyperbolic tangent activation function
-    static private func hyperbolicTangentDerivative(x:Float) -> Float {
-        return 1.0 / (cosh(x) * cosh(x))
+    /// Randomizes all of the network's weights, from each layer.
+    private func randomizeWeights() {
+        for i in 0..<self.numHiddenWeights {
+            self.hiddenWeights[i] = randomWeight(numInputNodes: self.numInputNodes)
+        }
+        for i in 0..<self.numOutputWeights {
+            self.outputWeights[i] = randomWeight(numInputNodes: self.numHiddenNodes)
+        }
     }
 
 }
 
-
 // TODO: Generate random weights along a normal distribution, rather than a uniform distribution.
+//       Also, these weights are only optimal for sigmoid activation. They don't work very well with other functions
 
 /// Generates a random weight for a layer node, based on the parameters set for the network.
 /// Will return a Float between +/- 1/sqrt(numInputNodes).
@@ -478,3 +410,60 @@ private func randomWeight(numInputNodes numInputNodes: Int) -> Float {
     let randomFloat = Float(arc4random_uniform(rangeInt)) - Float(rangeInt / 2)
     return randomFloat / 1_000_000
 }
+
+
+// MARK: Activation Functions and Derivatives
+
+/// Linear activation function (raw sum)
+private func linear(x: Float) -> Float {
+    return x
+}
+
+/// Derivative for the linear activation function
+private func linearDerivative(y: Float) -> Float {
+    return 1.0
+}
+
+/// Sigmoid activation function
+private func sigmoid(x: Float) -> Float {
+    return 1 / (1 + exp(-x))
+}
+/// Derivative for the sigmoid activation function
+private func sigmoidDerivative(y: Float) -> Float {
+    return y * (1 - y)
+}
+
+/// Gaussian activation function
+private func gaussian(x: Float) -> Float {
+    return exp(-(x * x))
+}
+
+// TODO: Derive the correct formula for this derivative with respect to `x`, from the input `y`
+// x = +/- sqrt(log(1 / y))  - impossible to determine x?
+/// Derivative for the Gaussian activation function
+private func gaussianDerivative(y: Float) -> Float {
+    let x = sqrt(log(1 / y))
+    return -2 * x * y
+}
+
+/// Rational sigmoid activation function
+private func rationalSigmoid(x: Float) -> Float {
+    return x / (1.0 + sqrt(1.0 + x * x))
+}
+
+/// Derivative for the rational sigmoid activation function
+private func rationalSigmoidDerivative(y: Float) -> Float {
+    let x = -(2 * y) / (y * y - 1)
+    return 1 / ((x * x) + sqrt((x * x) + 1) + 1)
+}
+
+/// Hyperbolic tangent activation function
+private func hyperbolicTangent(x: Float) -> Float {
+    return tanh(x)
+}
+
+/// Derivative for the hyperbolic tangent activation function
+private func hyperbolicTangentDerivative(y: Float) -> Float {
+    return 1 - (y * y)
+}
+

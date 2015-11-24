@@ -113,7 +113,7 @@ extension Builder {
 class SimpleTest: XCTestCase {
     
     func testXor2way() {
-		let network = FFNN(inputs: 2, hidden: 2, outputs: 1, learningRate: 0.1, momentum: 0.1, weights: nil)
+        let network = FFNN(inputs: 2, hidden: 2, outputs: 1, learningRate: 0.1, momentum: 0.1, weights: nil, activationFunction: .Sigmoid)
 		
 		let b = Builder()
 		b.xor2way()
@@ -131,7 +131,7 @@ class SimpleTest: XCTestCase {
     }
 	
 	func testXor3way() {
-		let network = FFNN(inputs: 3, hidden: 3, outputs: 1, learningRate: 0.1, momentum: 0.1, weights: nil)
+        let network = FFNN(inputs: 3, hidden: 3, outputs: 1, learningRate: 0.1, momentum: 0.1, weights: nil, activationFunction: .Sigmoid)
 		
 		let b = Builder()
 		b.xor3way()
@@ -149,7 +149,7 @@ class SimpleTest: XCTestCase {
 	}
 	
 	func testSinus() {
-		let network = FFNN(inputs: 1, hidden: 10, outputs: 1, learningRate: 0.2, momentum: 0.1, weights: nil)
+		let network = FFNN(inputs: 1, hidden: 10, outputs: 1, learningRate: 0.2, momentum: 0.1, weights: nil, activationFunction: .Sigmoid)
 		
 		let b = Builder()
 		b.sinus()

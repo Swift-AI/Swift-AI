@@ -13,7 +13,7 @@ func sineWave(errorThreshold errorThreshold: Float) {
 
     // Initialize network
     let network = FFNN(inputs: 1, hidden: 8, outputs: 1,
-        learningRate: 0.6, momentum: 0.2, weights: nil, activationFunction: .Sigmoid)
+        learningRate: 0.7, momentum: 0.2, weights: nil, activationFunction: .RationalSigmoid)
     
     // Create training data
     // Note: Each input 'set' is an array with a single x-coordinate
@@ -38,14 +38,14 @@ func sineWave(errorThreshold errorThreshold: Float) {
     
     // Train the network
     print("Training... (may take several seconds, depending on error threshold)")
-    try! network.train(inputs: inputs, answers: answers,
+    let weights = try! network.train(inputs: inputs, answers: answers,
         testInputs: testInputs, testAnswers: testAnswers,
         errorThreshold: errorThreshold)
     
     // Print the y-coordinates for the resulting waveform
     print("TRAINING COMPLETED")
     print("Paste the following weights into Swift-AI-Playground to view your waveform:")
-    print(network.getWeights())
+    print(weights)
     
 }
 

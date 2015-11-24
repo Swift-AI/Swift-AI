@@ -7,12 +7,32 @@
 
 import Accelerate
 
+/// An enum containing all errors that may be thrown by FFNN.
 public enum FFNNError: ErrorType {
     case InvalidInputsError(String)
     case InvalidAnswerError(String)
     case InvalidWeightsError(String)
 }
 
+/// An enum containing all supported activation functions.
+public enum ActivationFunction {
+    /// No activation function (returns zero)
+    case None
+    /// Default activation function (sigmoid)
+    case Default
+    /// Linear activation function (raw sum)
+    case Linear
+    /// Sigmoid activation function
+    case Sigmoid
+    /// Gaussian activation function
+    case Gaussian
+    /// Rational sigmoid activation function
+    case RationalSigmoid
+    /// Hyperbolic tangent activation function
+    case HyperbolicTangent
+}
+
+/// A 3-Layer Feed-Forward Artificial Neural Network
 public final class FFNN {
     
     /// The number of input nodes to the network (read only).
@@ -36,6 +56,10 @@ public final class FFNN {
             self.mfLR = (1 - newMomentum) * self.learningRate
         }
     }
+    
+    /// The activation function to use during update cycles.
+    private var activationFunction : ActivationFunction = .Sigmoid
+    
     
     /**
      The following private properties are allocated once during initializtion, in order to prevent frequent
@@ -99,8 +123,9 @@ public final class FFNN {
     /// The input indices corresponding to each hidden weight.
     private var inputIndices = [Int]()
     
+    
     /// Initialization with an optional array of weights.
-    public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?) {
+    public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?, activationFunction : ActivationFunction) {
         if inputs < 1 || hidden < 1 || outputs < 1 || learningRate <= 0 {
             print("Warning: Invalid arguments passed to FFNN initializer. Inputs, hidden, outputs and learningRate must all be positive and nonzero. Network will not perform correctly.")
         }
@@ -132,6 +157,9 @@ public final class FFNN {
         self.hiddenWeightsCount = Int32(self.numHiddenWeights)
         self.outputWeightsCount = Int32(self.numOutputWeights)
         
+        
+        self.activationFunction = activationFunction
+        
         for weightIndex in 0..<self.numOutputWeights {
             self.outputErrorIndices.append(weightIndex / self.numHiddenNodes)
             self.hiddenOutputIndices.append(weightIndex % self.numHiddenNodes)
@@ -158,11 +186,12 @@ public final class FFNN {
         } else {
             self.randomizeWeights()
         }
+        
     }
     
     /// Propagates the given inputs through the neural network, returning the network's output.
-    /// - parameter inputs: An array of `Float`s, each element corresponding to one input node.
-    /// - returns: The network's output after applying the given inputs, as an array of `Float`s.
+    /// - Parameter inputs: An array of `Float`s, each element corresponding to one input node.
+    /// - Returns: The network's output after applying the given inputs, as an array of `Float`s.
     public func update(inputs inputs: [Float]) throws -> [Float] {
         // Ensure that the correct number of inputs is given
         guard inputs.count == self.numInputs else {
@@ -205,8 +234,8 @@ public final class FFNN {
     }
     
     /// Trains the network by comparing its most recent output to the given 'answers', adjusting the network's weights as needed.
-    /// - parameter answer: The 'correct' desired output for the most recent update to the network, as an array of `Float`s.
-    /// - returns: The total calculated error from the most recent update.
+    /// - Parameter answer: The 'correct' desired output for the most recent update to the network, as an array of `Float`s.
+    /// - Returns: The total calculated error from the most recent update.
     public func backpropagate(answer answer: [Float]) throws -> Float {
         // Verify valid answer
         guard answer.count == self.numOutputs else {
@@ -215,7 +244,8 @@ public final class FFNN {
         
         // Calculate output errors
         for (outputIndex, output) in self.outputCache.enumerate() {
-            self.outputErrorsCache[outputIndex] = output * (1 - output) * (answer[outputIndex] - output)
+//            self.outputErrorsCache[outputIndex] = output * (1 - output) * (answer[outputIndex] - output)
+            self.outputErrorsCache[outputIndex] = self.activationDerivative(output) * (answer[outputIndex] - output)
         }
         
         // Calculate hidden errors
@@ -224,7 +254,8 @@ public final class FFNN {
             &self.hiddenErrorSumsCache, 1,
             vDSP_Length(1), vDSP_Length(self.numHiddenNodes), vDSP_Length(self.numOutputs))
         for (errorIndex, error) in self.hiddenErrorSumsCache.enumerate() {
-            self.hiddenErrorsCache[errorIndex] = self.hiddenOutputCache[errorIndex] * (1 - self.hiddenOutputCache[errorIndex]) * error
+//            self.hiddenErrorsCache[errorIndex] = self.hiddenOutputCache[errorIndex] * (1 - self.hiddenOutputCache[errorIndex]) * error
+            self.hiddenErrorsCache[errorIndex] = self.activationDerivative(self.hiddenOutputCache[errorIndex]) * error
         }
         
         // Update output weights
@@ -257,20 +288,24 @@ public final class FFNN {
     }
     
     /// Trains the network using the given set of inputs and corresponding outputs.
-    /// - parameter inputs: A 2D array of `Float`s.
-    /// Inner array: A single set of inputs for the network. Outer array: The full set of training data to be used for training.
-    /// - parameter answers: A 2D array of `Float`s.
-    /// Inner array: A single set of outputs expected from the network. Outer array: The full set of output data to be used for training.
-    /// - parameter testInputs: A set of validation data to be used for testing the network.
-    /// - This data will not used in the network's training, but will be used to determine when an acceptable solution has been found.
-    /// - parameter testAnswers: The set of expected outputs corresponding to `testInputs`.
-    /// - parameter errorThreshold: A `Float` indicating the maximum error allowed per epoch of validation data, before the network is considered 'trained' and ceases its training process.
-    /// - This value must be determined by the user, because it varies based on the type of data used and the desired accuracy.
-    /// - returns: The final calculated weights of the network after training has completed.
+    /// - Parameters: 
+    ///     - inputs: A 2D array of `Float`s.
+    ///             Inner array: A single set of inputs for the network. Outer array: The full set of training data to be used for training.
+    ///     - answers: A 2D array of `Float`s.
+    ///             Inner array: A single set of outputs expected from the network. Outer array: The full set of output data to be used for training.
+    ///     - testInputs: A set of validation data to be used for testing the network.
+    ///             This data will not used in the network's training, but will be used to determine when an acceptable solution has been found.
+    ///     - testAnswers: The set of expected outputs corresponding to `testInputs`.
+    ///     - errorThreshold: A `Float` indicating the maximum error allowed per epoch of validation data, before the network is considered 'trained'.
+    ///             This value must be determined by the user, because it varies based on the type of data used and the desired accuracy.
+    /// - Returns: The final calculated weights of the network after training has completed.
     public func train(inputs inputs: [[Float]], answers: [[Float]], testInputs: [[Float]], testAnswers: [[Float]], errorThreshold: Float) throws -> [Float] {
         guard errorThreshold > 0 else {
             throw FFNNError.InvalidInputsError("Error threshold must be greater than zero!")
         }
+        
+        // TODO: Allow trainer to exit early or regenerate new weights if it gets stuck in local minima
+        
         // Train forever until the desired error threshold is met
         while true {
             for (index, input) in inputs.enumerate() {
@@ -282,7 +317,8 @@ public final class FFNN {
             for (inputIndex, input) in testInputs.enumerate() {
                 let outputs = try self.update(inputs: input)
                 for (outputIndex, output) in outputs.enumerate() {
-                    errorSum += abs(output * (1 - output) * (testAnswers[inputIndex][outputIndex] - output))
+//                    errorSum += abs(output * (1 - output) * (testAnswers[inputIndex][outputIndex] - output))
+                    errorSum += abs(self.activationDerivative(output) * (testAnswers[inputIndex][outputIndex] - output))
                 }
             }
             if errorSum < errorThreshold {
@@ -306,45 +342,131 @@ public final class FFNN {
         guard weights.count == self.numHiddenWeights + self.numOutputWeights else {
             throw FFNNError.InvalidWeightsError("Invalid number of weights provided: \(weights.count). Expected: \(self.numHiddenWeights + self.numOutputWeights)")
         }
+    
         self.hiddenWeights = Array(weights[0..<self.hiddenWeights.count])
         self.outputWeights = Array(weights[self.hiddenWeights.count..<weights.count])
     }
-    
-    
-    // MARK:- Private methods
+}
+
+/// FFNN private methods
+private extension FFNN {
     
     /// Applies the activation function (sigmoid) to the input.
     private func activation(input: Float) -> Float {
-        return 1 / (1 + exp(-input))
+        switch self.activationFunction {
+        case .None:
+            return 0.0
+        case .Default:
+            return sigmoid(input)
+        case .Linear:
+            return linear(input)
+        case .Sigmoid:
+            return sigmoid(input)
+        case .Gaussian:
+            return gaussian(input)
+        case .RationalSigmoid:
+            return rationalSigmoid(input)
+        case .HyperbolicTangent:
+            return hyperbolicTangent(input)
+        }
+    }
+    
+    private func activationDerivative(input: Float) -> Float {
+        switch self.activationFunction {
+        case .None:
+            return 0.0
+        case .Default:
+            return sigmoidDerivative(input)
+        case .Linear:
+            return linearDerivative(input)
+        case .Sigmoid:
+            return sigmoidDerivative(input)
+        case .Gaussian:
+            return gaussianDerivative(input)
+        case .RationalSigmoid:
+            return rationalSigmoidDerivative(input)
+        case .HyperbolicTangent:
+            return hyperbolicTangentDerivative(input)
+        }
     }
     
     /// Randomizes all of the network's weights, from each layer.
     private func randomizeWeights() {
         for i in 0..<self.numHiddenWeights {
-            self.hiddenWeights[i] = self.randomHiddenWeight()
+            self.hiddenWeights[i] = randomWeight(numInputNodes: self.numInputNodes)
         }
         for i in 0..<self.numOutputWeights {
-            self.outputWeights[i] = self.randomOutputWeight()
+            self.outputWeights[i] = randomWeight(numInputNodes: self.numHiddenNodes)
         }
     }
-    
-    // TODO: Generate random weights along a normal distribution, rather than a uniform distribution.
-    
-    /// Generates a random weight for a hidden layer node, based on the parameters set for the network.
-    /// Will return a Float between +/- 1/sqrt(numInputNodes).
-    private func randomHiddenWeight() -> Float {
-        let range = 1 / sqrt(Float(self.numInputNodes))
-        let rangeInt = UInt32(2_000_000 * range)
-        let randomFloat = Float(arc4random_uniform(rangeInt)) - Float(rangeInt / 2)
-        return randomFloat / 1_000_000
-    }
-    
-    /// Generates a random weight for an output layer node, based on the parameters set for the network.
-    /// Will return a Float between +/- 1/sqrt(numHiddenNodes).
-    private func randomOutputWeight() -> Float {
-        let range = 1 / sqrt(Float(self.numHiddenNodes))
-        let rangeInt = UInt32(2_000_000 * range)
-        let randomFloat = Float(arc4random_uniform(rangeInt)) - Float(rangeInt / 2)
-        return randomFloat / 1_000_000
-    }
+
 }
+
+// TODO: Generate random weights along a normal distribution, rather than a uniform distribution.
+
+/// Generates a random weight for a layer node, based on the parameters set for the network.
+/// Will return a Float between +/- 1/sqrt(numInputNodes).
+private func randomWeight(numInputNodes numInputNodes: Int) -> Float {
+    let range = 1 / sqrt(Float(numInputNodes))
+    let rangeInt = UInt32(2_000_000 * range)
+    let randomFloat = Float(arc4random_uniform(rangeInt)) - Float(rangeInt / 2)
+    return randomFloat / 1_000_000
+}
+
+
+// MARK: Activation Functions and Derivatives
+    
+/// Sigmoid activation function
+private func sigmoid(x:Float) -> Float {
+    return 1 / (1 + exp(-x))
+}
+/// Derivative for the sigmoid activation function
+private func sigmoidDerivative(x:Float) -> Float {
+//    return sigmoid(x) * (1 - sigmoid(x))
+    return x * (1 - x)
+}
+
+/// Linear activation function (raw sum)
+private func linear(x:Float) -> Float {
+    return x
+}
+
+/// Derivative for the linear activation function
+private func linearDerivative(x:Float) -> Float {
+    return 1.0
+}
+
+/// Gaussian activation function
+private func gaussian(x:Float) -> Float {
+    return exp(-(x * x))
+}
+
+/// Derivative for the Gaussian activation function
+private func gaussianDerivative(x:Float) -> Float {
+//    return -2.0 * gaussian(x) * x
+    let xOrig = -sqrt(log(1 / x))
+    return -2 * xOrig * x
+}
+
+/// Rational sigmoid activation function
+private func rationalSigmoid(x:Float) -> Float {
+    return x / (1.0 + sqrt(1.0 + x * x))
+}
+
+/// Derivative for the rational sigmoid activation function
+private func rationalSigmoidDerivative(x:Float) -> Float {
+    let val = sqrt(1.0 + x * x)
+    return 1.0 / (val * (1.0 + val))
+}
+
+/// Hyperbolic tangent activation function
+private func hyperbolicTangent(x:Float) -> Float {
+    return tanh(x) //(1 - exp(-2 * x))/(1 + exp(-2 * x))
+}
+
+/// Derivative for the hyperbolic tangent activation function
+private func hyperbolicTangentDerivative(x:Float) -> Float {
+//    return 1.0 / (cosh(x) * cosh(x))
+    return 1 - x * x
+}
+
