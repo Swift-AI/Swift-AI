@@ -6,7 +6,6 @@
 //
 
 import Accelerate
-
 /// An enum containing all errors that may be thrown by FFNN.
 public enum FFNNError: ErrorType {
     case InvalidInputsError(String)
@@ -15,7 +14,7 @@ public enum FFNNError: ErrorType {
 }
 
 /// An enum containing all supported activation functions.
-public enum ActivationFunction {
+public enum ActivationFunction : String {
     /// No activation function (returns zero)
     case None
     /// Default activation function (sigmoid)
@@ -49,6 +48,7 @@ public final class FFNN {
             self.mfLR = (1 - self.momentumFactor) * newRate
         }
     }
+    
     /// The 'momentum factor' to apply during backpropagation.
     /// This parameter may be safely tuned at any time, except for during a backpropagation cycle.
     var momentumFactor: Float {
@@ -124,6 +124,9 @@ public final class FFNN {
     private var inputIndices = [Int]()
     
     
+    /// Storing
+
+    
     /// Initialization with an optional array of weights.
     public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?, activationFunction : ActivationFunction) {
         if inputs < 1 || hidden < 1 || outputs < 1 || learningRate <= 0 {
@@ -156,7 +159,6 @@ public final class FFNN {
         
         self.hiddenWeightsCount = Int32(self.numHiddenWeights)
         self.outputWeightsCount = Int32(self.numOutputWeights)
-        
         
         self.activationFunction = activationFunction
         
@@ -244,7 +246,6 @@ public final class FFNN {
         
         // Calculate output errors
         for (outputIndex, output) in self.outputCache.enumerate() {
-//            self.outputErrorsCache[outputIndex] = output * (1 - output) * (answer[outputIndex] - output)
             self.outputErrorsCache[outputIndex] = self.activationDerivative(output) * (answer[outputIndex] - output)
         }
         
@@ -254,7 +255,6 @@ public final class FFNN {
             &self.hiddenErrorSumsCache, 1,
             vDSP_Length(1), vDSP_Length(self.numHiddenNodes), vDSP_Length(self.numOutputs))
         for (errorIndex, error) in self.hiddenErrorSumsCache.enumerate() {
-//            self.hiddenErrorsCache[errorIndex] = self.hiddenOutputCache[errorIndex] * (1 - self.hiddenOutputCache[errorIndex]) * error
             self.hiddenErrorsCache[errorIndex] = self.activationDerivative(self.hiddenOutputCache[errorIndex]) * error
         }
         
@@ -317,13 +317,13 @@ public final class FFNN {
             for (inputIndex, input) in testInputs.enumerate() {
                 let outputs = try self.update(inputs: input)
                 for (outputIndex, output) in outputs.enumerate() {
-//                    errorSum += abs(output * (1 - output) * (testAnswers[inputIndex][outputIndex] - output))
                     errorSum += abs(self.activationDerivative(output) * (testAnswers[inputIndex][outputIndex] - output))
                 }
             }
             if errorSum < errorThreshold {
                 break
             }
+            print(errorSum)
         }
         return self.hiddenWeights + self.outputWeights
     }
@@ -335,21 +335,69 @@ public final class FFNN {
     
     /// Resets the network with the given weights (i.e. from a pre-trained network).
     /// This change may be performed at any time except while the network is in the process of updating or backpropagating.
-    /// - parameter weights: An array of `Float`s, to be used as the weights for the network.
-    /// - important: The number of weights must equal numHidden * (numInputs + 1) + numOutputs * (numHidden + 1),
+    /// - Parameter weights: An array of `Float`s, to be used as the weights for the network.
+    /// - Important: The number of weights must equal numHidden * (numInputs + 1) + numOutputs * (numHidden + 1),
     /// or the weights will be rejected.
     public func resetWithWeights(weights: [Float]) throws {
         guard weights.count == self.numHiddenWeights + self.numOutputWeights else {
             throw FFNNError.InvalidWeightsError("Invalid number of weights provided: \(weights.count). Expected: \(self.numHiddenWeights + self.numOutputWeights)")
         }
-    
+        
         self.hiddenWeights = Array(weights[0..<self.hiddenWeights.count])
         self.outputWeights = Array(weights[self.hiddenWeights.count..<weights.count])
+    }
+
+    // MARK: Storage protocol
+
+    public typealias ItemType = FFNN
+    public static func read(filename: String) -> FFNN? {
+        let data = NSData(contentsOfURL: FFNN.getFileURL(filename))
+        guard let storage = NSKeyedUnarchiver.unarchiveObjectWithData(data!) as? [String : AnyObject] else {
+            return nil
+        }
+        
+        guard   let numInputs = storage["inputs"] as? Int,
+                let numHidden = storage["hidden"] as? Int,
+                let numOutputs = storage["outputs"] as? Int,
+                let momentumFactor = storage["momentum"] as? Float,
+                let learningRate = storage["learningRate"] as? Float,
+                let activationFunction = storage["activationFunction"] as? String,
+                let hiddenWeights = storage["hiddenWeights"] as? [Float],
+                let outputWeights = storage["outputWeights"] as? [Float] else {
+                return nil
+        }
+        
+        let n = FFNN(inputs: numInputs, hidden: numHidden, outputs: numOutputs, learningRate: learningRate, momentum: momentumFactor, weights: nil, activationFunction: ActivationFunction(rawValue: activationFunction)!)
+        n.outputWeights = outputWeights
+        n.hiddenWeights = hiddenWeights
+        return n
+    }
+    
+    public func write(filename: String) {
+
+        var storage : [String:AnyObject] = [:]
+        storage["inputs"] = self.numInputs
+        storage["hidden"] = self.numHidden
+        storage["outputs"] = self.numOutputs
+        storage["learningRate"] = self.learningRate
+        storage["momentum"] = self.momentumFactor
+        storage["hiddenWeights"] = self.hiddenWeights
+        storage["outputWeights"] = self.outputWeights
+        storage["activationFunction"] = self.activationFunction.rawValue
+        
+        let data:NSData = NSKeyedArchiver.archivedDataWithRootObject(storage)
+        data.writeToURL(FFNN.getFileURL(filename), atomically: true)
     }
 }
 
 /// FFNN private methods
 private extension FFNN {
+    
+    static func getFileURL(fileName: String) -> NSURL {
+        let manager = NSFileManager.defaultManager()
+        let dirURL = try? manager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
+        return dirURL!.URLByAppendingPathComponent(fileName)
+    }
     
     /// Applies the activation function (sigmoid) to the input.
     private func activation(input: Float) -> Float {
@@ -371,22 +419,22 @@ private extension FFNN {
         }
     }
     
-    private func activationDerivative(input: Float) -> Float {
+    private func activationDerivative(output: Float) -> Float {
         switch self.activationFunction {
         case .None:
             return 0.0
         case .Default:
-            return sigmoidDerivative(input)
+            return sigmoidDerivative(output)
         case .Linear:
-            return linearDerivative(input)
+            return linearDerivative(output)
         case .Sigmoid:
-            return sigmoidDerivative(input)
+            return sigmoidDerivative(output)
         case .Gaussian:
-            return gaussianDerivative(input)
+            return gaussianDerivative(output)
         case .RationalSigmoid:
-            return rationalSigmoidDerivative(input)
+            return rationalSigmoidDerivative(output)
         case .HyperbolicTangent:
-            return hyperbolicTangentDerivative(input)
+            return hyperbolicTangentDerivative(output)
         }
     }
     
@@ -403,6 +451,7 @@ private extension FFNN {
 }
 
 // TODO: Generate random weights along a normal distribution, rather than a uniform distribution.
+// Also, these weights are only optimal for sigmoid activation. They don't work very well with other functions
 
 /// Generates a random weight for a layer node, based on the parameters set for the network.
 /// Will return a Float between +/- 1/sqrt(numInputNodes).
@@ -415,58 +464,57 @@ private func randomWeight(numInputNodes numInputNodes: Int) -> Float {
 
 
 // MARK: Activation Functions and Derivatives
-    
-/// Sigmoid activation function
-private func sigmoid(x:Float) -> Float {
-    return 1 / (1 + exp(-x))
-}
-/// Derivative for the sigmoid activation function
-private func sigmoidDerivative(x:Float) -> Float {
-//    return sigmoid(x) * (1 - sigmoid(x))
-    return x * (1 - x)
-}
 
 /// Linear activation function (raw sum)
-private func linear(x:Float) -> Float {
+private func linear(x: Float) -> Float {
     return x
 }
 
 /// Derivative for the linear activation function
-private func linearDerivative(x:Float) -> Float {
+private func linearDerivative(y: Float) -> Float {
     return 1.0
 }
 
+/// Sigmoid activation function
+private func sigmoid(x: Float) -> Float {
+    return 1 / (1 + exp(-x))
+}
+/// Derivative for the sigmoid activation function
+private func sigmoidDerivative(y: Float) -> Float {
+    return y * (1 - y)
+}
+
 /// Gaussian activation function
-private func gaussian(x:Float) -> Float {
+private func gaussian(x: Float) -> Float {
     return exp(-(x * x))
 }
 
+// TODO: Derive the correct formula for this derivative with respect to `x`, from the input `y`
+// x = +/- sqrt(log(1 / y))  - impossible to determine x?
 /// Derivative for the Gaussian activation function
-private func gaussianDerivative(x:Float) -> Float {
-//    return -2.0 * gaussian(x) * x
-    let xOrig = -sqrt(log(1 / x))
-    return -2 * xOrig * x
+private func gaussianDerivative(y: Float) -> Float {
+    let x = sqrt(log(1 / y)) // This is only correct for x >= 0
+    return -2 * x * y
 }
 
 /// Rational sigmoid activation function
-private func rationalSigmoid(x:Float) -> Float {
+private func rationalSigmoid(x: Float) -> Float {
     return x / (1.0 + sqrt(1.0 + x * x))
 }
 
 /// Derivative for the rational sigmoid activation function
-private func rationalSigmoidDerivative(x:Float) -> Float {
-    let val = sqrt(1.0 + x * x)
-    return 1.0 / (val * (1.0 + val))
+private func rationalSigmoidDerivative(y: Float) -> Float {
+    let x = -(2 * y) / (y * y - 1)
+    return 1 / ((x * x) + sqrt((x * x) + 1) + 1)
 }
 
 /// Hyperbolic tangent activation function
-private func hyperbolicTangent(x:Float) -> Float {
-    return tanh(x) //(1 - exp(-2 * x))/(1 + exp(-2 * x))
+private func hyperbolicTangent(x: Float) -> Float {
+    return tanh(x)
 }
 
 /// Derivative for the hyperbolic tangent activation function
-private func hyperbolicTangentDerivative(x:Float) -> Float {
-//    return 1.0 / (cosh(x) * cosh(x))
-    return 1 - x * x
+private func hyperbolicTangentDerivative(y: Float) -> Float {
+    return 1 - (y * y)
 }
 

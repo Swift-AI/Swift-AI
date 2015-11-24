@@ -26,7 +26,3 @@ func plotSineWave() {
 
 // ** UNCOMMENT THIS LINE TO RUN **
 plotSineWave()
-
-
-
-

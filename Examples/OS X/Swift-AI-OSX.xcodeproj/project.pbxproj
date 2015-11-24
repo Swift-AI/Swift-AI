@@ -109,8 +109,8 @@
 		F02FD2361C02D3A300A137C2 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				6583B4201C04803600E94507 /* Storage.swift */,
 				F02FD23E1C02D4DA00A137C2 /* FFNN.swift */,
+				6583B4201C04803600E94507 /* Storage.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";

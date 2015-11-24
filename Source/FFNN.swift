@@ -14,7 +14,7 @@ public enum FFNNError: ErrorType {
 }
 
 /// An enum containing all supported activation functions.
-public enum ActivationFunction : String {
+public enum ActivationFunction: String {
     /// No activation function (returns zero)
     case None
     /// Default activation function (sigmoid)
@@ -32,7 +32,7 @@ public enum ActivationFunction : String {
 }
 
 /// A 3-Layer Feed-Forward Artificial Neural Network
-public final class FFNN : Storage{
+public final class FFNN: Storage {
     
     /// The number of input nodes to the network (read only).
     let numInputs: Int
@@ -48,6 +48,7 @@ public final class FFNN : Storage{
             self.mfLR = (1 - self.momentumFactor) * newRate
         }
     }
+    
     /// The 'momentum factor' to apply during backpropagation.
     /// This parameter may be safely tuned at any time, except for during a backpropagation cycle.
     var momentumFactor: Float {
@@ -322,7 +323,6 @@ public final class FFNN : Storage{
             if errorSum < errorThreshold {
                 break
             }
-            print(errorSum)
         }
         return self.hiddenWeights + self.outputWeights
     }
@@ -334,47 +334,94 @@ public final class FFNN : Storage{
     
     /// Resets the network with the given weights (i.e. from a pre-trained network).
     /// This change may be performed at any time except while the network is in the process of updating or backpropagating.
-    /// - parameter weights: An array of `Float`s, to be used as the weights for the network.
-    /// - important: The number of weights must equal numHidden * (numInputs + 1) + numOutputs * (numHidden + 1),
+    /// - Parameter weights: An array of `Float`s, to be used as the weights for the network.
+    /// - Important: The number of weights must equal numHidden * (numInputs + 1) + numOutputs * (numHidden + 1),
     /// or the weights will be rejected.
     public func resetWithWeights(weights: [Float]) throws {
         guard weights.count == self.numHiddenWeights + self.numOutputWeights else {
             throw FFNNError.InvalidWeightsError("Invalid number of weights provided: \(weights.count). Expected: \(self.numHiddenWeights + self.numOutputWeights)")
         }
-    
+        
         self.hiddenWeights = Array(weights[0..<self.hiddenWeights.count])
         self.outputWeights = Array(weights[self.hiddenWeights.count..<weights.count])
     }
 
-    // MARK: Storage protocol
+    
+    // MARK:- Storage protocol
 
-    public typealias ItemType = FFNN
-    static public func read(filename: String) -> FFNN? {
-        let data = NSData(contentsOfURL: FFNN.getFileURL(filename))
-        guard let storage = NSKeyedUnarchiver.unarchiveObjectWithData(data!) as? [String:AnyObject] else {
+//    public typealias StorageType = FFNN
+    
+    /// Reads a FFNN from file.
+    /// - Parameter filename: The name of the file, located in the default Documents directory.
+    public static func fromFile(filename: String) -> FFNN? {
+        return self.read(self.getFileURL(filename))
+    }
+    
+    /// Reads a FFNN from file.
+    /// - Parameter url: The `NSURL` for the file to read.
+    public static func fromFile(url: NSURL) -> FFNN? {
+        return self.read(url)
+    }
+
+    /// Writes the FFNN to file.
+    /// - Parameter filename: The name of the file to write to. This file will be written to the default Documents directory.
+    public func writeToFile(filename: String) {
+        self.write(FFNN.getFileURL(filename))
+    }
+    
+    /// Writes the FFNN to file.
+    /// - Parameter url: The `NSURL` to write the file to.
+    public func writeToFile(url: NSURL) {
+        self.write(url)
+    }
+    
+}
+
+
+// MARK:- FFNN private methods
+private extension FFNN {
+    
+    private static func getFileURL(fileName: String) -> NSURL {
+        let manager = NSFileManager.defaultManager()
+        let dirURL = try! manager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
+        return dirURL.URLByAppendingPathComponent(fileName)
+    }
+    
+    private static func read(url: NSURL) -> FFNN? {
+        guard let data = NSData(contentsOfURL: url) else {
+            return nil
+        }
+        guard let storage = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [String : AnyObject] else {
             return nil
         }
         
-        guard   let numInputs = storage["inputs"] as? Int,
-                let numHidden = storage["hidden"] as? Int,
-                let numOutputs = storage["outputs"] as? Int,
-                let momentumFactor = storage["momentum"] as? Float,
-                let learningRate = storage["learningRate"] as? Float,
-                let activationFunction = storage["activationFunction"] as? String,
-                let hiddenWeights = storage["hiddenWeights"] as? [Float],
-                let outputWeights = storage["outputWeights"] as? [Float] else{
+        // Read dictionary from file
+        guard let numInputs = storage["inputs"] as? Int,
+            let numHidden = storage["hidden"] as? Int,
+            let numOutputs = storage["outputs"] as? Int,
+            let momentumFactor = storage["momentum"] as? Float,
+            let learningRate = storage["learningRate"] as? Float,
+            let activationFunction = storage["activationFunction"] as? String,
+            let hiddenWeights = storage["hiddenWeights"] as? [Float],
+            let outputWeights = storage["outputWeights"] as? [Float] else {
                 return nil
         }
         
-        let n = FFNN(inputs: numInputs, hidden: numHidden, outputs: numOutputs, learningRate: learningRate, momentum: momentumFactor, weights: nil, activationFunction: ActivationFunction(rawValue: activationFunction)!)
-        n.outputWeights = outputWeights
-        n.hiddenWeights = hiddenWeights
+        // Fallback to Default activation if an unknown value is found (i.e. newer version of FFNN)
+        var activation = ActivationFunction(rawValue: activationFunction)
+        if activation == nil {
+            print("Warning: Unknown activation function read from file. Using Default activation instead.")
+            activation = ActivationFunction.Default
+        }
+        
+        let weights = hiddenWeights + outputWeights
+        
+        let n = FFNN(inputs: numInputs, hidden: numHidden, outputs: numOutputs, learningRate: learningRate, momentum: momentumFactor, weights: weights, activationFunction: activation!)
         return n
     }
     
-    public func write(filename: String) {
-
-        var storage : [String:AnyObject] = [:]
+    private func write(url: NSURL) {
+        var storage = [String : AnyObject]()
         storage["inputs"] = self.numInputs
         storage["hidden"] = self.numHidden
         storage["outputs"] = self.numOutputs
@@ -384,18 +431,8 @@ public final class FFNN : Storage{
         storage["outputWeights"] = self.outputWeights
         storage["activationFunction"] = self.activationFunction.rawValue
         
-        let data:NSData = NSKeyedArchiver.archivedDataWithRootObject(storage)
-        data.writeToURL(FFNN.getFileURL(filename), atomically: true)
-    }
-}
-
-/// FFNN private methods
-private extension FFNN {
-    
-    static func getFileURL(fileName: String) -> NSURL {
-        let manager = NSFileManager.defaultManager()
-        let dirURL = try? manager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
-        return dirURL!.URLByAppendingPathComponent(fileName)
+        let data: NSData = NSKeyedArchiver.archivedDataWithRootObject(storage)
+        data.writeToURL(url, atomically: true)
     }
     
     /// Applies the activation function (sigmoid) to the input.
@@ -450,7 +487,7 @@ private extension FFNN {
 }
 
 // TODO: Generate random weights along a normal distribution, rather than a uniform distribution.
-//       Also, these weights are only optimal for sigmoid activation. They don't work very well with other functions
+// Also, these weights are only optimal for sigmoid activation. They don't work very well with other functions
 
 /// Generates a random weight for a layer node, based on the parameters set for the network.
 /// Will return a Float between +/- 1/sqrt(numInputNodes).
