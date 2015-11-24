@@ -6,7 +6,7 @@
 //
 
 import Accelerate
-
+import Foundation
 /// An enum containing all errors that may be thrown by FFNN.
 public enum FFNNError: ErrorType {
     case InvalidInputsError(String)
@@ -15,7 +15,7 @@ public enum FFNNError: ErrorType {
 }
 
 /// An enum containing all supported activation functions.
-public enum ActivationFunction {
+public enum ActivationFunction : String {
     /// No activation function (returns zero)
     case None
     /// Default activation function (sigmoid)
@@ -33,7 +33,7 @@ public enum ActivationFunction {
 }
 
 /// A 3-Layer Feed-Forward Artificial Neural Network
-public final class FFNN {
+public final class FFNN : Storage{
     
     /// The number of input nodes to the network (read only).
     let numInputs: Int
@@ -123,6 +123,9 @@ public final class FFNN {
     /// The input indices corresponding to each hidden weight.
     private var inputIndices = [Int]()
     
+    
+    /// Storing
+
     
     /// Initialization with an optional array of weights.
     public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?, activationFunction : ActivationFunction) {
@@ -343,10 +346,58 @@ public final class FFNN {
         self.hiddenWeights = Array(weights[0..<self.hiddenWeights.count])
         self.outputWeights = Array(weights[self.hiddenWeights.count..<weights.count])
     }
+
+    // MARK: Storage protocol
+
+    public typealias ItemType = FFNN
+    static public func read(filename: String) -> FFNN? {
+        let data = NSData(contentsOfURL: FFNN.getFileURL(filename))
+        guard let storage = NSKeyedUnarchiver.unarchiveObjectWithData(data!) as? [String:AnyObject] else {
+            return nil
+        }
+        
+        guard   let numInputs = storage["inputs"] as? Int,
+                let numHidden = storage["hidden"] as? Int,
+                let numOutputs = storage["outputs"] as? Int,
+                let momentumFactor = storage["momentum"] as? Float,
+                let learningRate = storage["learningRate"] as? Float,
+                let activationFunction = storage["activationFunction"] as? String,
+                let hiddenWeights = storage["hiddenWeights"] as? [Float],
+                let outputWeights = storage["outputWeights"] as? [Float] else{
+                return nil
+        }
+        
+        let n = FFNN(inputs: numInputs, hidden: numHidden, outputs: numOutputs, learningRate: learningRate, momentum: momentumFactor, weights: nil, activationFunction: ActivationFunction(rawValue: activationFunction)!)
+        n.outputWeights = outputWeights
+        n.hiddenWeights = hiddenWeights
+        return n
+    }
+    
+    public func write(filename: String) {
+
+        var storage : [String:AnyObject] = [:]
+        storage["inputs"] = self.numInputs
+        storage["hidden"] = self.numHidden
+        storage["outputs"] = self.numOutputs
+        storage["learningRate"] = self.learningRate
+        storage["momentum"] = self.momentumFactor
+        storage["hiddenWeights"] = self.hiddenWeights
+        storage["outputWeights"] = self.outputWeights
+        storage["activationFunction"] = self.activationFunction.rawValue
+        
+        let data:NSData = NSKeyedArchiver.archivedDataWithRootObject(storage)
+        data.writeToURL(FFNN.getFileURL(filename), atomically: true)
+    }
 }
 
 /// FFNN private methods
 private extension FFNN {
+    
+    static func getFileURL(fileName: String) -> NSURL {
+        let manager = NSFileManager.defaultManager()
+        let dirURL = try? manager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
+        return dirURL!.URLByAppendingPathComponent(fileName)
+    }
     
     /// Applies the activation function (sigmoid) to the input.
     private func activation(input: Float) -> Float {
