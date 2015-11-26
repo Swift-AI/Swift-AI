@@ -6,6 +6,7 @@
 //
 
 import Accelerate
+
 /// An enum containing all errors that may be thrown by FFNN.
 public enum FFNNError: ErrorType {
     case InvalidInputsError(String)
@@ -122,9 +123,6 @@ public final class FFNN: Storage {
     private var hiddenErrorIndices = [Int]()
     /// The input indices corresponding to each hidden weight.
     private var inputIndices = [Int]()
-    
-    
-    /// Storing
 
     
     /// Initialization with an optional array of weights.

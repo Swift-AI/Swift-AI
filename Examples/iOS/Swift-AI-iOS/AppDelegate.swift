@@ -16,7 +16,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // Initialize view controllers
+        let graphViewController = GraphViewController()
+        graphViewController.title = "2D Graphs"
+        let gaViewController = GAViewController()
+        gaViewController.title = "Evolution"
+    
+        // Initialize drawer controller
+        let drawerNavigationController = DrawerNavigationController(viewControllers: [graphViewController, gaViewController])
+        
+        // Initialize main window
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        self.window!.rootViewController = drawerNavigationController
+        self.window!.makeKeyAndVisible()
+        
         return true
     }
 

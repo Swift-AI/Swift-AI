@@ -1,0 +1,10 @@
+framework module APKit {
+  umbrella header "APKit.h"
+
+  export *
+  module * { export * }
+}
+
+module APKit.Swift {
+    header "APKit-Swift.h"
+}

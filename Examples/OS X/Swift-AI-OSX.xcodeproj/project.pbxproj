@@ -9,11 +9,11 @@
 /* Begin PBXBuildFile section */
 		422046ED1C0352E0005F5AAD /* FFNN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD23E1C02D4DA00A137C2 /* FFNN.swift */; };
 		4258CD7D1C035289004A2682 /* SimpleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4258CD7C1C035289004A2682 /* SimpleTest.swift */; };
-		6583B4211C04803600E94507 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583B4201C04803600E94507 /* Storage.swift */; };
 		F02FD22F1C02D38100A137C2 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD22E1C02D38100A137C2 /* main.swift */; };
 		F02FD2391C02D3BB00A137C2 /* SineWave.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2371C02D3BB00A137C2 /* SineWave.swift */; };
 		F02FD23A1C02D3BB00A137C2 /* XOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2381C02D3BB00A137C2 /* XOR.swift */; };
 		F02FD23F1C02D4DA00A137C2 /* FFNN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD23E1C02D4DA00A137C2 /* FFNN.swift */; };
+		F0C5B8AF1C0647FC0016FF6F /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5B8AE1C0647FC0016FF6F /* Storage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,13 +32,13 @@
 		4258CD7A1C035289004A2682 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4258CD7C1C035289004A2682 /* SimpleTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTest.swift; sourceTree = "<group>"; };
 		4258CD7E1C035289004A2682 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6583B4201C04803600E94507 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		F02FD22B1C02D38100A137C2 /* Swift-AI-OSX */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Swift-AI-OSX"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F02FD22E1C02D38100A137C2 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		F02FD2371C02D3BB00A137C2 /* SineWave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SineWave.swift; sourceTree = "<group>"; };
 		F02FD2381C02D3BB00A137C2 /* XOR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XOR.swift; sourceTree = "<group>"; };
 		F02FD23E1C02D4DA00A137C2 /* FFNN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FFNN.swift; path = ../../../Source/FFNN.swift; sourceTree = "<group>"; };
 		F0BAD9641C03D039001AD2AE /* Swift-AI-Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = "Swift-AI-Playground.playground"; path = "../../Swift-AI-Playground.playground"; sourceTree = "<group>"; };
+		F0C5B8AE1C0647FC0016FF6F /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Storage.swift; path = ../../../Source/Storage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,7 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				F02FD23E1C02D4DA00A137C2 /* FFNN.swift */,
-				6583B4201C04803600E94507 /* Storage.swift */,
+				F0C5B8AE1C0647FC0016FF6F /* Storage.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -216,7 +216,7 @@
 				F02FD23F1C02D4DA00A137C2 /* FFNN.swift in Sources */,
 				F02FD22F1C02D38100A137C2 /* main.swift in Sources */,
 				F02FD2391C02D3BB00A137C2 /* SineWave.swift in Sources */,
-				6583B4211C04803600E94507 /* Storage.swift in Sources */,
+				F0C5B8AF1C0647FC0016FF6F /* Storage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
