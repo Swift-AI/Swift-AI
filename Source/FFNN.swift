@@ -138,7 +138,7 @@ public final class FFNN: Storage {
 
     
     /// Initialization with an optional array of weights.
-    public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?, activationFunction : ActivationFunction) {
+    public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?, activationFunction : ActivationFunction, errorFunction : ErrorFunction) {
         if inputs < 1 || hidden < 1 || outputs < 1 || learningRate <= 0 {
             print("Warning: Invalid arguments passed to FFNN initializer. Inputs, hidden, outputs and learningRate must all be positive and nonzero. Network will not perform correctly.")
         }
@@ -171,7 +171,7 @@ public final class FFNN: Storage {
         self.outputWeightsCount = Int32(self.numOutputWeights)
         
         self.activationFunction = activationFunction
-        
+        self.errorFunction = errorFunction
         for weightIndex in 0..<self.numOutputWeights {
             self.outputErrorIndices.append(weightIndex / self.numHiddenNodes)
             self.hiddenOutputIndices.append(weightIndex % self.numHiddenNodes)
@@ -420,7 +420,7 @@ private extension FFNN {
         
         let weights = hiddenWeights + outputWeights
         
-        let n = FFNN(inputs: numInputs, hidden: numHidden, outputs: numOutputs, learningRate: learningRate, momentum: momentumFactor, weights: weights, activationFunction: activation!)
+        let n = FFNN(inputs: numInputs, hidden: numHidden, outputs: numOutputs, learningRate: learningRate, momentum: momentumFactor, weights: weights, activationFunction: activation!, errorFunction: .Default(average: false))
         return n
     }
     
