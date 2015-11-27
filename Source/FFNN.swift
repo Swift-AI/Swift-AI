@@ -6,6 +6,7 @@
 //
 
 import Accelerate
+import Foundation
 
 /// An enum containing all errors that may be thrown by FFNN.
 public enum FFNNError: ErrorType {
@@ -30,6 +31,16 @@ public enum ActivationFunction: String {
     case RationalSigmoid
     /// Hyperbolic tangent activation function
     case HyperbolicTangent
+}
+
+/// An enum containing all supported error functions.
+public enum ErrorFunction {
+    
+    /// Default error function (sum)
+    case Default(average : Bool)
+    /// Cross Entropy function (Cross Entropy)
+    case CrossEntropy(average : Bool)
+    
 }
 
 /// A 3-Layer Feed-Forward Artificial Neural Network
@@ -61,7 +72,8 @@ public final class FFNN: Storage {
     /// The activation function to use during update cycles.
     private var activationFunction : ActivationFunction = .Sigmoid
     
-    
+    /// The error function used for training
+    private var errorFunction : ErrorFunction = .Default(average: false)
     /**
      The following private properties are allocated once during initializtion, in order to prevent frequent
      memory allocations for temporary variables during the update and backpropagation cycles.
@@ -311,13 +323,7 @@ public final class FFNN: Storage {
                 try self.backpropagate(answer: answers[index])
             }
             // Calculate the total error of the validation set after each epoch
-            var errorSum: Float = 0
-            for (inputIndex, input) in testInputs.enumerate() {
-                let outputs = try self.update(inputs: input)
-                for (outputIndex, output) in outputs.enumerate() {
-                    errorSum += abs(self.activationDerivative(output) * (testAnswers[inputIndex][outputIndex] - output))
-                }
-            }
+            let errorSum: Float = try self.error(testInputs, expected: testAnswers)
             if errorSum < errorThreshold {
                 break
             }
@@ -433,6 +439,42 @@ private extension FFNN {
         data.writeToURL(url, atomically: true)
     }
     
+    
+    private func error(result : [[Float]], expected : [[Float]]) throws -> Float {
+        var errorSum : Float = 0
+        switch self.errorFunction {
+        case .Default(let average):
+            for (inputIndex, input) in result.enumerate() {
+                let outputs = try self.update(inputs: input)
+                for (outputIndex, output) in outputs.enumerate() {
+                    errorSum += abs(self.activationDerivative(output) * (expected[inputIndex][outputIndex] - output))
+                }
+
+            }
+            if average {
+                errorSum /= Float(result.count)
+            }
+        break
+        case .CrossEntropy(let average):
+            for (inputIndex, input) in result.enumerate() {
+                let outputs = try self.update(inputs: input)
+                for (outputIndex, output) in outputs.enumerate() {
+                    errorSum += crossEntropy(output, b: expected[inputIndex][outputIndex])
+                
+                }
+            }
+            errorSum = -errorSum
+            if average {
+                errorSum /= Float(result.count)
+            }
+
+            break
+        }
+        return errorSum
+        
+    }
+    
+    
     /// Applies the activation function (sigmoid) to the input.
     private func activation(input: Float) -> Float {
         switch self.activationFunction {
@@ -497,6 +539,14 @@ private func randomWeight(numInputNodes numInputNodes: Int) -> Float {
 }
 
 
+
+// MARK Error functions
+
+private func crossEntropy(a: Float, b: Float) -> Float{
+    
+    return log(a) * b
+    
+}
 // MARK: Activation Functions and Derivatives
 
 /// Linear activation function (raw sum)

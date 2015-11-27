@@ -6,7 +6,12 @@
 //
 
 import Foundation
-
+func crossEntropyT(a: Float, b: Float) -> Float{
+    
+    print("log(\(a))*\(b) -> \(log(a) * b)")
+    return log(a) * b
+    
+}
 func sineWave(errorThreshold errorThreshold: Float) {
     
     print("******** Feed-Forward Neural Network: Sine Wave Example ********")
