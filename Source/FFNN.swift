@@ -27,7 +27,7 @@ public enum ActivationFunction: String {
     /// Sigmoid activation function
     case Sigmoid
     /// Gaussian activation function
-    case Gaussian
+//    case Gaussian
     /// Rational sigmoid activation function
     case RationalSigmoid
     /// Hyperbolic tangent activation function
@@ -36,12 +36,10 @@ public enum ActivationFunction: String {
 
 /// An enum containing all supported error functions.
 public enum ErrorFunction {
-    
     /// Default error function (sum)
-    case Default(average : Bool)
+    case Default(average: Bool)
     /// Cross Entropy function (Cross Entropy)
-    case CrossEntropy(average : Bool)
-    
+    case CrossEntropy(average: Bool)
 }
 
 /// A 3-Layer Feed-Forward Artificial Neural Network
@@ -386,12 +384,14 @@ public final class FFNN: Storage {
 // MARK:- FFNN private methods
 private extension FFNN {
     
-    private static func getFileURL(fileName: String) -> NSURL {
+    /// Returns an NSURL for a document with the given filename in the default documents directory.
+    private static func getFileURL(filename: String) -> NSURL {
         let manager = NSFileManager.defaultManager()
         let dirURL = try! manager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
-        return dirURL.URLByAppendingPathComponent(fileName)
+        return dirURL.URLByAppendingPathComponent(filename)
     }
     
+    /// Reads a FFNN stored in a file at the given URL.
     private static func read(url: NSURL) -> FFNN? {
         guard let data = NSData(contentsOfURL: url) else {
             return nil
@@ -425,6 +425,7 @@ private extension FFNN {
         return n
     }
     
+    /// Writes the current state of the FFNN to a file at the given URL.
     private func write(url: NSURL) {
         var storage = [String : AnyObject]()
         storage["inputs"] = self.numInputs
@@ -440,9 +441,9 @@ private extension FFNN {
         data.writeToURL(url, atomically: true)
     }
     
-    
-    private func error(result : [[Float]], expected : [[Float]]) throws -> Float {
-        var errorSum : Float = 0
+    /// Computes the error over the given training set.
+    private func error(result: [[Float]], expected: [[Float]]) throws -> Float {
+        var errorSum: Float = 0
         switch self.errorFunction {
         case .Default(let average):
             for (inputIndex, input) in result.enumerate() {
@@ -450,33 +451,26 @@ private extension FFNN {
                 for (outputIndex, output) in outputs.enumerate() {
                     errorSum += abs(self.activationDerivative(output) * (expected[inputIndex][outputIndex] - output))
                 }
-
             }
             if average {
                 errorSum /= Float(result.count)
             }
-        break
         case .CrossEntropy(let average):
             for (inputIndex, input) in result.enumerate() {
                 let outputs = try self.update(inputs: input)
                 for (outputIndex, output) in outputs.enumerate() {
                     errorSum += crossEntropy(output, b: expected[inputIndex][outputIndex])
-                
                 }
             }
             errorSum = -errorSum
             if average {
                 errorSum /= Float(result.count)
             }
-
-            break
         }
         return errorSum
-        
     }
     
-    
-    /// Applies the activation function (sigmoid) to the input.
+    /// Applies the activation function to the input.
     private func activation(input: Float) -> Float {
         switch self.activationFunction {
         case .None:
@@ -487,8 +481,8 @@ private extension FFNN {
             return linear(input)
         case .Sigmoid:
             return sigmoid(input)
-        case .Gaussian:
-            return gaussian(input)
+//        case .Gaussian:
+//            return gaussian(input)
         case .RationalSigmoid:
             return rationalSigmoid(input)
         case .HyperbolicTangent:
@@ -496,6 +490,7 @@ private extension FFNN {
         }
     }
     
+    /// Calculates the derivative of the activation function, from the given `y` value.
     private func activationDerivative(output: Float) -> Float {
         switch self.activationFunction {
         case .None:
@@ -506,8 +501,8 @@ private extension FFNN {
             return linearDerivative(output)
         case .Sigmoid:
             return sigmoidDerivative(output)
-        case .Gaussian:
-            return gaussianDerivative(output)
+//        case .Gaussian:
+//            return gaussianDerivative(output)
         case .RationalSigmoid:
             return rationalSigmoidDerivative(output)
         case .HyperbolicTangent:
@@ -528,7 +523,7 @@ private extension FFNN {
 }
 
 // TODO: Generate random weights along a normal distribution, rather than a uniform distribution.
-// Also, these weights are only optimal for sigmoid activation. They don't work very well with other functions
+// Also, these weights are only optimal for sigmoid activation. They don't work well with other functions
 
 /// Generates a random weight for a layer node, based on the parameters set for the network.
 /// Will return a Float between +/- 1/sqrt(numInputNodes).
@@ -539,15 +534,12 @@ private func randomWeight(numInputNodes numInputNodes: Int) -> Float {
     return randomFloat / 1_000_000
 }
 
-
-
 // MARK Error functions
 
-private func crossEntropy(a: Float, b: Float) -> Float{
-    
+private func crossEntropy(a: Float, b: Float) -> Float {
     return log(a) * b
-    
 }
+
 // MARK: Activation Functions and Derivatives
 
 /// Linear activation function (raw sum)
@@ -570,17 +562,17 @@ private func sigmoidDerivative(y: Float) -> Float {
 }
 
 /// Gaussian activation function
-private func gaussian(x: Float) -> Float {
-    return exp(-(x * x))
-}
+//private func gaussian(x: Float) -> Float {
+//    return exp(-(x * x))
+//}
 
 // TODO: Derive the correct formula for this derivative with respect to `x`, from the input `y`
 // x = +/- sqrt(log(1 / y))  - impossible to determine x?
 /// Derivative for the Gaussian activation function
-private func gaussianDerivative(y: Float) -> Float {
-    let x = sqrt(log(1 / y)) // This is only correct for x >= 0
-    return -2 * x * y
-}
+//private func gaussianDerivative(y: Float) -> Float {
+//    let x = sqrt(log(1 / y)) // This is only correct for x >= 0
+//    return -2 * x * y
+//}
 
 /// Rational sigmoid activation function
 private func rationalSigmoid(x: Float) -> Float {
