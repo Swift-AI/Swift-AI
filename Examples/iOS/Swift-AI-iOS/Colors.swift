@@ -22,6 +22,10 @@ extension UIColor {
         return UIColor(red: 248 / 255, green: 82 / 255, blue: 44 / 255, alpha: 1)
     }
     
+    class func swiftGreen() -> UIColor {
+        return UIColor(red: 78 / 255, green: 194 / 255, blue: 78 / 255, alpha: 1)
+    }
+    
     class func drawerColor() -> UIColor {
         return UIColor(red: 0.32, green: 0.26, blue: 0.25, alpha: 1)
     }

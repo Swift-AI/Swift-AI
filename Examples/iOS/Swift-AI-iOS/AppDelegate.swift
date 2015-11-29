@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Initialize view controllers
         let graphViewController = GraphViewController()
-        graphViewController.title = "2D Graphs"
+        graphViewController.title = "Regression"
         let gaViewController = GAViewController()
         gaViewController.title = "Evolution"
     

@@ -10,11 +10,17 @@ import APKit
 
 class GraphViewController: UIViewController {
     
+    enum Function {
+        
+    }
+    
     let graphView = GraphView()
     /// The number of points to plot on screen
     var numPoints = 0
-    /// Array of each point to display in the graph
+    /// Array of all points to display in the graph
     var points = [UIView]()
+    /// Array of all points to display for the target function in the graph
+    var targetPoints = [UIView]()
     /// Our neural network
     var network = FFNN(inputs: 1, hidden: 8, outputs: 1, learningRate: 0.6, momentum: 0.8, weights: nil, activationFunction: .Sigmoid)
     /// A multiplier, for altering the target function
@@ -35,15 +41,18 @@ class GraphViewController: UIViewController {
         // Configure slider for multiplier
         self.graphView.slider.addTarget(self, action: "sliderMoved:", forControlEvents: .ValueChanged)
         // Set function label text
-        self.graphView.functionLabel.text = "y = ½ sin(\(self.functionMultiplier)x) + ½"
+        self.graphView.functionLabel.text = "y = sin (\(self.functionMultiplier)x)"
         // Calculate number of points to plot, based on screen size (#hack)
         self.numPoints = Int(UIScreen.mainScreen().bounds.width / 2)
+        
+        self.initTarget()
         
         self.resetAll()
     }
     
     override func viewWillDisappear(animated: Bool) {
         self.graphView.startPauseButton.setTitle("Start", forState: .Normal)
+        self.graphView.startPauseButton.backgroundColor = UIColor.swiftGreen()
         self.pauseTraining()
     }
     
@@ -51,9 +60,11 @@ class GraphViewController: UIViewController {
         switch self.paused {
         case true:
             self.graphView.startPauseButton.setTitle("Pause", forState: .Normal)
+            self.graphView.startPauseButton.backgroundColor = UIColor.swiftDarkOrange()
             self.startTraining()
         case false:
             self.graphView.startPauseButton.setTitle("Start", forState: .Normal)
+            self.graphView.startPauseButton.backgroundColor = UIColor.swiftGreen()
             self.pauseTraining()
         }
     }
@@ -61,12 +72,13 @@ class GraphViewController: UIViewController {
     func sliderMoved(sender: UISlider) {
         self.functionMultiplier = sender.value
         let constantString = Double(self.functionMultiplier).toString(decimalPlaces: 1)
-        self.graphView.functionLabel.text = "y = ½ sin(" + constantString + "x) + ½"
+        self.graphView.functionLabel.text = "y = sin (" + constantString + "x)"
+        self.updateTarget()
     }
     
     func startTraining() {
         self.paused = false
-        // Dispatches training process to background thread, to keep UI responsive
+        // Dispatches training process to background thread
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
             var epoch = 0
             while !self.paused {
@@ -77,12 +89,12 @@ class GraphViewController: UIViewController {
                     try! self.network.backpropagate(answer: [answer])
                 }
                 if epoch % 10 == 0 {
+                    // Update graph
                     dispatch_sync(dispatch_get_main_queue(), { () -> Void in
                         for index in 0..<self.numPoints {
-                            let xScaled = -500 + Float(index) * 1000 / Float(self.numPoints)
-                            let x = xScaled / 100
+                            let x = (-500 + (Float(index) * 1000) / Float(self.numPoints)) / 100
                             let y = try! self.network.update(inputs: [x]).first!
-                            self.updatePoint(index, y: CGFloat(y * -200))
+                            self.updatePoint(index, y: CGFloat(y * -250) + 125)
                         }
                     })
                 }
@@ -114,20 +126,55 @@ class GraphViewController: UIViewController {
             let point = UIView()
             // Calculate position to place point
             let xPos = CGFloat(index) * (UIScreen.mainScreen().bounds.width / CGFloat(self.numPoints))
-            let yPos = UIScreen.mainScreen().bounds.height / 2
+            let yPos = UIScreen.mainScreen().bounds.width / 2 - 4 // -4 to offset point height
             // Add point to view
-            point.frame = CGRect(x: xPos, y: yPos, width: 8, height: 8)
+            point.frame = CGRect(x: xPos, y: yPos, width: 6, height: 6)
             point.backgroundColor = .swiftDarkOrange()
-            point.layer.cornerRadius = 4
+            point.layer.cornerRadius = 3
+            point.alpha = 0.8
             self.graphView.addSubview(point)
             // Store point
             self.points.append(point)
         }
     }
     
+    private func initTarget() {
+        // Remove all points first, in case this is a reset
+        for point in self.targetPoints {
+            point.removeFromSuperview()
+        }
+        self.targetPoints.removeAll()
+        for index in 0..<self.numPoints {
+            // Create a point
+            let point = UIView()
+            // Calculate position to place point
+            let xPos = CGFloat(index) * (UIScreen.mainScreen().bounds.width / CGFloat(self.numPoints))
+            let yPos = UIScreen.mainScreen().bounds.width / 2 - 4 // -4 to offset point height
+            // Add point to view
+            point.frame = CGRect(x: xPos, y: yPos, width: 1, height: 6)
+            point.backgroundColor = .swiftGreen()
+            self.graphView.addSubview(point)
+            // Store point
+            self.targetPoints.append(point)
+        }
+        self.updateTarget()
+    }
+    
+    private func updateTarget() {
+        // Remove all points first, in case this is a reset
+        for (index, point) in self.targetPoints.enumerate() {
+            // Calculate position to place point
+            let x = (-500 + (Float(index) * 1000) / Float(self.numPoints)) / 100
+            let y = self.sineFunc(x)
+            let yPos = CGFloat(y * -250) + 125
+            // Store point
+            point.transform = CGAffineTransformMakeTranslation(0, yPos)
+        }
+    }
+    
     /// Resets the neural network, with new random weights
     private func resetNetwork() {
-        self.network = FFNN(inputs: 1, hidden: 10, outputs: 1, learningRate: 0.5, momentum: 0.8, weights: nil, activationFunction: .Sigmoid)
+        self.network = FFNN(inputs: 1, hidden: 10, outputs: 1, learningRate: 0.4, momentum: 0.8, weights: nil, activationFunction: .Sigmoid)
     }
     
     /// Translates a the point at the given index to the specified y-value

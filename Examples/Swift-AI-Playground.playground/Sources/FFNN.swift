@@ -8,6 +8,7 @@
 import Accelerate
 import Foundation
 
+
 /// An enum containing all errors that may be thrown by FFNN.
 public enum FFNNError: ErrorType {
     case InvalidInputsError(String)
@@ -16,7 +17,7 @@ public enum FFNNError: ErrorType {
 }
 
 /// An enum containing all supported activation functions.
-public enum ActivationFunction : String {
+public enum ActivationFunction: String {
     /// No activation function (returns zero)
     case None
     /// Default activation function (sigmoid)
@@ -33,8 +34,18 @@ public enum ActivationFunction : String {
     case HyperbolicTangent
 }
 
+/// An enum containing all supported error functions.
+public enum ErrorFunction {
+    
+    /// Default error function (sum)
+    case Default(average : Bool)
+    /// Cross Entropy function (Cross Entropy)
+    case CrossEntropy(average : Bool)
+    
+}
+
 /// A 3-Layer Feed-Forward Artificial Neural Network
-public final class FFNN {
+public final class FFNN: Storage {
     
     /// The number of input nodes to the network (read only).
     let numInputs: Int
@@ -62,7 +73,8 @@ public final class FFNN {
     /// The activation function to use during update cycles.
     private var activationFunction : ActivationFunction = .Sigmoid
     
-    
+    /// The error function used for training
+    private var errorFunction : ErrorFunction = .Default(average: false)
     /**
      The following private properties are allocated once during initializtion, in order to prevent frequent
      memory allocations for temporary variables during the update and backpropagation cycles.
@@ -124,13 +136,10 @@ public final class FFNN {
     private var hiddenErrorIndices = [Int]()
     /// The input indices corresponding to each hidden weight.
     private var inputIndices = [Int]()
-    
-    
-    /// Storing
 
     
     /// Initialization with an optional array of weights.
-    public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?, activationFunction : ActivationFunction) {
+    public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?, activationFunction : ActivationFunction, errorFunction : ErrorFunction) {
         if inputs < 1 || hidden < 1 || outputs < 1 || learningRate <= 0 {
             print("Warning: Invalid arguments passed to FFNN initializer. Inputs, hidden, outputs and learningRate must all be positive and nonzero. Network will not perform correctly.")
         }
@@ -163,7 +172,7 @@ public final class FFNN {
         self.outputWeightsCount = Int32(self.numOutputWeights)
         
         self.activationFunction = activationFunction
-        
+        self.errorFunction = errorFunction
         for weightIndex in 0..<self.numOutputWeights {
             self.outputErrorIndices.append(weightIndex / self.numHiddenNodes)
             self.hiddenOutputIndices.append(weightIndex % self.numHiddenNodes)
@@ -315,17 +324,10 @@ public final class FFNN {
                 try self.backpropagate(answer: answers[index])
             }
             // Calculate the total error of the validation set after each epoch
-            var errorSum: Float = 0
-            for (inputIndex, input) in testInputs.enumerate() {
-                let outputs = try self.update(inputs: input)
-                for (outputIndex, output) in outputs.enumerate() {
-                    errorSum += abs(self.activationDerivative(output) * (testAnswers[inputIndex][outputIndex] - output))
-                }
-            }
+            let errorSum: Float = try self.error(testInputs, expected: testAnswers)
             if errorSum < errorThreshold {
                 break
             }
-            print(errorSum)
         }
         return self.hiddenWeights + self.outputWeights
     }
@@ -349,35 +351,82 @@ public final class FFNN {
         self.outputWeights = Array(weights[self.hiddenWeights.count..<weights.count])
     }
 
-    // MARK: Storage protocol
+    
+    // MARK:- Storage protocol
 
-    public typealias ItemType = FFNN
-    public static func read(filename: String) -> FFNN? {
-        let data = NSData(contentsOfURL: FFNN.getFileURL(filename))
-        guard let storage = NSKeyedUnarchiver.unarchiveObjectWithData(data!) as? [String : AnyObject] else {
+//    public typealias StorageType = FFNN
+    
+    /// Reads a FFNN from file.
+    /// - Parameter filename: The name of the file, located in the default Documents directory.
+    public static func fromFile(filename: String) -> FFNN? {
+        return self.read(self.getFileURL(filename))
+    }
+    
+    /// Reads a FFNN from file.
+    /// - Parameter url: The `NSURL` for the file to read.
+    public static func fromFile(url: NSURL) -> FFNN? {
+        return self.read(url)
+    }
+
+    /// Writes the FFNN to file.
+    /// - Parameter filename: The name of the file to write to. This file will be written to the default Documents directory.
+    public func writeToFile(filename: String) {
+        self.write(FFNN.getFileURL(filename))
+    }
+    
+    /// Writes the FFNN to file.
+    /// - Parameter url: The `NSURL` to write the file to.
+    public func writeToFile(url: NSURL) {
+        self.write(url)
+    }
+    
+}
+
+
+// MARK:- FFNN private methods
+private extension FFNN {
+    
+    private static func getFileURL(fileName: String) -> NSURL {
+        let manager = NSFileManager.defaultManager()
+        let dirURL = try! manager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
+        return dirURL.URLByAppendingPathComponent(fileName)
+    }
+    
+    private static func read(url: NSURL) -> FFNN? {
+        guard let data = NSData(contentsOfURL: url) else {
+            return nil
+        }
+        guard let storage = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? [String : AnyObject] else {
             return nil
         }
         
-        guard   let numInputs = storage["inputs"] as? Int,
-                let numHidden = storage["hidden"] as? Int,
-                let numOutputs = storage["outputs"] as? Int,
-                let momentumFactor = storage["momentum"] as? Float,
-                let learningRate = storage["learningRate"] as? Float,
-                let activationFunction = storage["activationFunction"] as? String,
-                let hiddenWeights = storage["hiddenWeights"] as? [Float],
-                let outputWeights = storage["outputWeights"] as? [Float] else {
+        // Read dictionary from file
+        guard let numInputs = storage["inputs"] as? Int,
+            let numHidden = storage["hidden"] as? Int,
+            let numOutputs = storage["outputs"] as? Int,
+            let momentumFactor = storage["momentum"] as? Float,
+            let learningRate = storage["learningRate"] as? Float,
+            let activationFunction = storage["activationFunction"] as? String,
+            let hiddenWeights = storage["hiddenWeights"] as? [Float],
+            let outputWeights = storage["outputWeights"] as? [Float] else {
                 return nil
         }
         
-        let n = FFNN(inputs: numInputs, hidden: numHidden, outputs: numOutputs, learningRate: learningRate, momentum: momentumFactor, weights: nil, activationFunction: ActivationFunction(rawValue: activationFunction)!)
-        n.outputWeights = outputWeights
-        n.hiddenWeights = hiddenWeights
+        // Fallback to Default activation if an unknown value is found (i.e. newer version of FFNN)
+        var activation = ActivationFunction(rawValue: activationFunction)
+        if activation == nil {
+            print("Warning: Unknown activation function read from file. Using Default activation instead.")
+            activation = ActivationFunction.Default
+        }
+        
+        let weights = hiddenWeights + outputWeights
+        
+        let n = FFNN(inputs: numInputs, hidden: numHidden, outputs: numOutputs, learningRate: learningRate, momentum: momentumFactor, weights: weights, activationFunction: activation!, errorFunction: .Default(average: false))
         return n
     }
     
-    public func write(filename: String) {
-
-        var storage : [String:AnyObject] = [:]
+    private func write(url: NSURL) {
+        var storage = [String : AnyObject]()
         storage["inputs"] = self.numInputs
         storage["hidden"] = self.numHidden
         storage["outputs"] = self.numOutputs
@@ -387,19 +436,45 @@ public final class FFNN {
         storage["outputWeights"] = self.outputWeights
         storage["activationFunction"] = self.activationFunction.rawValue
         
-        let data:NSData = NSKeyedArchiver.archivedDataWithRootObject(storage)
-        data.writeToURL(FFNN.getFileURL(filename), atomically: true)
+        let data: NSData = NSKeyedArchiver.archivedDataWithRootObject(storage)
+        data.writeToURL(url, atomically: true)
     }
-}
-
-/// FFNN private methods
-private extension FFNN {
     
-    static func getFileURL(fileName: String) -> NSURL {
-        let manager = NSFileManager.defaultManager()
-        let dirURL = try? manager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
-        return dirURL!.URLByAppendingPathComponent(fileName)
+    
+    private func error(result : [[Float]], expected : [[Float]]) throws -> Float {
+        var errorSum : Float = 0
+        switch self.errorFunction {
+        case .Default(let average):
+            for (inputIndex, input) in result.enumerate() {
+                let outputs = try self.update(inputs: input)
+                for (outputIndex, output) in outputs.enumerate() {
+                    errorSum += abs(self.activationDerivative(output) * (expected[inputIndex][outputIndex] - output))
+                }
+
+            }
+            if average {
+                errorSum /= Float(result.count)
+            }
+        break
+        case .CrossEntropy(let average):
+            for (inputIndex, input) in result.enumerate() {
+                let outputs = try self.update(inputs: input)
+                for (outputIndex, output) in outputs.enumerate() {
+                    errorSum += crossEntropy(output, b: expected[inputIndex][outputIndex])
+                
+                }
+            }
+            errorSum = -errorSum
+            if average {
+                errorSum /= Float(result.count)
+            }
+
+            break
+        }
+        return errorSum
+        
     }
+    
     
     /// Applies the activation function (sigmoid) to the input.
     private func activation(input: Float) -> Float {
@@ -465,6 +540,14 @@ private func randomWeight(numInputNodes numInputNodes: Int) -> Float {
 }
 
 
+
+// MARK Error functions
+
+private func crossEntropy(a: Float, b: Float) -> Float{
+    
+    return log(a) * b
+    
+}
 // MARK: Activation Functions and Derivatives
 
 /// Linear activation function (raw sum)

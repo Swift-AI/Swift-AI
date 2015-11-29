@@ -12,7 +12,7 @@ func xorTwoWay() {
     
     // Initialize network
     let network = FFNN(inputs: 2, hidden: 2, outputs: 1,
-        learningRate: 0.2, momentum: 0.1, weights: nil,activationFunction:  .Sigmoid)
+        learningRate: 0.2, momentum: 0.1, weights: nil,activationFunction:  .Sigmoid, errorFunction: .Default(average: false))
     
     // Create training data
     let inputs: [[Float]] = [

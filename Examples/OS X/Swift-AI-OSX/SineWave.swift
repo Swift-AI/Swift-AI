@@ -11,8 +11,7 @@ func sineWave(errorThreshold errorThreshold: Float) {
     print("******** Feed-Forward Neural Network: Sine Wave Example ********")
 
     // Initialize network
-    let network = FFNN(inputs: 1, hidden: 8, outputs: 1,
-        learningRate: 0.7, momentum: 0.2, weights: nil, activationFunction: .Sigmoid)
+    let network = FFNN(inputs: 1, hidden: 8, outputs: 1, learningRate: 0.7, momentum: 0.2, weights: nil, activationFunction: .Sigmoid, errorFunction: .Default(average: false))
     
     // Create training data
     // Note: Each input 'set' is an array with a single x-coordinate

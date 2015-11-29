@@ -8,6 +8,7 @@
 import Accelerate
 import Foundation
 
+
 /// An enum containing all errors that may be thrown by FFNN.
 public enum FFNNError: ErrorType {
     case InvalidInputsError(String)
