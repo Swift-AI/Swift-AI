@@ -40,18 +40,19 @@ You must provide eight parameters to the initializer:
 - `errorFunction`: One of the supported `ErrorFunction`s for calculating error on a validation set during training.
 
 
+
 Alternatively, the following methods may be used to read/write a neural network from disk:
 
 **fromFile** - A static method used to initialize a `FFNN` from file. This is the easiest way to package an application with a pre-trained neural network.
 
-This method accepts an `NSURL` with the full filepath, or a `String` specifying only the filename. When a filename is given, it is assumed that the file resides in the user's default documents directory. This file will usually have been generated using the `writeToFile` method below, but developers are free to build these files manually using the same format.
+This method accepts an `NSURL` with the full filepath, or a `String` specifying only the filename. When a filename is given, it is assumed that the file resides in the user's default documents directory. This file will usually have been generated using the `writeToFile()` method below, but developers are free to build these files manually using the same format.
 ```
 let network = FFNN.fromFile(fileURL)
 ```
 
 **writeToFile** - Writes the current state of the `FFNN` to the specified file. This includes the structure of the neural network itself, all of its current weights (preserving any training that has been performed), and all parameters (such as learning rate, activation function, etc.) that have been set.
 
-As with `fromFile()`, this method accepts either an `NSURL` for a custom filepath, or a `String` for the desired filename in the user's default documents directory.
+As with `fromFile()`, this method accepts either an `NSURL` for a custom filepath, or a `String` with the desired filename to reside in the user's default documents directory.
 ```
 self.network.writeToFile(fileURL)
 ```
