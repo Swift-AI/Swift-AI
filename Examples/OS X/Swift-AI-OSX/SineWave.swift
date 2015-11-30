@@ -12,7 +12,7 @@ func sineWave(errorThreshold errorThreshold: Float) {
 
     // Initialize network
     let network = FFNN(inputs: 1, hidden: 8, outputs: 1, learningRate: 0.7, momentum: 0.2, weights: nil, activationFunction: .Sigmoid, errorFunction: .Default(average: false))
-    
+        
     // Create training data
     // Note: Each input 'set' is an array with a single x-coordinate
     var inputs = [[Float]]()
