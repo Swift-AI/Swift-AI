@@ -4,7 +4,7 @@ These tools have been optimized for use in both iOS and OS X applications, with 
 
 This library is a work in progress, and more features will be added shortly.
 
-### Features
+## Features
 - [x] [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/tree/master/Source#multi-layer-feed-forward-neural-network)
 - [ ] Recurrent Neural Network
 - [ ] Convolutional Network
