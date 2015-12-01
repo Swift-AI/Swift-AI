@@ -20,7 +20,7 @@ Swift AI includes a set of common tools used for machine learning and artificial
 
 ## Examples
 
-Example applications have been provided to demonstrate the usage and potential applications of Swift AI.
+Example projects have been provided to demonstrate the usage and potential applications of Swift AI.
 
 See [examples](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples).
 
