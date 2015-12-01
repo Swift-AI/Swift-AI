@@ -12,10 +12,9 @@ The Swift AI iOS app serves two purposes:
 - Provide visual representations of the "learning" process involved in machine learning.
 - Demonstrate the possibilities of using artificial intelligence in iOS apps.
 
-Each of the following examples are included in the app:
+The following examples are included in the app:
 
 ### Regression
-
 ##### Feed-Forward Neural Network
 
 A description of the Regression example will go here.
@@ -24,9 +23,10 @@ A description of the Regression example will go here.
 
 ##### Genetic Algorithm
 
-Genetic algorithm example will be here soon!
+Genetic algorithm example coming soon!
 
 
+### Additional Notes
 
 **What's this 'APKit' thing?**
 
