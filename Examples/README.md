@@ -28,6 +28,6 @@ Genetic algorithm example coming soon!
 
 ### Additional Notes
 
-**What's this 'APKit' thing?**
+> **What's this 'APKit' framework?**
 
-APKit is a framework for creating views programmatically using Auto Layout, and contains abstractions for many common animation tasks.  It has no direct effect on Swift AI's implementation, and may be ignored.
+APKit is a framework for creating views programmatically using Auto Layout, and contains abstractions for many common animation tasks.  It has no direct effect on Swift AI's implementation.
