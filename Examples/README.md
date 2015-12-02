@@ -11,7 +11,7 @@ The following examples are included in the app:
 ### Regression
 ##### Feed-Forward Neural Network
 
-A neural network can perform a regression for any arbitrary function. This example shows how [FFNN](https://github.com/collinhundley/Swift-AI/tree/master/Source#multi-layer-feed-forward-neural-network) can "learn" the sine function over time using backpropagation.
+A neural network can perform a regression for any arbitrary function. This example shows how [FFNN](https://github.com/collinhundley/Swift-AI/tree/master/Source#multi-layer-feed-forward-neural-network) can "learn" the sine function using backpropagation.
 
 ![Sine.gif](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Sine.gif?raw=true)
 
