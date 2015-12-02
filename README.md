@@ -42,11 +42,11 @@ In order to provide support for multiple platforms (Linux, Windows, etc.), alter
 
 ## Care Enough to Donate?
 
-Give a little, take a little. Donors will be featured as sponsors right here on the front page! Donate $20+ and we'll include your name with a link to your profile, $250+ and we'll add your company's logo!
+Take a little, give a little. This is your chance to make a difference!
 
 >**What good will my donation do?**
 
-Your money will put a college student through school. More donations = less contract work = more time building great open-source projects!
+Your money will help put a college student through school. More donations = less contract work = more time building great open-source projects!
 
 [![Donate](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/DonateButton.png?raw=true)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3FCBZ7MXZJFG2&lc=US&item_name=Swift%20AI%20Development&currency_code=USD&bn=PP%2dDonationsBF%3aDonateButton%2epng%3fraw%3dtrue%3aNonHosted)
 
