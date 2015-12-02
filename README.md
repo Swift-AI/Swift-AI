@@ -44,9 +44,9 @@ In order to provide support for multiple platforms (Linux, Windows, etc.), alter
 
 Take a little, give a little. This is your chance to make a difference!
 
->**What good will my donation do?**
+>**What good will my money do?**
 
-Your money will help put a college student through school. More donations = less contract work = more time building great open-source projects!
+Your donation will help put a college student through school. More donations = less contract work = more time building great open-source projects!
 
 [![Donate](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/DonateButton.png?raw=true)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3FCBZ7MXZJFG2&lc=US&item_name=Swift%20AI&currency_code=USD&bn=PP%2dDonationsBF%3aDonateButton%2epng%3fraw%3dtrue%3aNonHosted)
 
