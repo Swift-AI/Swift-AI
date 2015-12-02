@@ -25,7 +25,9 @@ You can control the target function by adjusting the slider:
 
 ![Sune-Sider.gif](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Sine-Slider.gif?raw=true)
 
-You tap 'Start' to begin the training process and view the network's progress - live! Tapping 'Pause' will pause the training. Tapping 'Reset' will completely reset the neural network with new, randomly-generated weights. This discards any training that has happened previously.
+- Tap 'Start' to begin the training process and view the network's progress - live!
+- Tap 'Pause' to pause the training.
+- Tap 'Reset' to completely reset the neural network with new, randomly-generated weights. This discards any training that has happened previously.
 
 > **How does it work?**
 
