@@ -1,4 +1,4 @@
-![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/SwiftAI.png?raw=true)
+[![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/SwiftAI.png?raw=true)](https://github.com/collinhundley/Swift-AI#care-enough-to-donate)
 
 Swift AI is a high-performance AI and Machine Learning library written entirely in Swift.
 We currently support iOS and OS X, with support for more platforms coming soon!
