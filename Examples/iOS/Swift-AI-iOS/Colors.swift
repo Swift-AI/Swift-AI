@@ -11,15 +11,15 @@ import UIKit
 extension UIColor {
     
     class func swiftLightOrange() -> UIColor {
-        return UIColor(red: 248 / 255, green: 115 / 255, blue: 50 / 255, alpha: 1)
+        return UIColor(red: 255 / 255, green: 133 / 255, blue: 43 / 255, alpha: 1)
     }
     
     class func swiftMediumOrange() -> UIColor {
-        return UIColor(red: 248 / 255, green: 95 / 255, blue: 47 / 255, alpha: 1)
+        return UIColor(red: 249 / 255, green: 77 / 255, blue: 30 / 255, alpha: 1)
     }
     
     class func swiftDarkOrange() -> UIColor {
-        return UIColor(red: 248 / 255, green: 82 / 255, blue: 44 / 255, alpha: 1)
+        return UIColor(red: 251 / 255, green: 72 / 255, blue: 31 / 255, alpha: 1)
     }
     
     class func swiftGreen() -> UIColor {

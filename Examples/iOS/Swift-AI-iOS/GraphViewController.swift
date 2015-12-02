@@ -10,10 +10,6 @@ import APKit
 
 class GraphViewController: UIViewController {
     
-    enum Function {
-        
-    }
-    
     let graphView = GraphView()
     /// The number of points to plot on screen
     var numPoints = 0
@@ -22,7 +18,7 @@ class GraphViewController: UIViewController {
     /// Array of all points to display for the target function in the graph
     var targetPoints = [UIView]()
     /// Our neural network
-    var network = FFNN(inputs: 1, hidden: 8, outputs: 1, learningRate: 0.6, momentum: 0.8, weights: nil, activationFunction: .Sigmoid)
+    var network = FFNN(inputs: 1, hidden: 8, outputs: 1, learningRate: 0.6, momentum: 0.8, weights: nil, activationFunction: .Sigmoid, errorFunction: .Default(average: false))
     /// A multiplier, for altering the target function
     var functionMultiplier: Float = 1.5
     /// State variable to start/stop the network's training when needed
@@ -37,11 +33,12 @@ class GraphViewController: UIViewController {
 
         // Configure buttons
         self.graphView.startPauseButton.addTarget(self, action: "startPause", forControlEvents: .TouchUpInside)
+        self.graphView.infoButton.addTarget(self, action: "infoTapped", forControlEvents: .TouchUpInside)
         self.graphView.resetButton.addTarget(self, action: "resetAll", forControlEvents: .TouchUpInside)
         // Configure slider for multiplier
         self.graphView.slider.addTarget(self, action: "sliderMoved:", forControlEvents: .ValueChanged)
         // Set function label text
-        self.graphView.functionLabel.text = "y = sin (\(self.functionMultiplier)x)"
+        self.graphView.functionLabel.text = "Function:  y = sin (\(self.functionMultiplier)x)"
         // Calculate number of points to plot, based on screen size (#hack)
         self.numPoints = Int(UIScreen.mainScreen().bounds.width / 2)
         
@@ -72,7 +69,7 @@ class GraphViewController: UIViewController {
     func sliderMoved(sender: UISlider) {
         self.functionMultiplier = sender.value
         let constantString = Double(self.functionMultiplier).toString(decimalPlaces: 1)
-        self.graphView.functionLabel.text = "y = sin (" + constantString + "x)"
+        self.graphView.functionLabel.text = "Function:  y = sin (" + constantString + "x)"
         self.updateTarget()
     }
     
@@ -110,6 +107,11 @@ class GraphViewController: UIViewController {
     func resetAll() {
         self.initPoints()
         self.resetNetwork()
+    }
+    
+    func infoTapped() {
+        let infoController = GraphInfoViewController()
+        DrawerNavigationController.globalDrawerController().presentViewController(infoController, animated: true, completion: nil)
     }
     
     // MARK:- Private methods
@@ -174,7 +176,7 @@ class GraphViewController: UIViewController {
     
     /// Resets the neural network, with new random weights
     private func resetNetwork() {
-        self.network = FFNN(inputs: 1, hidden: 10, outputs: 1, learningRate: 0.4, momentum: 0.8, weights: nil, activationFunction: .Sigmoid)
+        self.network = FFNN(inputs: 1, hidden: 10, outputs: 1, learningRate: 0.4, momentum: 0.8, weights: nil, activationFunction: .Sigmoid, errorFunction: .Default(average: false))
     }
     
     /// Translates a the point at the given index to the specified y-value

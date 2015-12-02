@@ -21,8 +21,8 @@ class GraphView: UIView {
     let functionLabel = UILabel()
     let errorLabel = UILabel()
     let startPauseButton = UIButton()
-    let functionButton = UIButton()
     let resetButton = UIButton()
+    let infoButton = UIButton()
     
     convenience init() {
         self.init(frame: CGRectZero)
@@ -39,8 +39,10 @@ class GraphView: UIView {
     
     func configureSubviews() {
         // Add Subviews
-        self.addSubviews([self.xAxis, self.yAxis, self.negXLabel, self.posXLabel, self.negYLabel, self.posYLabel,
-            self.functionLabel, self.slider, self.startPauseButton, self.functionButton, self.resetButton])
+        self.insertSubview(self.xAxis, atIndex: 0)
+        self.insertSubview(self.yAxis, atIndex: 1)
+        self.addSubviews([self.negXLabel, self.posXLabel, self.negYLabel, self.posYLabel,
+            self.functionLabel, self.slider, self.startPauseButton, self.infoButton, self.resetButton])
         
         // Style View
         self.backgroundColor = .white
@@ -55,6 +57,7 @@ class GraphView: UIView {
         self.posYLabel.text = "1"
         
         self.functionLabel.textColor = .red
+        self.functionLabel.font = UIFont.swiftFontOfSize(20)
         
         self.slider.minimumValue = 0.5
         self.slider.maximumValue = 2.5
@@ -62,15 +65,18 @@ class GraphView: UIView {
     
         self.startPauseButton.setTitle("Start", forState: .Normal)
         self.startPauseButton.setTitleColor(UIColor.swiftLightOrange(), forState: .Highlighted)
+        self.startPauseButton.titleLabel?.font = UIFont.swiftFontOfSize(18)
         self.startPauseButton.backgroundColor = UIColor.swiftGreen()
         
-        self.functionButton.setTitle("Function", forState: .Normal)
-        self.functionButton.setTitleColor(UIColor.swiftDarkOrange(), forState: .Highlighted)
-        self.functionButton.backgroundColor = UIColor.swiftLightOrange()
+        self.infoButton.setTitle("Info", forState: .Normal)
+        self.infoButton.setTitleColor(UIColor.swiftDarkOrange(), forState: .Highlighted)
+        self.infoButton.titleLabel?.font = UIFont.swiftFontOfSize(18)
+        self.infoButton.backgroundColor = UIColor.swiftDarkOrange()
         
         self.resetButton.setTitle("Reset", forState: .Normal)
         self.resetButton.setTitleColor(UIColor.swiftLightOrange(), forState: .Highlighted)
-        self.resetButton.backgroundColor = UIColor.swiftDarkOrange()
+        self.resetButton.titleLabel?.font = UIFont.swiftFontOfSize(18)
+        self.resetButton.backgroundColor = UIColor.swiftLightOrange()
     }
     
     override func updateConstraints() {
@@ -122,17 +128,17 @@ class GraphView: UIView {
             Constraint.bb : (of: self, multiplier: 1, offset: 0),
             Constraint.hw : (of: self.startPauseButton, multiplier: 0.6, offset: 0)])
         
-        self.functionButton.constrainUsing(constraints: [
-            Constraint.lr : (of: self.startPauseButton, multiplier: 1, offset: 0),
-            Constraint.w : (of: self.resetButton, multiplier: 1, offset: 0),
-            Constraint.bb : (of: self, multiplier: 1, offset: 0),
-            Constraint.hw : (of: self.functionButton, multiplier: 0.6, offset: 0)])
-        
         self.resetButton.constrainUsing(constraints: [
-            Constraint.lr : (of: self.functionButton, multiplier: 1, offset: 0),
-            Constraint.rr : (of: self, multiplier: 1, offset: 0),
+            Constraint.lr : (of: self.startPauseButton, multiplier: 1, offset: 0),
+            Constraint.w : (of: self.infoButton, multiplier: 1, offset: 0),
             Constraint.bb : (of: self, multiplier: 1, offset: 0),
             Constraint.hw : (of: self.resetButton, multiplier: 0.6, offset: 0)])
+        
+        self.infoButton.constrainUsing(constraints: [
+            Constraint.lr : (of: self.resetButton, multiplier: 1, offset: 0),
+            Constraint.rr : (of: self, multiplier: 1, offset: 0),
+            Constraint.bb : (of: self, multiplier: 1, offset: 0),
+            Constraint.hw : (of: self.infoButton, multiplier: 0.6, offset: 0)])
         
         
         super.updateConstraints()

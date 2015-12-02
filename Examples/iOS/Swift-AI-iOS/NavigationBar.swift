@@ -39,7 +39,7 @@ class NavigationBar: UIView {
         // Style Subviews
         self.titleLabel.text = "Swift AI"
         self.titleLabel.textColor = .white
-        self.titleLabel.font = UIFont.systemFontOfSize(24)
+        self.titleLabel.font = UIFont.swiftFontOfSize(24)
         
         self.hamburgerButton.setImage(UIImage(named: "hamburger"), forState: .Normal)
         self.hamburgerButton.setImage(UIImage(named: "hamburger_highlighted"), forState: .Highlighted)

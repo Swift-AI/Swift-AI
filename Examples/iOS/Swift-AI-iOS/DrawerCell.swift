@@ -36,10 +36,10 @@ class DrawerCell: UITableViewCell {
         
         // Style Subviews
         self.titleLabel.textColor = .swiftLightGray()
-        self.titleLabel.font = UIFont.systemFontOfSize(18)
+        self.titleLabel.font = UIFont.swiftFontOfSize(18)
         
         self.descriptionLabel.textColor = .swiftLightGray()
-        self.descriptionLabel.font = UIFont.systemFontOfSize(13)
+        self.descriptionLabel.font = UIFont.swiftFontOfSize(13)
         
         self.selectionView.backgroundColor = UIColor(white: 1, alpha: 0.4)
         

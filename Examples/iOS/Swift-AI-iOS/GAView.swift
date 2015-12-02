@@ -34,7 +34,7 @@ class GAView: UIView {
         // Style Subviews
         self.tempLabel.text = "Genetic Algorithm example coming soon!"
         self.tempLabel.textColor = .swiftDarkOrange()
-        self.tempLabel.font = UIFont.systemFontOfSize(15)
+        self.tempLabel.font = UIFont.swiftFontOfSize(15)
         
     }
     
