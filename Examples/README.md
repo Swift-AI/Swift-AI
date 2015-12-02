@@ -39,7 +39,11 @@ Within a few seconds, the network is able to "learn" a good approximation of the
 
 > **Mine got stuck!**
 
-Yeah, that can happen. It's called a [local minimum](http://mnemstudio.org/ai/nn/images/minima1.gif). A good [learning rate and momentum factor](https://github.com/collinhundley/Swift-AI/tree/master/Source#standard) can help prevent that, but for this simple example it's best to just reset the network.
+Yeah, that can happen. It's called a local minimum:
+
+![LocalMinimum](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/LocalMinima.gif?raw=true).
+
+A good [learning rate and momentum factor](https://github.com/collinhundley/Swift-AI/tree/master/Source#standard) can help prevent that, but for this simple example it's best to just reset the network.
 
 ### Evolution
 
