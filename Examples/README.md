@@ -23,7 +23,7 @@ The green waveform represents the 'target' function - the one that we'd like to 
 
 You can control the target function by adjusting the slider:
 
-![Sune-Sider.gif](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Sine-Slider.gif?raw=true)
+![Sine-Slider.gif](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Sine-Slider.gif?raw=true) ![Sine-Slider2.gif](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Sine-Slider2.gif?raw=true)
 
 - Tap 'Start' to begin the training process and view the network's progress - live!
 - Tap 'Pause' to pause the training.
@@ -35,11 +35,11 @@ Initially, you're given a randomly-generated neural network. Tapping 'Start' ini
 - **Update**: For every `x` position on the graph, the neural network is asked to make its 'best guess' for the corresponding `y` value. These points are plotted in red on the screen.
 - **Backpropagation**: For every `x` position, the network's output `y` is compared to the 'target' value. The resulting error is propagated through the network and its weights are adjusted accordingly (more details in the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Source#training)).
 
-Within a few seconds, the network is able to "learn" a good approximation of the target function. Note that the 'target' values are never actually stored by the neural network - rather, it uses them to learn by example.
+Within a few seconds, the network is able to "learn" a good approximation of the target function. Note that the target values are never actually stored by the neural network - rather, it uses them to learn by example.
 
 > **Mine got stuck!**
 
-Yeah, that can happen. It's called a [local minimum](http://mnemstudio.org/ai/nn/images/minima1.gif). A good [learning rate and momentum factor](https://github.com/collinhundley/Swift-AI/tree/master/Source#standard) can help prevent that, but for this app it's best to just reset the network.
+Yeah, that can happen. It's called a [local minimum](http://mnemstudio.org/ai/nn/images/minima1.gif). A good [learning rate and momentum factor](https://github.com/collinhundley/Swift-AI/tree/master/Source#standard) can help prevent that, but for this simple example it's best to just reset the network.
 
 ### Evolution
 
