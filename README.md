@@ -1,10 +1,11 @@
 ![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/SwiftAI.png?raw=true)
 
 Swift AI is a high-performance AI and Machine Learning library written entirely in Swift.
-These tools have been optimized for use in both iOS and OS X applications, with support for more platforms coming soon!
+We currently support iOS and OS X, with support for more platforms coming soon!
+
 
 ## Features
-Swift AI includes a set of common tools used for machine learning and artificial intelligence research. These tools are designed to be flexible yet powerful, and suitable for everything from iOS apps to large-scale AI implementations.
+Swift AI includes a set of common tools used for machine learning and artificial intelligence research. These tools are designed to be flexible, powerful and suitable for a wide range of applications.
 
 - [x] [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/tree/master/Source#multi-layer-feed-forward-neural-network)
     * 3-layer network with options for customization.
@@ -38,5 +39,15 @@ Swift AI currently depends on Apple's [Accelerate](https://developer.apple.com/l
 
 In order to provide support for multiple platforms (Linux, Windows, etc.), alternative BLAS solutions are being considered. A vanilla Swift implementation is possible, but SIMD instructions will be preferred for their significant performance boost.
 
-## Notes
-Compiler optimizations can greatly enhance the performance of Swift AI. Even Xcode's default 'Release' build settings can increase speed by up to 10x, but it is also recommended that [Whole Module Optimization](https://developer.apple.com/swift/blog/?id=27) be enabled for maximum efficiency.
+
+## Care Enough to Donate?
+
+Give a little, take a little. Donors will be featured as sponsors right here on the front page! Donate $20+ and we'll include your name with a link to your profile, $250+ and we'll add your company's logo!
+
+>**What good will my donation do?**
+
+Your money will put a college student through school. More donations = less contract work = more time building great open-source projects!
+
+[![Donate](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/DonateButton.png?raw=true)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3FCBZ7MXZJFG2&lc=US&item_name=Swift%20AI%20Development&currency_code=USD&bn=PP%2dDonationsBF%3aDonateButton%2epng%3fraw%3dtrue%3aNonHosted)
+
+
