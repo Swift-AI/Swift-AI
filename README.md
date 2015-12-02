@@ -18,7 +18,7 @@ Swift AI includes a set of common tools used for machine learning and artificial
 
 
 ## Usage and Examples
-We've created some [example projects](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) to demonstrate the usage and potential applications of Swift AI:
+We've created [example projects](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) to demonstrate the usage and potential applications of Swift AI:
 - [iOS](https://github.com/collinhundley/Swift-AI/tree/master/Examples#ios):
     * 2D function regression (feed-forward neural network)
     * Evolution simultaion (genetic algorithm)
