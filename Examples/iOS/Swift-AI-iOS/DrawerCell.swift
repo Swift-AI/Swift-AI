@@ -58,9 +58,7 @@ class DrawerCell: UITableViewCell {
         self.descriptionLabel.constrainUsing(constraints: [
             Constraint.ll : (of: self.titleLabel, offset: 0),
             Constraint.cycy : (of: self.contentView, offset: 12)])
-        
-//        self.selectionView.fillSuperview()
-        
+                
         super.updateConstraints()
     }
 }

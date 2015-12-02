@@ -351,8 +351,6 @@ public final class FFNN: Storage {
 
     
     // MARK:- Storage protocol
-
-//    public typealias StorageType = FFNN
     
     /// Reads a FFNN from file.
     /// - Parameter filename: The name of the file, located in the default Documents directory.

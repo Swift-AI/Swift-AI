@@ -59,10 +59,10 @@ class GraphInfoView: UIView {
         
         // Add Constraints
         self.dismissButton.constrainUsing(constraints: [
-            Constraint.ll : (of: self, multiplier: 1, offset: 0),
-            Constraint.rr : (of: self, multiplier: 1, offset: 0),
-            Constraint.bb : (of: self, multiplier: 1, offset: 0),
-            Constraint.hw : (of: self.dismissButton, multiplier: 0.2, offset: 0)])
+            Constraint.ll : (of: self, offset: 0),
+            Constraint.rr : (of: self, offset: 0),
+            Constraint.bb : (of: self, offset: 0),
+            Constraint.h : (of: nil, offset: 64)])
         
         self.label1.constrainUsing(constraints: [
             Constraint.ll : (of: self, offset: 15),

@@ -21,6 +21,9 @@ class DrawerViewController: UIViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         self.drawerView.tableView.dataSource = self
         self.drawerView.tableView.delegate = self
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: "tappedFeedback")
+        self.drawerView.footerView.addGestureRecognizer(tapRecognizer)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -48,6 +51,10 @@ class DrawerViewController: UIViewController, UITableViewDataSource, UITableView
         DrawerNavigationController.globalDrawerController().switchToViewAtIndex(indexPath.row, completion: nil)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-  
+    
+    func tappedFeedback() {
+        let url = NSURL(string: "https://github.com/collinhundley/Swift-AI/issues/new")!
+        UIApplication.sharedApplication().openURL(url)
+    }
 
 }

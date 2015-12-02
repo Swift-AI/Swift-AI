@@ -56,7 +56,10 @@ class DrawerView: UIView {
         
         self.footerView.backgroundColor = .clear
         
-        self.footerLabel.text = "Feedback or ideas?\nLet us know on Github"
+        let text = NSMutableAttributedString(string: "Feedback or ideas?\nLet us know on Github")
+        text.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.StyleSingle.rawValue, range: NSMakeRange(text.length - 6, 6))
+        self.footerLabel.attributedText = text
+//        self.footerLabel.text = "Feedback or ideas?\nLet us know on Github"
         self.footerLabel.font = UIFont.swiftFontOfSize(13)
         self.footerLabel.textColor = .swiftLightGray()
         self.footerLabel.textAlignment = .Center

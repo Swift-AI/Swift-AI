@@ -3,7 +3,6 @@
 //  Swift-AI-iOS
 //
 //  Created by Collin Hundley on 11/30/15.
-//  Copyright © 2015 Appsidian. All rights reserved.
 //
 
 import UIKit
