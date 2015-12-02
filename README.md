@@ -3,8 +3,6 @@
 Swift AI is a high-performance AI and Machine Learning library written entirely in Swift.
 These tools have been optimized for use in both iOS and OS X applications, with support for more platforms coming soon!
 
-This library is a work in progress, and more features will be added shortly.
-
 ## Features
 
 Swift AI includes a set of common tools used for machine learning and artificial intelligence research. These tools are designed to be flexible yet powerful, and suitable for everything from iOS apps to large-scale AI implementations.
