@@ -17,7 +17,7 @@ Swift AI includes a set of common tools used for machine learning and artificial
 - [ ] Fast Matrix Library
 - [ ] Fourier Transform Functions
 
-## Examples
+## Usage and Examples
 
 Example projects have been provided to demonstrate the usage and potential applications of Swift AI.
 
@@ -32,4 +32,4 @@ Swift AI currently depends on Apple's [Accelerate](https://developer.apple.com/l
 In order to provide support for multiple platforms (Linux, Windows, etc.), alternative BLAS solutions are being considered. A vanilla Swift implementation is possible, but SIMD instructions will be preferred for their significant performance boost.
 
 ## Notes
-Compiler optimizations can greatly enhance the performance of Swift AI. Even Xcode's default 'Release' build settings can increase speed by up to 10x, but it is also recommended that Whole Module Optimization be enabled for maximum efficiency.
+Compiler optimizations can greatly enhance the performance of Swift AI. Even Xcode's default 'Release' build settings can increase speed by up to 10x, but it is also recommended that [Whole Module Optimization](https://developer.apple.com/swift/blog/?id=27) be enabled for maximum efficiency.
