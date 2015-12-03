@@ -4,10 +4,10 @@ All of the Swift AI docs can be found in this directory. If you're looking for t
 
 ## Table of Contents
 
-- [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/tree/master/Documentation#multi-layer-feed-forward-neural-network)
+- [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#multi-layer-feed-forward-neural-network)
     * FFNN.swift
 - Genetic Algorithms
     * GA.swift
-- [Matrix and Vector Library](link)
+- [Matrix and Vector Library](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/Matrix.md#matrix)
     * Matrix.swift
     * Operations.swift
