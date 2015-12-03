@@ -1,8 +1,14 @@
-# Swift AI Documentation
+[![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/SwiftAI.png?raw=true)](https://github.com/collinhundley/Swift-AI#care-enough-to-donate)
 
-All of the Swift AI docs can be found in this directory. If you're looking for the example projects documentation, go [here](link).
+# Documentation
+
+If you notice anything missing or that needs updating, [let us know!](https://github.com/collinhundley/Swift-AI/issues/new)
+
+To find documentation for the example projects, go [here](https://github.com/collinhundley/Swift-AI/tree/master/Examples).
 
 ## Table of Contents
+
+These links will give you documentation and code examples for each of the tools in Swift AI:
 
 - [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#multi-layer-feed-forward-neural-network)
     * FFNN.swift
