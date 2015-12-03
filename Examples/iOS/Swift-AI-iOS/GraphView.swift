@@ -10,18 +10,23 @@ import APKit
 
 class GraphView: UIView {
     
+    // Graph
+    let graphContainer = UIView()
     let xAxis = UIView()
     let yAxis = UIView()
     let negXLabel = UILabel()
     let posXLabel = UILabel()
     let negYLabel = UILabel()
     let posYLabel = UILabel()
-    let slider = UISlider()
+    // Slider controls
+    let sliderContainer = UIView()
     let functionLabel = UILabel()
-    let errorLabel = UILabel()
-    let startPauseButton = UIButton()
-    let resetButton = UIButton()
-    let infoButton = UIButton()
+    let slider = UISlider()
+    // Buttons
+    let buttonContainer = UIView()
+    let startPauseButton = APSpringButton()
+    let resetButton = APSpringButton()
+    let infoButton = APSpringButton()
     
     convenience init() {
         self.init(frame: CGRectZero)
@@ -38,22 +43,36 @@ class GraphView: UIView {
     
     func configureSubviews() {
         // Add Subviews
-        self.insertSubview(self.xAxis, atIndex: 0)
-        self.insertSubview(self.yAxis, atIndex: 1)
-        self.addSubviews([self.negXLabel, self.posXLabel, self.negYLabel, self.posYLabel,
-            self.functionLabel, self.slider, self.startPauseButton, self.infoButton, self.resetButton])
+        self.addSubviews([self.graphContainer, self.sliderContainer, self.buttonContainer])
+        self.graphContainer.insertSubview(self.xAxis, atIndex: 0)
+        self.graphContainer.insertSubview(self.yAxis, atIndex: 1)
+        self.graphContainer.addSubviews([self.negXLabel, self.posXLabel, self.negYLabel, self.posYLabel])
+        self.sliderContainer.addSubviews([self.functionLabel, self.slider])
+        self.buttonContainer.addSubviews([self.startPauseButton, self.infoButton, self.resetButton])
         
         // Style View
-        self.backgroundColor = .whiteColor()
+        self.backgroundColor = UIColor.swiftLightGray()
         
         // Style Subviews
-        self.xAxis.backgroundColor = .blackColor()
-        self.yAxis.backgroundColor = .blackColor()
+        self.graphContainer.backgroundColor = .whiteColor()
+        self.graphContainer.layer.cornerRadius = 4
+        self.graphContainer.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.graphContainer.layer.shadowOpacity = 0.4
+        self.graphContainer.layer.shadowOffset = CGSize(width: 3, height: 3)
+        
+        self.xAxis.backgroundColor = .swiftMediumGray()
+        self.yAxis.backgroundColor = .swiftMediumGray()
         
         self.negXLabel.text = "-5"
         self.posXLabel.text = "5"
         self.negYLabel.text = "-1"
         self.posYLabel.text = "1"
+        
+        self.sliderContainer.backgroundColor = .whiteColor()
+        self.sliderContainer.layer.cornerRadius = 4
+        self.sliderContainer.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.sliderContainer.layer.shadowOpacity = 0.4
+        self.sliderContainer.layer.shadowOffset = CGSize(width: 3, height: 3)
         
         self.functionLabel.textColor = UIColor.swiftGreen()
         self.functionLabel.font = UIFont.swiftFontOfSize(18)
@@ -63,20 +82,32 @@ class GraphView: UIView {
         self.slider.value = 1.5
         self.slider.tintColor = UIColor.swiftGreen()
     
+        self.buttonContainer.backgroundColor = .whiteColor()
+        self.buttonContainer.layer.cornerRadius = 4
+        self.buttonContainer.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.buttonContainer.layer.shadowOpacity = 0.4
+        self.buttonContainer.layer.shadowOffset = CGSize(width: 3, height: 3)
+        
         self.startPauseButton.setTitle("Start", forState: .Normal)
         self.startPauseButton.setTitleColor(UIColor.swiftLightGray(), forState: .Highlighted)
         self.startPauseButton.titleLabel?.font = UIFont.swiftFontOfSize(18)
         self.startPauseButton.backgroundColor = UIColor.swiftGreen()
+        self.startPauseButton.layer.cornerRadius = 6
+        self.startPauseButton.minimumScale = 0.92
         
         self.infoButton.setTitle("Info", forState: .Normal)
-        self.infoButton.setTitleColor(UIColor.swiftLightOrange(), forState: .Highlighted)
+        self.infoButton.setTitleColor(UIColor.swiftLightGray(), forState: .Highlighted)
         self.infoButton.titleLabel?.font = UIFont.swiftFontOfSize(18)
         self.infoButton.backgroundColor = UIColor.swiftDarkOrange()
+        self.infoButton.layer.cornerRadius = 6
+        self.infoButton.minimumScale = 0.92
         
         self.resetButton.setTitle("Reset", forState: .Normal)
-        self.resetButton.setTitleColor(UIColor.swiftDarkOrange(), forState: .Highlighted)
+        self.resetButton.setTitleColor(UIColor.swiftLightGray(), forState: .Highlighted)
         self.resetButton.titleLabel?.font = UIFont.swiftFontOfSize(18)
         self.resetButton.backgroundColor = UIColor.swiftLightOrange()
+        self.resetButton.layer.cornerRadius = 6
+        self.resetButton.minimumScale = 0.92
     }
     
     override func updateConstraints() {
@@ -85,25 +116,33 @@ class GraphView: UIView {
         self.configureSubviews()
         
         // Add Constraints
+        
+        // Graph
+        self.graphContainer.constrainUsing(constraints: [
+            Constraint.ll : (of: self, offset: 10),
+            Constraint.rr : (of: self, offset: -10),
+            Constraint.tt : (of: self, offset: 15),
+            Constraint.hw : (of: self, offset: -20)])
+        
         self.xAxis.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 0),
-            Constraint.rr : (of: self, offset: 0),
+            Constraint.ll : (of: self.graphContainer, offset: 5),
+            Constraint.rr : (of: self.graphContainer, offset: -5),
             Constraint.cycy : (of: self.yAxis, offset: 0),
-            Constraint.h : (of: nil, offset: 2)])
+            Constraint.h : (of: nil, offset: 1.5)])
         
         self.yAxis.constrainUsing(constraints: [
-            Constraint.cxcx : (of: self, offset: 0),
-            Constraint.w : (of: nil, offset: 2),
-            Constraint.tt : (of: self, offset: 15),
-            Constraint.hw : (of: self.xAxis, offset: -30)])
+            Constraint.cxcx : (of: self.graphContainer, offset: 0),
+            Constraint.w : (of: nil, offset: 1.5),
+            Constraint.tt : (of: self.graphContainer, offset: 5),
+            Constraint.bb : (of: self.graphContainer, offset: -5)])
         
         self.negXLabel.constrainUsing(constraints: [
             Constraint.ll : (of: self.xAxis, offset: 2),
-            Constraint.tb : (of: self.xAxis, offset: 0)])
+            Constraint.tb : (of: self.xAxis, offset: 2)])
         
         self.posXLabel.constrainUsing(constraints: [
             Constraint.rr : (of: self.xAxis, offset: -2),
-            Constraint.tb : (of: self.xAxis, offset: 0)])
+            Constraint.tb : (of: self.xAxis, offset: 2)])
         
         self.posYLabel.constrainUsing(constraints: [
             Constraint.lr : (of: self.yAxis, offset: 6),
@@ -113,32 +152,48 @@ class GraphView: UIView {
             Constraint.lr : (of: self.yAxis, offset: 6),
             Constraint.bb : (of: self.yAxis, offset: 0)])
         
-        self.functionLabel.constrainUsing(constraints: [
-            Constraint.cxcx : (of: self, offset: 0),
-            Constraint.bt : (of: self.slider, offset: -15)])
+        // Slider
         
+        self.sliderContainer.constrainUsing(constraints: [
+            Constraint.ll : (of: self.graphContainer, offset: 0),
+            Constraint.rr : (of: self.graphContainer, offset: 0),
+            Constraint.tb : (of: self.graphContainer, offset: 20),
+            Constraint.bt : (of: self.buttonContainer, offset: -20)])
+        
+        self.functionLabel.constrainUsing(constraints: [
+            Constraint.cxcx : (of: self.sliderContainer, offset: 0),
+            Constraint.bcy : (of: self.sliderContainer, offset: -7)])
+
         self.slider.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 40),
-            Constraint.rr : (of: self, offset: -40),
-            Constraint.bt : (of: self.startPauseButton, offset: -20)])
+            Constraint.ll : (of: self.sliderContainer, offset: 20),
+            Constraint.rr : (of: self.sliderContainer, offset: -20),
+            Constraint.tcy : (of: self.sliderContainer, offset: 7)])
+        
+        // Buttons
+        
+        self.buttonContainer.constrainUsing(constraints: [
+            Constraint.ll : (of: self.graphContainer, multiplier: 1, offset: 0),
+            Constraint.rr : (of: self.graphContainer, multiplier: 1, offset: 0),
+            Constraint.bb : (of: self, multiplier: 1, offset: -15),
+            Constraint.hw : (of: self.buttonContainer, multiplier: 0.18, offset: 0)])
         
         self.startPauseButton.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 0),
+            Constraint.ll : (of: self.buttonContainer, offset: 5),
             Constraint.w : (of: self.resetButton, offset: 0),
-            Constraint.bb : (of: self, offset: 0),
-            Constraint.h : (of: nil, offset: 64)])
+            Constraint.tt : (of: self.buttonContainer, offset: 5),
+            Constraint.bb : (of: self.buttonContainer, offset: -5)])
         
         self.resetButton.constrainUsing(constraints: [
-            Constraint.lr : (of: self.startPauseButton, offset: 0),
+            Constraint.lr : (of: self.startPauseButton, offset: 5),
             Constraint.w : (of: self.infoButton, offset: 0),
-            Constraint.bb : (of: self, offset: 0),
-            Constraint.h : (of: nil, offset: 64)])
+            Constraint.tt : (of: self.buttonContainer, offset: 5),
+            Constraint.bb : (of: self.buttonContainer, offset: -5)])
         
         self.infoButton.constrainUsing(constraints: [
-            Constraint.lr : (of: self.resetButton, offset: 0),
-            Constraint.rr : (of: self, offset: 0),
-            Constraint.bb : (of: self, offset: 0),
-            Constraint.h : (of: nil, offset: 64)])
+            Constraint.lr : (of: self.resetButton, offset: 5),
+            Constraint.rr : (of: self.buttonContainer, offset: -5),
+            Constraint.tt : (of: self.buttonContainer, offset: 5),
+            Constraint.bb : (of: self.buttonContainer, offset: -5)])
         
         
         super.updateConstraints()

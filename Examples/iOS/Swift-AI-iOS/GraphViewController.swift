@@ -40,7 +40,7 @@ class GraphViewController: UIViewController {
         // Set function label text
         self.graphView.functionLabel.text = "Function:  y = sin (\(self.functionMultiplier)x)"
         // Calculate number of points to plot, based on screen size (#hack)
-        self.numPoints = Int(UIScreen.mainScreen().bounds.width / 2)
+        self.numPoints = Int((UIScreen.mainScreen().bounds.width - 20) / 2) // -20 for margins
         
         self.initTarget()
         
@@ -110,8 +110,9 @@ class GraphViewController: UIViewController {
     }
     
     func infoTapped() {
-        let infoController = GraphInfoViewController()
-        DrawerNavigationController.globalDrawerController().presentViewController(infoController, animated: true, completion: nil)
+        let infoView = InfoView()
+        infoView.effect = UIBlurEffect(style: .Dark)
+        DrawerNavigationController.globalDrawerController().presentInfoView(infoView)
     }
     
     // MARK:- Private methods
@@ -127,14 +128,14 @@ class GraphViewController: UIViewController {
             // Create a point
             let point = UIView()
             // Calculate position to place point
-            let xPos = CGFloat(index) * (UIScreen.mainScreen().bounds.width / CGFloat(self.numPoints))
-            let yPos = UIScreen.mainScreen().bounds.width / 2 - 4 // -4 to offset point height
+            let xPos = CGFloat(index) * ((UIScreen.mainScreen().bounds.width - 20) / CGFloat(self.numPoints)) * 0.99 // *.99 so points don't overflow
+            let yPos = (UIScreen.mainScreen().bounds.width - 20) / 2 - 4 // -20 for gray margins; -4 to offset point height
             // Add point to view
             point.frame = CGRect(x: xPos, y: yPos, width: 6, height: 6)
             point.backgroundColor = .swiftDarkOrange()
             point.layer.cornerRadius = 3
             point.alpha = 0.8
-            self.graphView.addSubview(point)
+            self.graphView.graphContainer.addSubview(point)
             // Store point
             self.points.append(point)
         }
@@ -150,12 +151,12 @@ class GraphViewController: UIViewController {
             // Create a point
             let point = UIView()
             // Calculate position to place point
-            let xPos = CGFloat(index) * (UIScreen.mainScreen().bounds.width / CGFloat(self.numPoints))
-            let yPos = UIScreen.mainScreen().bounds.width / 2 - 4 // -4 to offset point height
+            let xPos = CGFloat(index) * ((UIScreen.mainScreen().bounds.width - 20) / CGFloat(self.numPoints)) * 0.99
+            let yPos = (UIScreen.mainScreen().bounds.width - 20) / 2 - 4 // -20 for gray margins; -4 to offset point height
             // Add point to view
             point.frame = CGRect(x: xPos, y: yPos, width: 1, height: 6)
             point.backgroundColor = .swiftGreen()
-            self.graphView.addSubview(point)
+            self.graphView.graphContainer.addSubview(point)
             // Store point
             self.targetPoints.append(point)
         }

@@ -48,7 +48,7 @@ class DrawerView: UIView {
         self.headerView.backgroundColor = .clear
 
         self.headerLabel.text = "Example Projects"
-        self.headerLabel.font = UIFont.swiftFontOfSize(20)
+        self.headerLabel.font = UIFont.swiftFontOfSize(18)
         self.headerLabel.textColor = .swiftLightGray()
         
         self.tableView.backgroundColor = .drawerColor()

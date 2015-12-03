@@ -1,5 +1,5 @@
 //
-//  GraphInfoView.swift
+//  InfoView.swift
 //  Swift-AI-iOS
 //
 //  Created by Collin Hundley on 11/30/15.
@@ -8,45 +8,32 @@
 import UIKit
 import APKit
 
-class GraphInfoView: UIView {
+class InfoView: UIVisualEffectView {
     
     let dismissButton = UIButton()
     let label1 = UILabel()
     let field1 = UITextView()
-    
-    convenience init() {
-        self.init(frame: CGRectZero)
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setNeedsUpdateConstraints()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     func configureSubviews() {
         // Add Subviews
         self.addSubviews([self.dismissButton, self.label1, self.field1])
         
         // Style View
-        self.backgroundColor = .swiftDarkOrange()
         
         // Style Subviews
         self.dismissButton.setTitle("Dismiss", forState: .Normal)
-        self.dismissButton.backgroundColor = .swiftLightOrange()
-        self.dismissButton.setTitleColor(.redColor(), forState: .Highlighted)
+        self.dismissButton.backgroundColor = .swiftMediumGray()
+        self.dismissButton.setTitleColor(UIColor.grayColor(), forState: .Highlighted)
+        self.dismissButton.addTarget(DrawerNavigationController.globalDrawerController(), action: "dismissInfoView", forControlEvents: .TouchUpInside)
         
         self.label1.text = "What's going on?"
         self.label1.textColor = .whiteColor()
-        self.label1.font = UIFont.swiftFontOfSize(20)
+        self.label1.font = UIFont.swiftFontOfSize(18)
         self.label1.backgroundColor = .clearColor()
         
         self.field1.text = "A description about this example will go right here."
         self.field1.textColor = .whiteColor()
-        self.field1.font = UIFont.swiftFontOfSize(18)
+        self.field1.font = UIFont.swiftFontOfSize(16)
         self.field1.backgroundColor = .clearColor()
         self.field1.userInteractionEnabled = false
         

@@ -1,5 +1,5 @@
 //
-//  GraphInfoViewController.swift
+//  InfoViewController.swift
 //  Swift-AI-iOS
 //
 //  Created by Collin Hundley on 11/30/15.
@@ -7,18 +7,18 @@
 
 import UIKit
 
-class GraphInfoViewController: UIViewController {
+class InfoViewController: UIViewController {
     
-    let graphInfoView = GraphInfoView()
+    let infoView = InfoView()
     
     override func loadView() {
-        self.view = self.graphInfoView
+        self.view = self.infoView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.graphInfoView.dismissButton.addTarget(self, action: "dismiss", forControlEvents: .TouchUpInside)
+        self.infoView.dismissButton.addTarget(self, action: "dismiss", forControlEvents: .TouchUpInside)
     }
     
     func dismiss() {

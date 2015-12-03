@@ -12,8 +12,8 @@
 		F02FD2141C02B93400A137C2 /* Swift_AI_iOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2121C02B93400A137C2 /* Swift_AI_iOS.xcdatamodeld */; };
 		F02FD2161C02B93400A137C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F02FD2151C02B93400A137C2 /* Assets.xcassets */; };
 		F02FD2191C02B93400A137C2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F02FD2171C02B93400A137C2 /* LaunchScreen.storyboard */; };
-		F09470481C0D2A23004F4202 /* GraphInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09470471C0D2A23004F4202 /* GraphInfoViewController.swift */; };
-		F094704A1C0D2A2F004F4202 /* GraphInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09470491C0D2A2F004F4202 /* GraphInfoView.swift */; };
+		F09470481C0D2A23004F4202 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09470471C0D2A23004F4202 /* InfoViewController.swift */; };
+		F094704A1C0D2A2F004F4202 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09470491C0D2A2F004F4202 /* InfoView.swift */; };
 		F09470521C0E6695004F4202 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09470511C0E6695004F4202 /* Fonts.swift */; };
 		F09470531C0E6785004F4202 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F094704B1C0E6684004F4202 /* OpenSans-Bold.ttf */; };
 		F09470541C0E6785004F4202 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F094704C1C0E6684004F4202 /* OpenSans-Italic.ttf */; };
@@ -58,8 +58,8 @@
 		F02FD2151C02B93400A137C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F02FD2181C02B93400A137C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F02FD21A1C02B93400A137C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F09470471C0D2A23004F4202 /* GraphInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphInfoViewController.swift; sourceTree = "<group>"; };
-		F09470491C0D2A2F004F4202 /* GraphInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphInfoView.swift; sourceTree = "<group>"; };
+		F09470471C0D2A23004F4202 /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		F09470491C0D2A2F004F4202 /* InfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		F094704B1C0E6684004F4202 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Bold.ttf"; path = "Fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		F094704C1C0E6684004F4202 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Italic.ttf"; path = "Fonts/OpenSans-Italic.ttf"; sourceTree = "<group>"; };
 		F094704D1C0E6684004F4202 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Light.ttf"; path = "Fonts/OpenSans-Light.ttf"; sourceTree = "<group>"; };
@@ -133,6 +133,7 @@
 				F0C5B8921C0634D10016FF6F /* DrawerViewController.swift */,
 				F0C5B8911C0634D10016FF6F /* DrawerView.swift */,
 				F0C5B88F1C0634D10016FF6F /* DrawerCell.swift */,
+				F09470491C0D2A2F004F4202 /* InfoView.swift */,
 			);
 			name = Drawer;
 			sourceTree = "<group>";
@@ -152,8 +153,7 @@
 			children = (
 				F02FD20D1C02B93400A137C2 /* GraphViewController.swift */,
 				F0BAD9E91C0565AE001AD2AE /* GraphView.swift */,
-				F09470471C0D2A23004F4202 /* GraphInfoViewController.swift */,
-				F09470491C0D2A2F004F4202 /* GraphInfoView.swift */,
+				F09470471C0D2A23004F4202 /* InfoViewController.swift */,
 			);
 			name = Graphs;
 			sourceTree = "<group>";
@@ -269,14 +269,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0C5B8951C0634D10016FF6F /* DrawerView.swift in Sources */,
-				F09470481C0D2A23004F4202 /* GraphInfoViewController.swift in Sources */,
+				F09470481C0D2A23004F4202 /* InfoViewController.swift in Sources */,
 				F0C5B8AD1C0645E80016FF6F /* Storage.swift in Sources */,
 				F0C5B8A01C0638680016FF6F /* Colors.swift in Sources */,
 				F0C5B8AC1C0645E80016FF6F /* FFNN.swift in Sources */,
 				F0C5B8961C0634D10016FF6F /* DrawerViewController.swift in Sources */,
 				F0C5B8941C0634D10016FF6F /* DrawerNavigationController.swift in Sources */,
 				F09470521C0E6695004F4202 /* Fonts.swift in Sources */,
-				F094704A1C0D2A2F004F4202 /* GraphInfoView.swift in Sources */,
+				F094704A1C0D2A2F004F4202 /* InfoView.swift in Sources */,
 				F02FD20E1C02B93400A137C2 /* GraphViewController.swift in Sources */,
 				F0C5B8A51C0640B10016FF6F /* GAViewController.swift in Sources */,
 				F0C5B8A31C0638BB0016FF6F /* NavigationBar.swift in Sources */,

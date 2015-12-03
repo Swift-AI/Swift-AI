@@ -18,6 +18,7 @@ class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate 
     // Private state variables
     private var views = [UIView]()
     private var currentView: UIView!
+    private var infoView: InfoView?
     private var touchBeginLocation: CGPoint?
     private var open = false
     
@@ -257,6 +258,28 @@ class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate 
                 self.open = false
                 completion?()
         })
+    }
+    
+    func presentInfoView(infoView: InfoView) {
+        self.infoView = infoView
+        self.view.addSubview(infoView)
+        infoView.fillSuperview()
+        infoView.transform = CGAffineTransformMakeTranslation(0, UIScreen.mainScreen().bounds.height)
+        UIView.animateWithDuration(0.6, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+            infoView.transform = CGAffineTransformIdentity
+        }, completion: nil)
+    }
+    
+    func dismissInfoView() {
+        guard let infoView = self.infoView else {
+            return
+        }
+        UIView.animateWithDuration(0.6, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+            infoView.transform = CGAffineTransformMakeTranslation(0, UIScreen.mainScreen().bounds.height)
+        }) { (Bool) -> Void in
+            infoView.removeFromSuperview()
+            self.infoView = nil
+        }
     }
     
 

@@ -31,7 +31,11 @@ extension UIColor {
     }
     
     class func swiftLightGray() -> UIColor {
-        return UIColor(red: 240 / 255, green: 240 / 255, blue: 240 / 255, alpha: 1)
+        return UIColor(red: 235 / 255, green: 235 / 255, blue: 235 / 255, alpha: 1)
+    }
+    
+    class func swiftMediumGray() -> UIColor {
+        return UIColor(red: 160 / 255, green: 160 / 255, blue: 160 / 255, alpha: 1)
     }
     
 }
