@@ -35,6 +35,9 @@ We've created [example projects](https://github.com/collinhundley/Swift-AI/tree/
 ## Installation
 Grab the files you need, drag them into your project. That was easy!
 
+>**Why don't we use CocoaPods/Carthage?**
+
+With Swift becoming open-source, we're waiting to see how these dependency managers will cooperate with other platforms. There are benefits and drawbacks to both, but for now it's quite easy to hand-pick the Swift AI classes you want to use. Plus, it saves space and compilation time!
 
 ## Compatibility
 Swift AI currently depends on Apple's [Accelerate](https://developer.apple.com/library/mac/documentation/Accelerate/Reference/AccelerateFWRef/) framework for vector/matrix calculations and digital signal processing. With Swift becoming open-source later this year, it remains to be seen if additional frameworks will be released as well.
