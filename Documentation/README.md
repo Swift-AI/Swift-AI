@@ -1,4 +1,4 @@
-[![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/SwiftAI.png?raw=true)](https://github.com/collinhundley/Swift-AI#care-enough-to-donate)
+[![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Banner.png?raw=true)](https://github.com/collinhundley/Swift-AI#care-enough-to-donate)
 
 # Documentation
 
