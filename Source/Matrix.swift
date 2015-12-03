@@ -13,7 +13,7 @@ public class Matrix {
     public let rows: Int
     public let shape: (Int, Int)
     public let size: Int
-    public var flat: Vector
+    var flat: Vector
     
     public var vectorView: Vector {
         get {
