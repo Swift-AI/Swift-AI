@@ -1,7 +1,7 @@
+[![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/SwiftAI.png?raw=true)](https://github.com/collinhundley/Swift-AI#care-enough-to-donate)
+
 # Source
 
-This directory contains all of the source files for Swift AI.
+This folder is where you'll find all of the source files for Swift AI.
 
-## Documentation
-
-Documentation has been moved to [here](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/README.md).
+For instructions and examples, see the [documentation](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/README.md).
