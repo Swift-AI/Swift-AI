@@ -4,11 +4,11 @@
 
 If you notice anything missing or that needs updating, [let us know!](https://github.com/collinhundley/Swift-AI/issues/new)
 
-To find documentation for the example projects, go [here](https://github.com/collinhundley/Swift-AI/tree/master/Examples).
+To find documentation for the example projects, see [examples](https://github.com/collinhundley/Swift-AI/tree/master/Examples).
 
 ## Table of Contents
 
-These links will give you documentation and code examples for each of the tools in Swift AI:
+These links will give you documentation and code snippets for each of the tools in Swift AI:
 
 - [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#multi-layer-feed-forward-neural-network)
     * FFNN.swift
