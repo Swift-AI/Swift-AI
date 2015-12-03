@@ -44,11 +44,11 @@ In order to provide support for multiple platforms (Linux, Windows, etc.), alter
 
 ## Care Enough to Donate?
 
-Take a little, give a little. This is your chance to make a difference!
+Take a little, give a little. I don't usually like handouts, but time is the biggest constraint. More donations = less contract work = more time building great open-source projects!
 
->**What good will my money do?**
+**What good will my money do?**
 
-Your donation will help put a college student through school. More donations = less contract work = more time building great open-source projects!
+Your donation will help a college student get through school, and give you a warm, fuzzy feeling. Every contribution is very much appreciated.
 
 [![Donate](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/DonateButton.png?raw=true)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3FCBZ7MXZJFG2&lc=US&item_name=Swift%20AI&currency_code=USD&bn=PP%2dDonationsBF%3aDonateButton%2epng%3fraw%3dtrue%3aNonHosted)
 
