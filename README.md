@@ -7,7 +7,7 @@ We currently support iOS and OS X, with support for more platforms coming soon!
 ## Features
 Swift AI includes a set of common tools used for machine learning and artificial intelligence research. These tools are designed to be flexible, powerful and suitable for a wide range of applications.
 
-- [x] [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/tree/master/Source#multi-layer-feed-forward-neural-network)
+- [x] [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/tree/master/Documentation#multi-layer-feed-forward-neural-network)
     * 3-layer network with options for customization.
     * [Example projects](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) for iOS and OS X.
 - [ ] Recurrent Neural Network
