@@ -46,7 +46,7 @@ Yeah, that can happen. It's called a local minimum:
 
 ![LocalMinimum](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/LocalMinima.gif?raw=true).
 
-A good [learning rate and momentum factor](https://github.com/collinhundley/Swift-AI/tree/master/Source#standard) can help prevent that, but for this simple example it's best to just reset the network.
+A good [learning rate and momentum factor](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#standard) can help prevent that, but for this simple example it's best to just reset the network.
 
 ### Evolution
 
