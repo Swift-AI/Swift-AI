@@ -15,7 +15,7 @@ Swift AI includes a set of common tools used for machine learning and artificial
 - [ ] GPU-Accelerated Networks
 - [ ] Genetic Algorithms
 - [x] [Fast Matrix Library](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/Matrix.md#matrix)
-    * Matrix class with methods for common tasks
+    * Matrix class with common operators
     * SIMD-accelerated operations
 - [ ] Fourier Transform Functions
 
@@ -24,6 +24,7 @@ Swift AI includes a set of common tools used for machine learning and artificial
 We've created [example projects](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) to demonstrate the usage and potential applications of Swift AI:
 - [iOS](https://github.com/collinhundley/Swift-AI/tree/master/Examples#ios):
     * 2D function regression (feed-forward neural network)
+    * Handwriting recognition (feed-forward neural network)
     * Evolution simultaion (genetic algorithm)
 - [OS X](https://github.com/collinhundley/Swift-AI/tree/master/Examples#os-x):
     * XOR logic gate modeling (feed-forward neural network)
@@ -37,12 +38,14 @@ Grab the files you need, drag them into your project. That was easy!
 
 >**Why don't we use CocoaPods/Carthage?**
 
-With Swift becoming open-source, we're waiting to see how these dependency managers will cooperate with other platforms. There are benefits and drawbacks to both, but for now it's quite easy to hand-pick the Swift AI classes you want to use. Plus, it saves space and compilation time!
+Swift is open-source now, and it remains to be seen how these dependency managers will cooperate with other platforms.
+
+A better alternative will probably be the [Swift Package Manager](https://swift.org/package-manager/).
 
 ## Compatibility
-Swift AI currently depends on Apple's [Accelerate](https://developer.apple.com/library/mac/documentation/Accelerate/Reference/AccelerateFWRef/) framework for vector/matrix calculations and digital signal processing. With Swift becoming open-source later this year, it remains to be seen if additional frameworks will be released as well.
+Swift AI currently depends on Apple's [Accelerate](https://developer.apple.com/library/mac/documentation/Accelerate/Reference/AccelerateFWRef/) framework for vector/matrix calculations and digital signal processing.
 
-In order to provide support for multiple platforms (Linux, Windows, etc.), alternative BLAS solutions are being considered. A vanilla Swift implementation is possible, but SIMD instructions will be preferred for their significant performance boost.
+In order to provide support for more platforms (Linux, Windows, etc.), alternative BLAS solutions are being considered. A vanilla Swift implementation is one possibility, but SIMD instructions will be preferred for their significant performance boost. Check back for more updates on this soon.
 
 
 ## Care Enough to Donate?
@@ -51,7 +54,7 @@ Take a little, give a little. I don't usually like handouts, but time is a big c
 
 >**What good will my money do?**
 
-Your donation will help a college student get through school, and give you a warm, fuzzy feeling. Every contribution is very much appreciated.
+Your donation will help a college student get through school, and give you a warm, fuzzy feeling. Every contribution is appreciated.
 
 [![Donate](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/DonateButton.png?raw=true)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3FCBZ7MXZJFG2&lc=US&item_name=Swift%20AI&currency_code=USD&bn=PP%2dDonationsBF%3aDonateButton%2epng%3fraw%3dtrue%3aNonHosted)
 
