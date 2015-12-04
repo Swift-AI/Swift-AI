@@ -265,7 +265,7 @@ class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate 
         self.view.addSubview(infoView)
         infoView.fillSuperview()
         infoView.transform = CGAffineTransformMakeTranslation(0, UIScreen.mainScreen().bounds.height)
-        UIView.animateWithDuration(0.6, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+        UIView.animateWithDuration(0.2, delay: 0, options: .CurveEaseOut, animations: { () -> Void in
             infoView.transform = CGAffineTransformIdentity
         }, completion: nil)
     }

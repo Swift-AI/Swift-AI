@@ -14,9 +14,9 @@ class GraphViewController: UIViewController {
     /// The number of points to plot on screen
     var numPoints = 0
     /// Array of all points to display in the graph
-    var points = [UIView]()
+    var points = [CALayer]()
     /// Array of all points to display for the target function in the graph
-    var targetPoints = [UIView]()
+    var targetPoints = [CALayer]()
     /// Our neural network
     var network = FFNN(inputs: 1, hidden: 8, outputs: 1, learningRate: 0.6, momentum: 0.8, weights: nil, activationFunction: .Sigmoid, errorFunction: .Default(average: false))
     /// A multiplier, for altering the target function
@@ -38,7 +38,6 @@ class GraphViewController: UIViewController {
         // Configure slider for multiplier
         self.graphView.slider.addTarget(self, action: "sliderMoved:", forControlEvents: .ValueChanged)
         // Set function label text
-//        self.graphView.functionLabel.text = "y = sin (\(self.functionMultiplier)x)"
         self.graphView.functionLabel.setTitle("y = sin (\(self.functionMultiplier)x)", forState: .Normal)
         // Calculate number of points to plot, based on screen size (#hack)
         self.numPoints = Int((UIScreen.mainScreen().bounds.width - 20) / 2) // -20 for margins
@@ -73,7 +72,6 @@ class GraphViewController: UIViewController {
     func sliderMoved(sender: UISlider) {
         self.functionMultiplier = sender.value
         let constantString = Double(self.functionMultiplier).toString(decimalPlaces: 1)
-//        self.graphView.functionLabel.text = "y = sin (" + constantString + "x)"
         self.graphView.functionLabel.setTitle("y = sin (" + constantString + "x)", forState: .Normal)
         self.updateTarget()
     }
@@ -126,21 +124,20 @@ class GraphViewController: UIViewController {
     private func initPoints() {
         // Remove all points first, in case this is a reset
         for point in self.points {
-            point.removeFromSuperview()
+            point.removeFromSuperlayer()
         }
         self.points.removeAll()
         for index in 0..<self.numPoints {
             // Create a point
-            let point = UIView()
+            let point = CALayer()
             // Calculate position to place point
             let xPos = CGFloat(index) * ((UIScreen.mainScreen().bounds.width - 20) / CGFloat(self.numPoints)) * 0.99 // *.99 so points don't overflow
             let yPos = (UIScreen.mainScreen().bounds.width - 20) / 2 - 4 // -20 for gray margins; -4 to offset point height
             // Add point to view
             point.frame = CGRect(x: xPos, y: yPos, width: 6, height: 6)
-            point.backgroundColor = .swiftDarkOrange()
-            point.layer.cornerRadius = 3
-            point.alpha = 0.8
-            self.graphView.graphContainer.addSubview(point)
+            point.backgroundColor = UIColor.swiftDarkOrange().CGColor
+            point.cornerRadius = 3
+            self.graphView.graphContainer.layer.addSublayer(point)
             // Store point
             self.points.append(point)
         }
@@ -149,19 +146,19 @@ class GraphViewController: UIViewController {
     private func initTarget() {
         // Remove all points first, in case this is a reset
         for point in self.targetPoints {
-            point.removeFromSuperview()
+            point.removeFromSuperlayer()
         }
         self.targetPoints.removeAll()
         for index in 0..<self.numPoints {
             // Create a point
-            let point = UIView()
+            let point = CALayer()
             // Calculate position to place point
             let xPos = CGFloat(index) * ((UIScreen.mainScreen().bounds.width - 20) / CGFloat(self.numPoints)) * 0.99
             let yPos = (UIScreen.mainScreen().bounds.width - 20) / 2 - 4 // -20 for gray margins; -4 to offset point height
             // Add point to view
             point.frame = CGRect(x: xPos, y: yPos, width: 1, height: 6)
-            point.backgroundColor = .swiftGreen()
-            self.graphView.graphContainer.addSubview(point)
+            point.backgroundColor = UIColor.swiftGreen().CGColor
+            self.graphView.graphContainer.layer.addSublayer(point)
             // Store point
             self.targetPoints.append(point)
         }
@@ -169,14 +166,13 @@ class GraphViewController: UIViewController {
     }
     
     private func updateTarget() {
-        // Remove all points first, in case this is a reset
         for (index, point) in self.targetPoints.enumerate() {
             // Calculate position to place point
             let x = (-500 + (Float(index) * 1000) / Float(self.numPoints)) / 100
             let y = self.sineFunc(x)
             let yPos = CGFloat(y * -250) + 125
             // Store point
-            point.transform = CGAffineTransformMakeTranslation(0, yPos)
+            point.transform = CATransform3DMakeTranslation(0, yPos, 0)
         }
     }
     
@@ -187,7 +183,7 @@ class GraphViewController: UIViewController {
     
     /// Translates a the point at the given index to the specified y-value
     private func updatePoint(index: Int, y: CGFloat) {
-        self.points[index].transform = CGAffineTransformMakeTranslation(0, y)
+        self.points[index].transform = CATransform3DMakeTranslation(0, y, 0)
     }
     
     /// The sine wave function for regression

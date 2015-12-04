@@ -21,6 +21,8 @@
 		F09470561C0E6785004F4202 /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F094704E1C0E6684004F4202 /* OpenSans-LightItalic.ttf */; };
 		F09470571C0E6785004F4202 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F094704F1C0E6684004F4202 /* OpenSans-Semibold.ttf */; };
 		F09470581C0E6785004F4202 /* OpenSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F09470501C0E6684004F4202 /* OpenSans.ttf */; };
+		F0969D361C11580C009C3B4A /* HandwritingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D351C11580C009C3B4A /* HandwritingViewController.swift */; };
+		F0969D381C115815009C3B4A /* HandwritingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D371C115815009C3B4A /* HandwritingView.swift */; };
 		F0BAD9EA1C0565AE001AD2AE /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BAD9E91C0565AE001AD2AE /* GraphView.swift */; };
 		F0C5B8931C0634D10016FF6F /* DrawerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5B88F1C0634D10016FF6F /* DrawerCell.swift */; };
 		F0C5B8941C0634D10016FF6F /* DrawerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5B8901C0634D10016FF6F /* DrawerNavigationController.swift */; };
@@ -67,6 +69,8 @@
 		F094704F1C0E6684004F4202 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Semibold.ttf"; path = "Fonts/OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		F09470501C0E6684004F4202 /* OpenSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = OpenSans.ttf; path = Fonts/OpenSans.ttf; sourceTree = "<group>"; };
 		F09470511C0E6695004F4202 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		F0969D351C11580C009C3B4A /* HandwritingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandwritingViewController.swift; sourceTree = "<group>"; };
+		F0969D371C115815009C3B4A /* HandwritingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandwritingView.swift; sourceTree = "<group>"; };
 		F0BAD9E91C0565AE001AD2AE /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		F0C5B88F1C0634D10016FF6F /* DrawerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerCell.swift; sourceTree = "<group>"; };
 		F0C5B8901C0634D10016FF6F /* DrawerNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerNavigationController.swift; sourceTree = "<group>"; };
@@ -126,6 +130,15 @@
 			path = "Swift-AI-iOS";
 			sourceTree = "<group>";
 		};
+		F0969D341C1157CF009C3B4A /* Handwriting */ = {
+			isa = PBXGroup;
+			children = (
+				F0969D351C11580C009C3B4A /* HandwritingViewController.swift */,
+				F0969D371C115815009C3B4A /* HandwritingView.swift */,
+			);
+			name = Handwriting;
+			sourceTree = "<group>";
+		};
 		F0C5B8971C0634D60016FF6F /* Drawer */ = {
 			isa = PBXGroup;
 			children = (
@@ -143,6 +156,7 @@
 			children = (
 				F0C5B8A21C0638BB0016FF6F /* NavigationBar.swift */,
 				F0C5B89E1C06374E0016FF6F /* Graphs */,
+				F0969D341C1157CF009C3B4A /* Handwriting */,
 				F0C5B8A61C0640B50016FF6F /* Genetic Algorithm */,
 			);
 			name = Views;
@@ -279,11 +293,13 @@
 				F094704A1C0D2A2F004F4202 /* InfoView.swift in Sources */,
 				F02FD20E1C02B93400A137C2 /* GraphViewController.swift in Sources */,
 				F0C5B8A51C0640B10016FF6F /* GAViewController.swift in Sources */,
+				F0969D381C115815009C3B4A /* HandwritingView.swift in Sources */,
 				F0C5B8A31C0638BB0016FF6F /* NavigationBar.swift in Sources */,
 				F0BAD9EA1C0565AE001AD2AE /* GraphView.swift in Sources */,
 				F02FD2141C02B93400A137C2 /* Swift_AI_iOS.xcdatamodeld in Sources */,
 				F02FD20C1C02B93400A137C2 /* AppDelegate.swift in Sources */,
 				F0C5B8A81C0640CB0016FF6F /* GAView.swift in Sources */,
+				F0969D361C11580C009C3B4A /* HandwritingViewController.swift in Sources */,
 				F0C5B8931C0634D10016FF6F /* DrawerCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -20,7 +20,6 @@ class GraphView: UIView {
     let posYLabel = UILabel()
     // Slider controls
     let sliderContainer = UIView()
-//    let functionLabel = UILabel()
     let functionLabel = APSpringButton()
     let slider = UISlider()
     // Buttons
@@ -78,7 +77,6 @@ class GraphView: UIView {
         self.functionLabel.titleLabel?.font = UIFont.swiftFontOfSize(18)
         self.functionLabel.setTitleColor(UIColor.swiftGreen(), forState: .Normal)
         self.functionLabel.backgroundColor = UIColor.clearColor()
-//        self.functionLabel.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
         self.functionLabel.layer.cornerRadius = 6
         self.functionLabel.minimumScale = 0.92
         
@@ -98,18 +96,27 @@ class GraphView: UIView {
         self.startPauseButton.backgroundColor = UIColor.swiftGreen()
         self.startPauseButton.layer.cornerRadius = 6
         self.startPauseButton.minimumScale = 0.92
+        self.startPauseButton.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.startPauseButton.layer.shadowOpacity = 0.4
+        self.startPauseButton.layer.shadowOffset = CGSize(width: 3, height: 3)
         
         self.resetButton.setImage(UIImage(named: "reset"), forState: .Normal)
         self.resetButton.setImage(UIImage(named: "reset_highlighted"), forState: .Highlighted)
         self.resetButton.backgroundColor = UIColor.swiftLightOrange()
         self.resetButton.layer.cornerRadius = 6
         self.resetButton.minimumScale = 0.92
+        self.resetButton.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.resetButton.layer.shadowOpacity = 0.4
+        self.resetButton.layer.shadowOffset = CGSize(width: 3, height: 3)
         
         self.infoButton.setImage(UIImage(named: "info"), forState: .Normal)
         self.infoButton.setImage(UIImage(named: "info_highlighted"), forState: .Highlighted)
         self.infoButton.backgroundColor = UIColor.swiftDarkOrange()
         self.infoButton.layer.cornerRadius = 6
         self.infoButton.minimumScale = 0.92
+        self.infoButton.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.infoButton.layer.shadowOpacity = 0.4
+        self.infoButton.layer.shadowOffset = CGSize(width: 3, height: 3)
     }
     
     override func updateConstraints() {
