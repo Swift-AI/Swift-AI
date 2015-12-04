@@ -30,6 +30,7 @@ You can control the target function by adjusting the slider:
 - Tap 'Start' to begin the training process and view the network's progress - live!
 - Tap 'Pause' to pause the training.
 - Tap 'Reset' to completely reset the neural network with new, randomly-generated weights. This discards any training that has happened previously.
+- Tap 'Info' for more information.
 
 > **How does it work?**
 
