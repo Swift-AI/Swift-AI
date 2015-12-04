@@ -30,6 +30,7 @@ You can control the target function by adjusting the slider:
 - Tap 'Start' to begin the training process and view the network's progress - live!
 - Tap 'Pause' to pause the training.
 - Tap 'Reset' to completely reset the neural network with new, randomly-generated weights. This discards any training that has happened previously.
+- Tap 'Info' for more information.
 
 > **How does it work?**
 
@@ -45,7 +46,7 @@ Yeah, that can happen. It's called a local minimum:
 
 ![LocalMinimum](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/LocalMinima.gif?raw=true).
 
-A good [learning rate and momentum factor](https://github.com/collinhundley/Swift-AI/tree/master/Source#standard) can help prevent that, but for this simple example it's best to just reset the network.
+A good [learning rate and momentum factor](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#standard) can help prevent that, but for this simple example it's best to just reset the network.
 
 ### Evolution
 

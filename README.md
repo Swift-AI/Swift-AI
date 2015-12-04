@@ -49,7 +49,7 @@ In order to provide support for multiple platforms (Linux, Windows, etc.), alter
 
 Take a little, give a little. I don't usually like handouts, but time is the biggest constraint. More donations = less contract work = more time building great open-source projects!
 
-**What good will my money do?**
+>**What good will my money do?**
 
 Your donation will help a college student get through school, and give you a warm, fuzzy feeling. Every contribution is very much appreciated.
 
