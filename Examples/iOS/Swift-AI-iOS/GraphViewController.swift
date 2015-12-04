@@ -38,7 +38,8 @@ class GraphViewController: UIViewController {
         // Configure slider for multiplier
         self.graphView.slider.addTarget(self, action: "sliderMoved:", forControlEvents: .ValueChanged)
         // Set function label text
-        self.graphView.functionLabel.text = "Function:  y = sin (\(self.functionMultiplier)x)"
+//        self.graphView.functionLabel.text = "y = sin (\(self.functionMultiplier)x)"
+        self.graphView.functionLabel.setTitle("y = sin (\(self.functionMultiplier)x)", forState: .Normal)
         // Calculate number of points to plot, based on screen size (#hack)
         self.numPoints = Int((UIScreen.mainScreen().bounds.width - 20) / 2) // -20 for margins
         
@@ -48,7 +49,8 @@ class GraphViewController: UIViewController {
     }
     
     override func viewWillDisappear(animated: Bool) {
-        self.graphView.startPauseButton.setTitle("Start", forState: .Normal)
+        self.graphView.startPauseButton.setImage(UIImage(named: "play"), forState: .Normal)
+        self.graphView.startPauseButton.setImage(UIImage(named: "play_highlighted"), forState: .Highlighted)
         self.graphView.startPauseButton.backgroundColor = UIColor.swiftGreen()
         self.pauseTraining()
     }
@@ -56,11 +58,13 @@ class GraphViewController: UIViewController {
     func startPause() {
         switch self.paused {
         case true:
-            self.graphView.startPauseButton.setTitle("Pause", forState: .Normal)
+            self.graphView.startPauseButton.setImage(UIImage(named: "pause"), forState: .Normal)
+            self.graphView.startPauseButton.setImage(UIImage(named: "pause_highlighted"), forState: .Highlighted)
             self.graphView.startPauseButton.backgroundColor = UIColor.swiftDarkOrange()
             self.startTraining()
         case false:
-            self.graphView.startPauseButton.setTitle("Start", forState: .Normal)
+            self.graphView.startPauseButton.setImage(UIImage(named: "play"), forState: .Normal)
+            self.graphView.startPauseButton.setImage(UIImage(named: "play_highlighted"), forState: .Highlighted)
             self.graphView.startPauseButton.backgroundColor = UIColor.swiftGreen()
             self.pauseTraining()
         }
@@ -69,7 +73,8 @@ class GraphViewController: UIViewController {
     func sliderMoved(sender: UISlider) {
         self.functionMultiplier = sender.value
         let constantString = Double(self.functionMultiplier).toString(decimalPlaces: 1)
-        self.graphView.functionLabel.text = "Function:  y = sin (" + constantString + "x)"
+//        self.graphView.functionLabel.text = "y = sin (" + constantString + "x)"
+        self.graphView.functionLabel.setTitle("y = sin (" + constantString + "x)", forState: .Normal)
         self.updateTarget()
     }
     

@@ -20,7 +20,8 @@ class GraphView: UIView {
     let posYLabel = UILabel()
     // Slider controls
     let sliderContainer = UIView()
-    let functionLabel = UILabel()
+//    let functionLabel = UILabel()
+    let functionLabel = APSpringButton()
     let slider = UISlider()
     // Buttons
     let buttonContainer = UIView()
@@ -74,8 +75,12 @@ class GraphView: UIView {
         self.sliderContainer.layer.shadowOpacity = 0.4
         self.sliderContainer.layer.shadowOffset = CGSize(width: 3, height: 3)
         
-        self.functionLabel.textColor = UIColor.swiftGreen()
-        self.functionLabel.font = UIFont.swiftFontOfSize(18)
+        self.functionLabel.titleLabel?.font = UIFont.swiftFontOfSize(18)
+        self.functionLabel.setTitleColor(UIColor.swiftGreen(), forState: .Normal)
+        self.functionLabel.backgroundColor = UIColor.clearColor()
+//        self.functionLabel.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
+        self.functionLabel.layer.cornerRadius = 6
+        self.functionLabel.minimumScale = 0.92
         
         self.slider.minimumValue = 0.5
         self.slider.maximumValue = 3.0
@@ -88,26 +93,23 @@ class GraphView: UIView {
         self.buttonContainer.layer.shadowOpacity = 0.4
         self.buttonContainer.layer.shadowOffset = CGSize(width: 3, height: 3)
         
-        self.startPauseButton.setTitle("Start", forState: .Normal)
-        self.startPauseButton.setTitleColor(UIColor.swiftLightGray(), forState: .Highlighted)
-        self.startPauseButton.titleLabel?.font = UIFont.swiftFontOfSize(18)
+        self.startPauseButton.setImage(UIImage(named: "play"), forState: .Normal)
+        self.startPauseButton.setImage(UIImage(named: "play_highlighted"), forState: .Highlighted)
         self.startPauseButton.backgroundColor = UIColor.swiftGreen()
         self.startPauseButton.layer.cornerRadius = 6
         self.startPauseButton.minimumScale = 0.92
         
-        self.infoButton.setTitle("Info", forState: .Normal)
-        self.infoButton.setTitleColor(UIColor.swiftLightGray(), forState: .Highlighted)
-        self.infoButton.titleLabel?.font = UIFont.swiftFontOfSize(18)
-        self.infoButton.backgroundColor = UIColor.swiftDarkOrange()
-        self.infoButton.layer.cornerRadius = 6
-        self.infoButton.minimumScale = 0.92
-        
-        self.resetButton.setTitle("Reset", forState: .Normal)
-        self.resetButton.setTitleColor(UIColor.swiftLightGray(), forState: .Highlighted)
-        self.resetButton.titleLabel?.font = UIFont.swiftFontOfSize(18)
+        self.resetButton.setImage(UIImage(named: "reset"), forState: .Normal)
+        self.resetButton.setImage(UIImage(named: "reset_highlighted"), forState: .Highlighted)
         self.resetButton.backgroundColor = UIColor.swiftLightOrange()
         self.resetButton.layer.cornerRadius = 6
         self.resetButton.minimumScale = 0.92
+        
+        self.infoButton.setImage(UIImage(named: "info"), forState: .Normal)
+        self.infoButton.setImage(UIImage(named: "info_highlighted"), forState: .Highlighted)
+        self.infoButton.backgroundColor = UIColor.swiftDarkOrange()
+        self.infoButton.layer.cornerRadius = 6
+        self.infoButton.minimumScale = 0.92
     }
     
     override func updateConstraints() {
@@ -162,6 +164,7 @@ class GraphView: UIView {
         
         self.functionLabel.constrainUsing(constraints: [
             Constraint.cxcx : (of: self.sliderContainer, offset: 0),
+            Constraint.w : (of: nil, offset: self.functionLabel.intrinsicContentSize().width + 30),
             Constraint.bcy : (of: self.sliderContainer, offset: -7)])
 
         self.slider.constrainUsing(constraints: [
