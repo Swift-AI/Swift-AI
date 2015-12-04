@@ -261,6 +261,9 @@ class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate 
     }
     
     func presentInfoView(infoView: InfoView) {
+        guard self.infoView == nil else {
+            return
+        }
         self.infoView = infoView
         self.view.addSubview(infoView)
         infoView.fillSuperview()

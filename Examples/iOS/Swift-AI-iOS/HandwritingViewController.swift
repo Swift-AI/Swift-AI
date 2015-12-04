@@ -11,6 +11,8 @@ class HandwritingViewController: UIViewController {
     
     var lastPoint = CGPointZero
     var swiped = false
+    var drawing = false
+    var timer = NSTimer()
     let brushWidth: CGFloat = 10.0
     
     let handwritingView = HandwritingView()
@@ -23,6 +25,7 @@ class HandwritingViewController: UIViewController {
         super.viewDidLoad()
         
         self.handwritingView.clearButton.addTarget(self, action: "clearCanvas", forControlEvents: .TouchUpInside)
+        self.handwritingView.infoButton.addTarget(self, action: "infoTapped", forControlEvents: .TouchUpInside)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -30,30 +33,33 @@ class HandwritingViewController: UIViewController {
             return
         }
         self.swiped = false
-        if CGRectContainsPoint(self.handwritingView.canvas.frame, touch.locationInView(self.handwritingView)) {
-            self.lastPoint = touch.locationInView(self.handwritingView.canvas)
-        } else {
+        guard CGRectContainsPoint(self.handwritingView.canvas.frame, touch.locationInView(self.handwritingView)) else {
             super.touchesBegan(touches, withEvent: event)
+            return
         }
+        self.timer.invalidate()
+        self.lastPoint = touch.locationInView(self.handwritingView.canvas)
+        self.drawing = true
     }
 
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         guard let touch = touches.first  else {
             return
         }
-        if CGRectContainsPoint(self.handwritingView.canvas.frame, touch.locationInView(self.handwritingView)) {
-            let currentPoint = touch.locationInView(self.handwritingView.canvas)
-            if self.swiped {
-                self.drawLine(fromPoint: self.lastPoint, toPoint: currentPoint)
-            } else {
-                self.drawLine(fromPoint: currentPoint, toPoint: currentPoint)
-                self.swiped = true
-            }
-            self.lastPoint = currentPoint
-        } else {
+        guard CGRectContainsPoint(self.handwritingView.canvas.frame, touch.locationInView(self.handwritingView)) else {
             super.touchesMoved(touches, withEvent: event)
             self.swiped = false
+            return
         }
+        let currentPoint = touch.locationInView(self.handwritingView.canvas)
+        if self.swiped {
+            self.drawLine(fromPoint: self.lastPoint, toPoint: currentPoint)
+        } else {
+            self.drawLine(fromPoint: currentPoint, toPoint: currentPoint)
+            self.swiped = true
+        }
+        self.lastPoint = currentPoint
+        self.timer.invalidate()
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -66,6 +72,8 @@ class HandwritingViewController: UIViewController {
                 self.drawLine(fromPoint: self.lastPoint, toPoint: self.lastPoint)
             }
         }
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: "timerExpired:", userInfo: nil, repeats: false)
+        self.drawing = false
         super.touchesEnded(touches, withEvent: event)
     }
     
@@ -77,6 +85,19 @@ class HandwritingViewController: UIViewController {
             self.handwritingView.canvas.alpha = 1
         }
     }
+    
+    func infoTapped() {
+        let infoView = InfoView()
+        infoView.effect = UIBlurEffect(style: .Dark)
+        DrawerNavigationController.globalDrawerController().presentInfoView(infoView)
+    }
+    
+    func timerExpired(sender: NSTimer) {
+        self.clearCanvas()
+    }
+    
+    
+    // MARK:- Private methods
     
     private func drawLine(fromPoint fromPoint: CGPoint, toPoint: CGPoint) {
         // Begin context
