@@ -8,12 +8,14 @@ The Swift AI iOS app serves two purposes:
 - Provide visual representations of the "learning" process involved in machine learning.
 - Demonstrate the possibilities of integrating artificial intelligence into iOS apps.
 
-The following examples are included in the app:
+**Important:** This app has been optimized for iPhone6/6s/+, and also supports iPhone 5/5s. I make no guarantee regarding compatibility with iPhone 4s, and it's likely that performance will suffer.
+
+**iOS Simulator:** I recommend that you always build to a real iOS device, as some examples won't work well on the Simulator. These include examples requiring high graphics performance (such as Regression), examples using gestures (Handwriting), and any examples requiring the camera.
 
 ### Regression
 ##### Feed-Forward Neural Network
 
-A neural network can perform a regression for any arbitrary function. This example shows how [FFNN](https://github.com/collinhundley/Swift-AI/tree/master/Source#multi-layer-feed-forward-neural-network) can "learn" the sine function using backpropagation.
+A neural network can perform a regression for any arbitrary function. This example shows how [FFNN](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#multi-layer-feed-forward-neural-network) can "learn" the sine function using backpropagation.
 
 ![Sine.gif](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Sine.gif?raw=true)
 
