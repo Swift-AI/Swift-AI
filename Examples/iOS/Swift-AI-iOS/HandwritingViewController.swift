@@ -9,11 +9,17 @@ import UIKit
 
 class HandwritingViewController: UIViewController {
     
-    var lastPoint = CGPointZero
-    var swiped = false
-    var drawing = false
-    var timer = NSTimer()
+    let network = FFNN(inputs: 784, hidden: 560, outputs: 10, learningRate: 0.7, momentum: 0.1, weights: nil, activationFunction: .Sigmoid, errorFunction: .CrossEntropy(average: true))
+    var images = [[Float]]()
+    var labels = [UInt8]()
+    
     let brushWidth: CGFloat = 10.0
+    
+    // Drawing state variables
+    private var lastDrawPoint = CGPointZero
+    private var swiped = false
+    private var drawing = false
+    private var timer = NSTimer()
     
     let handwritingView = HandwritingView()
     
@@ -24,8 +30,11 @@ class HandwritingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.handwritingView.startPauseButton.addTarget(self, action: "startPause", forControlEvents: .TouchUpInside)
         self.handwritingView.clearButton.addTarget(self, action: "clearCanvas", forControlEvents: .TouchUpInside)
         self.handwritingView.infoButton.addTarget(self, action: "infoTapped", forControlEvents: .TouchUpInside)
+        
+//        (self.images, self.labels) = self.extractTrainingData()
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -38,7 +47,7 @@ class HandwritingViewController: UIViewController {
             return
         }
         self.timer.invalidate()
-        self.lastPoint = touch.locationInView(self.handwritingView.canvas)
+        self.lastDrawPoint = touch.locationInView(self.handwritingView.canvas)
         self.drawing = true
     }
 
@@ -53,12 +62,12 @@ class HandwritingViewController: UIViewController {
         }
         let currentPoint = touch.locationInView(self.handwritingView.canvas)
         if self.swiped {
-            self.drawLine(fromPoint: self.lastPoint, toPoint: currentPoint)
+            self.drawLine(fromPoint: self.lastDrawPoint, toPoint: currentPoint)
         } else {
             self.drawLine(fromPoint: currentPoint, toPoint: currentPoint)
             self.swiped = true
         }
-        self.lastPoint = currentPoint
+        self.lastDrawPoint = currentPoint
         self.timer.invalidate()
     }
     
@@ -69,12 +78,18 @@ class HandwritingViewController: UIViewController {
         if CGRectContainsPoint(self.handwritingView.canvas.frame, touch.locationInView(self.handwritingView)) {
             if !self.swiped {
                 // Draw dot
-                self.drawLine(fromPoint: self.lastPoint, toPoint: self.lastPoint)
+                self.drawLine(fromPoint: self.lastDrawPoint, toPoint: self.lastDrawPoint)
             }
         }
         self.timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: "timerExpired:", userInfo: nil, repeats: false)
         self.drawing = false
         super.touchesEnded(touches, withEvent: event)
+    }
+    
+    func startPause() {
+        
+        
+        
     }
     
     func clearCanvas() {
@@ -95,6 +110,7 @@ class HandwritingViewController: UIViewController {
     func timerExpired(sender: NSTimer) {
         self.clearCanvas()
     }
+
     
     
     // MARK:- Private methods
@@ -119,4 +135,50 @@ class HandwritingViewController: UIViewController {
         UIGraphicsEndImageContext()
     }
     
+}
+
+// MARK:- Training methods
+
+extension HandwritingViewController {
+    
+    private func extractTrainingData() -> (images: [[Float]], labels: [UInt8]) {
+        // Create variables for storing data
+        var images = [[Float]]()
+        var labels = [UInt8]()
+        // Define image size
+        let numImages = 60_000
+        let imageSize = CGSize(width: 28, height: 28)
+        let numPixels = Int(imageSize.width * imageSize.height)
+        // Extract training data
+        let trainImagesURL = NSBundle.mainBundle().URLForResource("train-images-idx3-ubyte", withExtension: nil)!
+        let trainImagesData = NSData(contentsOfURL: trainImagesURL)!
+        // Extract training labels
+        let trainLabelsURL = NSBundle.mainBundle().URLForResource("train-images-idx3-ubyte", withExtension: nil)!
+        let trainLablelsData = NSData(contentsOfURL: trainLabelsURL)!
+        // Store image/label byte indices
+        var trainImageIndex = 16 // Start after header info
+        var trainLabelIndex = 8 // Start after header info
+        for _ in 0..<numImages {
+            // Extract image pixels
+            var pixelsArray = [UInt8](count: numPixels, repeatedValue: 0)
+            trainImagesData.getBytes(&pixelsArray, range: NSMakeRange(trainImageIndex, numPixels))
+            // Convert pixels to Floats
+            var pixelsFloatArray = [Float]()
+            for pixel in pixelsArray {
+                pixelsFloatArray.append(Float(pixel) / 255)
+            }
+            // Append image to array
+            images.append(pixelsFloatArray)
+            // Extract labels
+            var label = [UInt8](count: 1, repeatedValue: 0)
+            trainLablelsData.getBytes(&label, range: NSMakeRange(trainLabelIndex, 1))
+            // Append label to array
+            labels.append(label.first!)
+            // Increment counters
+            trainImageIndex += numPixels
+            trainLabelIndex++
+        }
+        return (images, labels)
+    }
+
 }

@@ -15,6 +15,9 @@ class HandwritingView: UIView {
     let canvasContainer = UIView()
     let canvas = UIImageView()
     
+    let outputContainer = UIView()
+    let outputLabel = UILabel()
+    
     // Buttons
     let buttonContainer = UIView()
     let startPauseButton = APSpringButton()
@@ -36,56 +39,57 @@ class HandwritingView: UIView {
     
     func configureSubviews() {
         // Add Subviews
-        self.addSubviews([self.canvasContainer, self.buttonContainer])
+        self.addSubviews([self.canvasContainer, self.outputContainer, self.buttonContainer])
         self.canvasContainer.addSubview(self.canvas)
+        self.outputContainer.addSubview(self.outputLabel)
         self.buttonContainer.addSubviews([self.startPauseButton, self.clearButton, self.infoButton])
-        
-        self.addSubview(self.tempLabel)
         
         // Style View
         self.backgroundColor = UIColor.swiftLightGray()
         
         // Style Subviews
         self.canvasContainer.backgroundColor = .whiteColor()
-        self.canvasContainer.layer.cornerRadius = 4
+        self.canvasContainer.layer.cornerRadius = 3
         self.canvasContainer.layer.shadowColor = UIColor.swiftMediumGray().CGColor
         self.canvasContainer.layer.shadowOpacity = 0.4
-        self.canvasContainer.layer.shadowOffset = CGSize(width: 3, height: 3)
+        self.canvasContainer.layer.shadowOffset = CGSize(width: 1, height: 3)
         
         self.canvas.backgroundColor = .clearColor()
+        
+        self.outputContainer.backgroundColor = .whiteColor()
+        self.outputContainer.layer.cornerRadius = 4
+        self.outputContainer.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.outputContainer.layer.shadowOpacity = 0.3
+        self.outputContainer.layer.shadowOffset = CGSize(width: 1, height: 3)
+        
+        self.outputLabel.text = "6"
+        self.outputLabel.textColor = .blackColor()
+        self.outputLabel.textAlignment = .Center
+        self.outputLabel.font = UIFont.swiftFontOfSize(80)
         
         self.buttonContainer.backgroundColor = .whiteColor()
         self.buttonContainer.layer.cornerRadius = 4
         self.buttonContainer.layer.shadowColor = UIColor.swiftMediumGray().CGColor
-        self.buttonContainer.layer.shadowOpacity = 0.4
-        self.buttonContainer.layer.shadowOffset = CGSize(width: 3, height: 3)
+        self.buttonContainer.layer.shadowOpacity = 0.3
+        self.buttonContainer.layer.shadowOffset = CGSize(width: 1, height: 3)
         
         self.startPauseButton.setImage(UIImage(named: "play"), forState: .Normal)
         self.startPauseButton.setImage(UIImage(named: "play_highlighted"), forState: .Highlighted)
         self.startPauseButton.backgroundColor = UIColor.swiftGreen()
         self.startPauseButton.layer.cornerRadius = 6
         self.startPauseButton.minimumScale = 0.92
-        self.startPauseButton.layer.shadowColor = UIColor.swiftMediumGray().CGColor
-        self.startPauseButton.layer.shadowOpacity = 0.4
-        self.startPauseButton.layer.shadowOffset = CGSize(width: 3, height: 3)
         
         self.clearButton.setImage(UIImage(named: "reset"), forState: .Normal)
         self.clearButton.setImage(UIImage(named: "reset_highlighted"), forState: .Highlighted)
         self.clearButton.backgroundColor = UIColor.swiftLightOrange()
         self.clearButton.layer.cornerRadius = 6
         self.clearButton.minimumScale = 0.92
-        self.clearButton.layer.shadowColor = UIColor.swiftMediumGray().CGColor
-        self.clearButton.layer.shadowOpacity = 0.4
-        self.clearButton.layer.shadowOffset = CGSize(width: 3, height: 3)
         
         self.infoButton.setImage(UIImage(named: "info"), forState: .Normal)
         self.infoButton.setImage(UIImage(named: "info_highlighted"), forState: .Highlighted)
         self.infoButton.backgroundColor = UIColor.swiftDarkOrange()
         self.infoButton.layer.cornerRadius = 6
         self.infoButton.minimumScale = 0.92
-        self.infoButton.layer.shadowColor = UIColor.swiftMediumGray().CGColor
-        self.infoButton.layer.shadowOpacity = 0.4
-        self.infoButton.layer.shadowOffset = CGSize(width: 3, height: 3)
         
         self.tempLabel.text = "Handwriting recognition: under construction"
         self.tempLabel.textColor = .blackColor()
@@ -106,6 +110,14 @@ class HandwritingView: UIView {
             Constraint.hw : (of: self, offset: -20)])
         
         self.canvas.fillSuperview()
+        
+        self.outputContainer.constrainUsing(constraints: [
+            Constraint.cxcx : (of: self, offset: 0),
+            Constraint.w : (of: nil, offset: 200),
+            Constraint.tb : (of: self.canvasContainer, offset: 15),
+            Constraint.bt : (of: self.buttonContainer, offset: -15)])
+        
+        self.outputLabel.centerInSuperview()
         
         self.buttonContainer.constrainUsing(constraints: [
             Constraint.ll : (of: self.canvasContainer, multiplier: 1, offset: 0),
@@ -131,11 +143,14 @@ class HandwritingView: UIView {
             Constraint.tt : (of: self.buttonContainer, offset: 5),
             Constraint.bb : (of: self.buttonContainer, offset: -5)])
         
-        self.tempLabel.constrainUsing(constraints: [
-            Constraint.cxcx : (of: self, offset: 0),
-            Constraint.tb : (of: self.canvasContainer, offset: 0),
-            Constraint.bt : (of: self.buttonContainer, offset: 0)])
-        
         super.updateConstraints()
+    }
+    
+    // Note: Shadow paths defined here where views have frames
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.canvasContainer.layer.shadowPath = UIBezierPath(roundedRect: self.canvasContainer.bounds, cornerRadius: self.canvasContainer.layer.cornerRadius).CGPath
+        self.outputContainer.layer.shadowPath = UIBezierPath(roundedRect: self.outputContainer.bounds, cornerRadius: self.outputContainer.layer.cornerRadius).CGPath
+        self.buttonContainer.layer.shadowPath = UIBezierPath(roundedRect: self.buttonContainer.bounds, cornerRadius: self.buttonContainer.layer.cornerRadius).CGPath
     }
 }
