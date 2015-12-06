@@ -139,7 +139,7 @@ public final class FFNN: Storage {
 
     
     /// Initialization with an optional array of weights.
-    public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?, activationFunction : ActivationFunction, errorFunction : ErrorFunction) {
+    public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float = 0.7, momentum: Float = 0.4, weights: [Float]? = nil, activationFunction: ActivationFunction = .Default, errorFunction: ErrorFunction = .Default(average: false)) {
         if inputs < 1 || hidden < 1 || outputs < 1 || learningRate <= 0 {
             print("Warning: Invalid arguments passed to FFNN initializer. Inputs, hidden, outputs and learningRate must all be positive and nonzero. Network will not perform correctly.")
         }
@@ -188,14 +188,14 @@ public final class FFNN: Storage {
         self.outputWeights = [Float](count: outputs * self.numHiddenNodes, repeatedValue: 0)
         self.previousOutputWeights = self.outputWeights
         
-        if weights != nil {
-            guard weights!.count == numHiddenWeights + numOutputWeights else {
+        if let weights = weights {
+            guard weights.count == numHiddenWeights + numOutputWeights else {
                 print("FFNN initialization error: Incorrect number of weights provided. Randomized weights will be used instead.")
                 self.randomizeWeights()
                 return
             }
-            self.hiddenWeights = Array(weights![0..<self.numHiddenWeights])
-            self.outputWeights = Array(weights![self.numHiddenWeights..<weights!.count])
+            self.hiddenWeights = Array(weights[0..<self.numHiddenWeights])
+            self.outputWeights = Array(weights[self.numHiddenWeights..<weights.count])
         } else {
             self.randomizeWeights()
         }
