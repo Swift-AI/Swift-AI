@@ -47,6 +47,11 @@ Swift AI currently depends on Apple's [Accelerate](https://developer.apple.com/l
 
 In order to provide support for more platforms (Linux, Windows, etc.), alternative BLAS solutions are being considered. A vanilla Swift implementation is one possibility, but SIMD instructions will be preferred for their significant performance boost. Check back for more updates on this soon.
 
+## Using Swift AI?
+If you're using Swift AI in one of your own projects, let us know! We'll add a link to your profile/website/app right here on the front page.
+
+## Contributing
+Contributions to the project are welcome. Please review the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) before submitting a pull request, and strive to maintain consistency with the structure and formatting of existing code. Official guidelines with more details will be provided soon.
 
 ## Care Enough to Donate?
 
