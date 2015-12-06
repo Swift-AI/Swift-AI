@@ -10,23 +10,19 @@ import APKit
 
 class InfoView: UIVisualEffectView {
     
-    let dismissButton = APSpringButton()
     let label1 = UILabel()
     let field1 = UITextView()
     
+    let dismissLabel = UILabel()
+    let dismissArrow = UIImageView()
+    
     func configureSubviews() {
         // Add Subviews
-        self.addSubviews([self.dismissButton, self.label1, self.field1])
+        self.addSubviews([self.label1, self.field1, self.dismissLabel, self.dismissArrow])
         
         // Style View
         
         // Style Subviews
-        self.dismissButton.setTitle("Dismiss", forState: .Normal)
-        self.dismissButton.backgroundColor = .swiftMediumGray()
-        self.dismissButton.setTitleColor(UIColor.grayColor(), forState: .Highlighted)
-        self.dismissButton.addTarget(DrawerNavigationController.globalDrawerController(), action: "dismissInfoView", forControlEvents: .TouchUpInside)
-        self.dismissButton.layer.cornerRadius = 6
-        self.dismissButton.minimumScale = 0.92
         
         self.label1.text = "What's going on?"
         self.label1.textColor = .whiteColor()
@@ -40,6 +36,13 @@ class InfoView: UIVisualEffectView {
         self.field1.userInteractionEnabled = false
         self.field1.contentInset = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 0)
         
+        self.dismissLabel.text = "Pull to dismiss"
+        self.dismissLabel.textColor = .whiteColor()
+        self.dismissLabel.font = UIFont.swiftFontOfSize(14)
+        self.dismissLabel.backgroundColor = .clearColor()
+        
+        self.dismissArrow.image = UIImage(named: "dismiss_arrow")
+        
     }
     
     override func updateConstraints() {
@@ -48,11 +51,6 @@ class InfoView: UIVisualEffectView {
         self.configureSubviews()
         
         // Add Constraints
-        self.dismissButton.constrainUsing(constraints: [
-            Constraint.rr : (of: self, offset: -15),
-            Constraint.w : (of: nil, offset: 100),
-            Constraint.bb : (of: self, offset: -15),
-            Constraint.h : (of: nil, offset: 50)])
         
         self.label1.constrainUsing(constraints: [
             Constraint.ll : (of: self, offset: 15),
@@ -61,8 +59,15 @@ class InfoView: UIVisualEffectView {
         self.field1.constrainUsing(constraints: [
             Constraint.ll : (of: self, offset: 15),
             Constraint.rr : (of: self, offset: -15),
-            Constraint.tb : (of: self.label1, offset: 10),
-            Constraint.bt : (of: self.dismissButton, offset: 0)])
+            Constraint.tb : (of: self.label1, offset: 10)])
+        
+        self.dismissLabel.constrainUsing(constraints: [
+            Constraint.cxcx : (of: self, offset: 0),
+            Constraint.bb : (of: self, offset: -25)])
+        
+        self.dismissArrow.constrainUsing(constraints: [
+            Constraint.cxcx : (of: self, offset: 0),
+            Constraint.tb : (of: self.dismissLabel, offset: 3)])
         
         super.updateConstraints()
     }

@@ -18,9 +18,12 @@ class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate 
     // Private state variables
     private var views = [UIView]()
     private var currentView: UIView!
-    private var infoView: InfoView?
     private var touchBeginLocation: CGPoint?
     private var open = false
+    
+    private var infoView: InfoView?
+    /// Once infoView has been dragged this far, it will be dismissed
+    private let infoViewThreshold: CGFloat = 80
     
     private static var globalDrawerNavController: DrawerNavigationController!
     
@@ -96,8 +99,14 @@ class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate 
         if self.drawerLocked {
             return
         }
-        let location = touches.first!.locationInView(self.currentView)
-        self.touchBeginLocation = location
+        switch self.infoView {
+        case nil:
+            let location = touches.first!.locationInView(self.currentView)
+            self.touchBeginLocation = location
+        default:
+            let location = touches.first!.locationInView(self.infoView)
+            self.touchBeginLocation = location
+        }
     }
     
     /// Transforms the top-level view as the user slides their finger
@@ -105,22 +114,39 @@ class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate 
         if self.drawerLocked {
             return
         }
-        let location = touches.first!.locationInView(self.currentView)
-        // Current x position of drag
-        let x = location.x
-        if let start = self.touchBeginLocation {
-            // Distance that has been dragged
-            let diff = x - start.x
-            // Transform top-level view to drag position
-            self.currentView.transform = CGAffineTransformTranslate(self.currentView.transform, diff, 0)
-            self.transformDrawer()
-            if self.currentView.transform.tx < 0 {
-                // Don't allow the view to transform to the left of the screen
-                self.currentView.transform = CGAffineTransformIdentity
-            } else if self.currentView.transform.tx > self.drawerWidth {
-                // Once the drawer is fully open, transform the view with a decaying curve
-                let distance = pow(self.currentView.transform.tx - self.drawerWidth, 0.8)
-                self.currentView.transform = CGAffineTransformMakeTranslation(self.drawerWidth + distance, 0)
+        switch self.infoView {
+        case nil: // Info view not present; open drawer as usual
+            let location = touches.first!.locationInView(self.currentView)
+            // Current x position of drag
+            let x = location.x
+            if let start = self.touchBeginLocation {
+                // Distance that has been dragged
+                let diff = x - start.x
+                // Transform top-level view to drag position
+                self.currentView.transform = CGAffineTransformTranslate(self.currentView.transform, diff, 0)
+                self.transformDrawer()
+                if self.currentView.transform.tx < 0 {
+                    // Don't allow the view to transform to the left of the screen
+                    self.currentView.transform = CGAffineTransformIdentity
+                } else if self.currentView.transform.tx > self.drawerWidth {
+                    // Once the drawer is fully open, transform the view with a decaying curve
+                    let distance = pow(self.currentView.transform.tx - self.drawerWidth, 0.8)
+                    self.currentView.transform = CGAffineTransformMakeTranslation(self.drawerWidth + distance, 0)
+                }
+            }
+        default: // Info view is present; control it instead of the drawer
+            let location = touches.first!.locationInView(self.infoView)
+            // Current y position of drag
+            let y = location.y
+            if let start = self.touchBeginLocation {
+                // Distance that has been dragged
+                let diff = y - start.y
+                // Transform top-level view to drag position
+                self.infoView!.transform = CGAffineTransformTranslate(self.infoView!.transform, 0, diff)
+                if self.infoView!.transform.ty < 0 {
+                    // Don't allow the view to transform above the screen
+                    self.infoView!.transform = CGAffineTransformIdentity
+                }
             }
         }
     }
@@ -139,6 +165,18 @@ class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate 
     /// Snaps the drawer open/closed depending on current position
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if self.drawerLocked {
+            return
+        }
+        if self.infoView != nil {
+            if self.infoView!.transform.ty > self.infoViewThreshold {
+                // Dismiss info view
+                self.dismissInfoView()
+            } else {
+                // Pop info view back open
+                UIView.animateWithDuration(0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .AllowUserInteraction, animations: { () -> Void in
+                    self.infoView!.transform = CGAffineTransformIdentity
+                    }, completion: nil)
+            }
             return
         }
         switch self.open {
@@ -277,7 +315,7 @@ class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate 
         guard let infoView = self.infoView else {
             return
         }
-        UIView.animateWithDuration(0.6, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+        UIView.animateWithDuration(0.4, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0, options: [], animations: { () -> Void in
             infoView.transform = CGAffineTransformMakeTranslation(0, UIScreen.mainScreen().bounds.height)
         }) { (Bool) -> Void in
             infoView.removeFromSuperview()
