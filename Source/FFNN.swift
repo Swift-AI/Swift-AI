@@ -26,6 +26,8 @@ public enum ActivationFunction: String {
     case Linear
     /// Sigmoid activation function
     case Sigmoid
+    /// Softmax output function (Sigmoid hidden activation)
+    case Softmax
     /// Gaussian activation function
 //    case Gaussian
     /// Rational sigmoid activation function
@@ -240,8 +242,13 @@ public final class FFNN: Storage {
             self.outputCache[i] = self.activation(self.outputCache[i])
         }
         
-        // Cache and return the final outputs
-        return self.outputCache
+        // Return the final outputs
+        switch self.activationFunction {
+        case .Softmax:
+            return softmax(self.outputCache)
+        default:
+            return self.outputCache
+        }
     }
     
     /// Trains the network by comparing its most recent output to the given 'answers', adjusting the network's weights as needed.
@@ -479,6 +486,8 @@ private extension FFNN {
             return linear(input)
         case .Sigmoid:
             return sigmoid(input)
+        case .Softmax:
+            return sigmoid(input)
 //        case .Gaussian:
 //            return gaussian(input)
         case .RationalSigmoid:
@@ -498,6 +507,8 @@ private extension FFNN {
         case .Linear:
             return linearDerivative(output)
         case .Sigmoid:
+            return sigmoidDerivative(output)
+        case .Softmax:
             return sigmoidDerivative(output)
 //        case .Gaussian:
 //            return gaussianDerivative(output)
@@ -532,7 +543,22 @@ private func randomWeight(numInputNodes numInputNodes: Int) -> Float {
     return randomFloat / 1_000_000
 }
 
-// MARK Error functions
+// MARK: Softmax Function
+
+private func softmax(outputs: [Float]) -> [Float] {
+    // exp(n)/sum(exp(n))
+    var sum: Float = 0
+    for output in outputs {
+        sum += exp(output)
+    }
+    var softmaxOutputs = [Float]()
+    for output in outputs {
+        softmaxOutputs.append(exp(output) / sum)
+    }
+    return softmaxOutputs
+}
+
+// MARK: Error Functions
 
 private func crossEntropy(a: Float, b: Float) -> Float {
     return log(a) * b

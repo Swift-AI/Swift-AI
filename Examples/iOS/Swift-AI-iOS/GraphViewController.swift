@@ -125,7 +125,6 @@ class GraphViewController: UIViewController {
         }
         // Present info view
         let infoView = InfoView()
-        infoView.effect = UIBlurEffect(style: .Dark)
         DrawerNavigationController.globalDrawerController().presentInfoView(infoView)
     }
     
@@ -151,10 +150,15 @@ class GraphViewController: UIViewController {
             self.graphView.graphContainer.layer.insertSublayer(point, below: self.graphView.negXLabel.layer)
             // Store point
             self.points.append(point)
-            
+            // Plot point on screen
             let x = (-500 + (Float(index) * 1000) / Float(self.numPoints)) / 100
-            let y = try! self.network.update(inputs: [x]).first!
-            self.updatePoint(index, y: CGFloat(y * -250) + 125)
+            // TODO: Figure out how to synchronize access to network without dispatching within loops
+            dispatch_async(self.networkQueue, { () -> Void in
+                let y = try! self.network.update(inputs: [x]).first!
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.updatePoint(index, y: CGFloat(y * -250) + 125)
+                })
+            })
         }
     }
 

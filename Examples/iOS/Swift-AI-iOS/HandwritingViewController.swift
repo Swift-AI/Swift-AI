@@ -103,7 +103,6 @@ class HandwritingViewController: UIViewController {
     
     func infoTapped() {
         let infoView = InfoView()
-        infoView.effect = UIBlurEffect(style: .Dark)
         DrawerNavigationController.globalDrawerController().presentInfoView(infoView)
     }
     

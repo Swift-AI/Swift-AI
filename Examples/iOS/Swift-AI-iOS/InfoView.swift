@@ -8,8 +8,9 @@
 import UIKit
 import APKit
 
-class InfoView: UIVisualEffectView {
+class InfoView: UIView {
     
+    let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
     let label1 = UILabel()
     let field1 = UITextView()
     
@@ -18,7 +19,7 @@ class InfoView: UIVisualEffectView {
     
     func configureSubviews() {
         // Add Subviews
-        self.addSubviews([self.label1, self.field1, self.dismissLabel, self.dismissArrow])
+        self.addSubviews([self.blurView, self.label1, self.field1, self.dismissLabel, self.dismissArrow])
         
         // Style View
         
@@ -52,6 +53,8 @@ class InfoView: UIVisualEffectView {
         
         // Add Constraints
         
+        self.blurView.fillSuperview()
+        
         self.label1.constrainUsing(constraints: [
             Constraint.ll : (of: self, offset: 15),
             Constraint.tt : (of: self, offset: 64)])
@@ -59,7 +62,8 @@ class InfoView: UIVisualEffectView {
         self.field1.constrainUsing(constraints: [
             Constraint.ll : (of: self, offset: 15),
             Constraint.rr : (of: self, offset: -15),
-            Constraint.tb : (of: self.label1, offset: 10)])
+            Constraint.tb : (of: self.label1, offset: 10),
+            Constraint.bt : (of: self.dismissLabel, offset: -15)])
         
         self.dismissLabel.constrainUsing(constraints: [
             Constraint.cxcx : (of: self, offset: 0),
