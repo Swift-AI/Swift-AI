@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4258CD7D1C035289004A2682 /* SimpleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4258CD7C1C035289004A2682 /* SimpleTest.swift */; };
+		65414A3C1C15BCC700EC0CAF /* Genetic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65414A3B1C15BCC700EC0CAF /* Genetic.swift */; };
 		F02FD22F1C02D38100A137C2 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD22E1C02D38100A137C2 /* main.swift */; };
 		F02FD2391C02D3BB00A137C2 /* SineWave.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2371C02D3BB00A137C2 /* SineWave.swift */; };
 		F02FD23A1C02D3BB00A137C2 /* XOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2381C02D3BB00A137C2 /* XOR.swift */; };
@@ -34,6 +35,7 @@
 		4258CD7A1C035289004A2682 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4258CD7C1C035289004A2682 /* SimpleTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTest.swift; sourceTree = "<group>"; };
 		4258CD7E1C035289004A2682 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65414A3B1C15BCC700EC0CAF /* Genetic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Genetic.swift; path = ../../../Source/Genetic.swift; sourceTree = "<group>"; };
 		F02FD22B1C02D38100A137C2 /* Swift-AI-OSX */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Swift-AI-OSX"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F02FD22E1C02D38100A137C2 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		F02FD2371C02D3BB00A137C2 /* SineWave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SineWave.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				F0969D0F1C0FD37A009C3B4A /* Vector.swift */,
 				F0969D0D1C0FD37A009C3B4A /* Matrix.swift */,
 				F0969D0E1C0FD37A009C3B4A /* Operations.swift */,
+				65414A3B1C15BCC700EC0CAF /* Genetic.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 			files = (
 				F0969D101C0FD37A009C3B4A /* FFNN.swift in Sources */,
 				F02FD23A1C02D3BB00A137C2 /* XOR.swift in Sources */,
+				65414A3C1C15BCC700EC0CAF /* Genetic.swift in Sources */,
 				F0969D131C0FD37A009C3B4A /* Vector.swift in Sources */,
 				F0969D111C0FD37A009C3B4A /* Matrix.swift in Sources */,
 				F0969D121C0FD37A009C3B4A /* Operations.swift in Sources */,
