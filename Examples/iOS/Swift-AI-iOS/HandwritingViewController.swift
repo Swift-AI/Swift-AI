@@ -13,7 +13,7 @@ class HandwritingViewController: UIViewController {
     var images = [[Float]]()
     var labels = [UInt8]()
     
-    let brushWidth: CGFloat = 10.0
+    let brushWidth: CGFloat = 15.0
     
     // Drawing state variables
     private var lastDrawPoint = CGPointZero
@@ -107,7 +107,7 @@ class HandwritingViewController: UIViewController {
     }
     
     func timerExpired(sender: NSTimer) {
-        self.clearCanvas()
+//        self.clearCanvas()
     }
 
     

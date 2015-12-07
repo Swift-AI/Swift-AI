@@ -28,8 +28,6 @@ public enum ActivationFunction: String {
     case Sigmoid
     /// Softmax output function (Sigmoid hidden activation)
     case Softmax
-    /// Gaussian activation function
-//    case Gaussian
     /// Rational sigmoid activation function
     case RationalSigmoid
     /// Hyperbolic tangent activation function
@@ -43,6 +41,7 @@ public enum ErrorFunction {
     /// Cross Entropy function (Cross Entropy)
     case CrossEntropy(average: Bool)
 }
+
 
 /// A 3-Layer Feed-Forward Artificial Neural Network
 public final class FFNN: Storage {
@@ -138,7 +137,7 @@ public final class FFNN: Storage {
     private var inputIndices = [Int]()
 
     
-    /// Initialization with an optional array of weights.
+    /// Initializes a feed-forward neural network.
     public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float = 0.7, momentum: Float = 0.4, weights: [Float]? = nil, activationFunction: ActivationFunction = .Default, errorFunction: ErrorFunction = .Default(average: false)) {
         if inputs < 1 || hidden < 1 || outputs < 1 || learningRate <= 0 {
             print("Warning: Invalid arguments passed to FFNN initializer. Inputs, hidden, outputs and learningRate must all be positive and nonzero. Network will not perform correctly.")
@@ -226,11 +225,8 @@ public final class FFNN: Storage {
         
         // Apply the activation function to the hidden layer nodes
         // Note: Array elements are shifted one index to the right, in order to efficiently insert the bias node at index 0
-        for (var i = self.numHidden; i > 0; --i) {
-            self.hiddenOutputCache[i] = self.activation(self.hiddenOutputCache[i - 1])
-        }
-        self.hiddenOutputCache[0] = 1.0
-        
+        self.activateHidden()
+
         //  Calculate the weighted sums for the output layer
         vDSP_mmul(self.outputWeights, 1,
             self.hiddenOutputCache, 1,
@@ -238,17 +234,10 @@ public final class FFNN: Storage {
             vDSP_Length(self.numOutputs), vDSP_Length(1), vDSP_Length(self.numHiddenNodes))
         
         // Apply the activation function to the output layer nodes
-        for i in 0..<self.numOutputs {
-            self.outputCache[i] = self.activation(self.outputCache[i])
-        }
+        self.activateOutput()
         
         // Return the final outputs
-        switch self.activationFunction {
-        case .Softmax:
-            return softmax(self.outputCache)
-        default:
-            return self.outputCache
-        }
+        return self.outputCache
     }
     
     /// Trains the network by comparing its most recent output to the given 'answers', adjusting the network's weights as needed.
@@ -262,7 +251,12 @@ public final class FFNN: Storage {
         
         // Calculate output errors
         for (outputIndex, output) in self.outputCache.enumerate() {
-            self.outputErrorsCache[outputIndex] = self.activationDerivative(output) * (answer[outputIndex] - output)
+            switch self.activationFunction {
+            case .Softmax:
+                self.outputErrorsCache[outputIndex] = output - answer[outputIndex]
+            default:
+                self.outputErrorsCache[outputIndex] = self.activationDerivative(output) * (answer[outputIndex] - output)
+            }
         }
         
         // Calculate hidden errors
@@ -475,25 +469,83 @@ private extension FFNN {
         return errorSum
     }
     
-    /// Applies the activation function to the input.
-    private func activation(input: Float) -> Float {
+    /// Applies the activation function to the hidden layer nodes.
+    private func activateHidden() {
         switch self.activationFunction {
         case .None:
-            return 0.0
+            for (var i = self.numHidden; i > 0; --i) {
+                self.hiddenOutputCache[i] = 0.0
+            }
+            self.hiddenOutputCache[0] = 1.0
         case .Default:
-            return sigmoid(input)
+            for (var i = self.numHidden; i > 0; --i) {
+                self.hiddenOutputCache[i] = sigmoid(self.hiddenOutputCache[i - 1])
+            }
+            self.hiddenOutputCache[0] = 1.0
         case .Linear:
-            return linear(input)
-        case .Sigmoid:
-            return sigmoid(input)
-        case .Softmax:
-            return sigmoid(input)
-//        case .Gaussian:
-//            return gaussian(input)
+            for (var i = self.numHidden; i > 0; --i) {
+                self.hiddenOutputCache[i] = linear(self.hiddenOutputCache[i - 1])
+            }
+            self.hiddenOutputCache[0] = 1.0
+        case .Sigmoid, .Softmax:
+            // For Softmax, apply Sigmoid activation for hidden layers
+            for (var i = self.numHidden; i > 0; --i) {
+                self.hiddenOutputCache[i] = sigmoid(self.hiddenOutputCache[i - 1])
+            }
+            self.hiddenOutputCache[0] = 1.0
         case .RationalSigmoid:
-            return rationalSigmoid(input)
+            for (var i = self.numHidden; i > 0; --i) {
+                self.hiddenOutputCache[i] = rationalSigmoid(self.hiddenOutputCache[i - 1])
+            }
+            self.hiddenOutputCache[0] = 1.0
         case .HyperbolicTangent:
-            return hyperbolicTangent(input)
+            for (var i = self.numHidden; i > 0; --i) {
+                self.hiddenOutputCache[i] = hyperbolicTangent(self.hiddenOutputCache[i - 1])
+            }
+            self.hiddenOutputCache[0] = 1.0
+        }
+    }
+    
+    /// Applies the activation function to the output layer nodes.
+    private func activateOutput() {
+        switch self.activationFunction {
+        case .None:
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = 0.0
+            }
+        case .Default:
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = sigmoid(self.outputCache[i])
+            }
+        case .Linear:
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = linear(self.outputCache[i])
+            }
+        case .Sigmoid:
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = sigmoid(self.outputCache[i])
+            }
+        case .Softmax:
+            var sum: Float = 0
+            let max = self.outputCache.maxElement()!
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = self.outputCache[i] - max
+            }
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = exp(self.outputCache[i])
+                sum += self.outputCache[i]
+            }
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = self.outputCache[i] / sum
+            }
+        case .RationalSigmoid:
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = rationalSigmoid(self.outputCache[i])
+            }
+        case .HyperbolicTangent:
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = hyperbolicTangent(self.outputCache[i])
+            }
         }
     }
     
@@ -510,8 +562,6 @@ private extension FFNN {
             return sigmoidDerivative(output)
         case .Softmax:
             return sigmoidDerivative(output)
-//        case .Gaussian:
-//            return gaussianDerivative(output)
         case .RationalSigmoid:
             return rationalSigmoidDerivative(output)
         case .HyperbolicTangent:
@@ -543,21 +593,6 @@ private func randomWeight(numInputNodes numInputNodes: Int) -> Float {
     return randomFloat / 1_000_000
 }
 
-// MARK: Softmax Function
-
-private func softmax(outputs: [Float]) -> [Float] {
-    // exp(n)/sum(exp(n))
-    var sum: Float = 0
-    for output in outputs {
-        sum += exp(output)
-    }
-    var softmaxOutputs = [Float]()
-    for output in outputs {
-        softmaxOutputs.append(exp(output) / sum)
-    }
-    return softmaxOutputs
-}
-
 // MARK: Error Functions
 
 private func crossEntropy(a: Float, b: Float) -> Float {
@@ -584,19 +619,6 @@ private func sigmoid(x: Float) -> Float {
 private func sigmoidDerivative(y: Float) -> Float {
     return y * (1 - y)
 }
-
-/// Gaussian activation function
-//private func gaussian(x: Float) -> Float {
-//    return exp(-(x * x))
-//}
-
-// TODO: Derive the correct formula for this derivative with respect to `x`, from the input `y`
-// x = +/- sqrt(log(1 / y))  - impossible to determine x?
-/// Derivative for the Gaussian activation function
-//private func gaussianDerivative(y: Float) -> Float {
-//    let x = sqrt(log(1 / y)) // This is only correct for x >= 0
-//    return -2 * x * y
-//}
 
 /// Rational sigmoid activation function
 private func rationalSigmoid(x: Float) -> Float {
