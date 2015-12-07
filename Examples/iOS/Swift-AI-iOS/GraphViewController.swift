@@ -82,7 +82,7 @@ class GraphViewController: UIViewController {
     func startTraining() {
         self.paused = false
         // Dispatches training process to background thread
-        dispatch_async(self.networkQueue) { () -> Void in
+        dispatch_async(self.networkQueue) {
             var epoch = 0
             while !self.paused {
                 for index in 0..<self.numPoints {
@@ -92,17 +92,31 @@ class GraphViewController: UIViewController {
                     try! self.network.backpropagate(answer: [answer])
                 }
                 if epoch % 10 == 0 {
-                    // Update graph
-                    for index in 0..<self.numPoints {
-                        let x = (-500 + (Float(index) * 1000) / Float(self.numPoints)) / 100
-                        let y = try! self.network.update(inputs: [x]).first!
-                        dispatch_sync(dispatch_get_main_queue(), { () -> Void in
-                            self.updatePoint(index, y: CGFloat(y * -250) + 125)
-                        })
+                    let ys = self.computePoints()
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.updatePoints(ys)
                     }
                 }
                 ++epoch
             }
+        }
+    }
+    
+    /// Returns new y coordinates for each point from the network
+    /// This func must be called on self.networkQueue
+    func computePoints() -> [Float] {
+        return (0..<self.numPoints).map { index -> Float in
+            let x = (-500 + (Float(index) * 1000) / Float(self.numPoints)) / 100
+            return try! self.network.update(inputs: [x]).first!
+        }
+    }
+    
+    /// Updates the points on screen with the given y coordinates.
+    /// This func must be called on the main queue
+    func updatePoints(ys: [Float]) {
+        for index in 0..<self.numPoints {
+            let y = ys[index]
+            self.updatePoint(index, y: CGFloat(y * -250) + 125)
         }
     }
     
@@ -150,15 +164,14 @@ class GraphViewController: UIViewController {
             self.graphView.graphContainer.layer.insertSublayer(point, below: self.graphView.negXLabel.layer)
             // Store point
             self.points.append(point)
-            // Plot point on screen
-            let x = (-500 + (Float(index) * 1000) / Float(self.numPoints)) / 100
-            // TODO: Figure out how to synchronize access to network without dispatching within loops
-            dispatch_async(self.networkQueue, { () -> Void in
-                let y = try! self.network.update(inputs: [x]).first!
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.updatePoint(index, y: CGFloat(y * -250) + 125)
-                })
-            })
+        }
+        
+        // Update the points on screen
+        dispatch_async(self.networkQueue) {
+            let ys = self.computePoints()
+            dispatch_async(dispatch_get_main_queue()) {
+                self.updatePoints(ys)
+            }
         }
     }
 
