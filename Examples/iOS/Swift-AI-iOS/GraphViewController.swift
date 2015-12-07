@@ -104,19 +104,19 @@ class GraphViewController: UIViewController {
     
     /// Returns new y coordinates for each point from the network
     /// This func must be called on self.networkQueue
-    func computePoints() -> [Float] {
-        return (0..<self.numPoints).map { index -> Float in
+    func computePoints() -> [CGFloat] {
+        return (0..<self.numPoints).map { index -> CGFloat in
             let x = (-500 + (Float(index) * 1000) / Float(self.numPoints)) / 100
-            return try! self.network.update(inputs: [x]).first!
+            let networkY = try! self.network.update(inputs: [x]).first!
+            return CGFloat(networkY * -250) + 125
         }
     }
     
     /// Updates the points on screen with the given y coordinates.
     /// This func must be called on the main queue
-    func updatePoints(ys: [Float]) {
+    func updatePoints(ys: [CGFloat]) {
         for index in 0..<self.numPoints {
-            let y = ys[index]
-            self.updatePoint(index, y: CGFloat(y * -250) + 125)
+            self.updatePoint(index, y: ys[index])
         }
     }
     
