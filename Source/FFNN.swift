@@ -45,7 +45,7 @@ public enum ErrorFunction {
 }
 
 /// A 3-Layer Feed-Forward Artificial Neural Network
-public final class FFNN: Storage {
+public final class FFNN {
     
     /// The number of input nodes to the network (read only).
     let numInputs: Int
@@ -355,9 +355,11 @@ public final class FFNN: Storage {
         self.hiddenWeights = Array(weights[0..<self.hiddenWeights.count])
         self.outputWeights = Array(weights[self.hiddenWeights.count..<weights.count])
     }
+}
 
-    
-    // MARK:- Storage protocol
+
+// MARK:- Storage protocol
+extension FFNN: Storage {
     
     /// Reads a FFNN from file.
     /// - Parameter filename: The name of the file, located in the default Documents directory.
