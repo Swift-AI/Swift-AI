@@ -4,6 +4,7 @@
 // This playground contains more examples for using Swift AI.
 
 import XCPlayground
+import Foundation
 
 // NOTE: For viewing graphs, you may need to open the Assistant Editor and select Timeline ->
 
@@ -25,4 +26,36 @@ func plotSineWave() {
 }
 
 // ** UNCOMMENT THIS LINE TO RUN **
-plotSineWave()
+//plotSineWave()
+
+
+func sine() {
+    var outputs = [Float]()
+    
+    let network = FFNN(inputs: 1, hidden: 8, outputs: 1, learningRate: 0.7, momentum: 0.2, weights: nil, activationFunction: .Sigmoid, errorFunction: ErrorFunction.Default(average: false))
+    
+    for _ in 0..<4000 {
+        for i in -500...500 {
+            let x = Float(i) / 1000
+            try! network.update(inputs: [x])
+            let answer = sineFunc(x)
+            try! network.backpropagate(answer: [answer])
+        }
+    }
+    
+    for i in -1000...1000 {
+        let x = Float(i) / 1000
+        let output = try! network.update(inputs: [x]).first!
+        outputs.append(output)
+    }
+    
+    print(outputs)
+}
+
+/// sin(10x)/2 + 1/2
+private func sineFunc(x: Float) -> Float {
+    return (0.5 * sin(10 * x)) + 0.5
+}
+
+//sine()
+

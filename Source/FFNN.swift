@@ -26,6 +26,8 @@ public enum ActivationFunction: String {
     case Linear
     /// Sigmoid activation function
     case Sigmoid
+    /// Softmax output function (Sigmoid hidden activation)
+    case Softmax
     /// Gaussian activation function
 //    case Gaussian
     /// Rational sigmoid activation function
@@ -137,7 +139,7 @@ public final class FFNN: Storage {
 
     
     /// Initialization with an optional array of weights.
-    public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float, momentum: Float, weights: [Float]?, activationFunction : ActivationFunction, errorFunction : ErrorFunction) {
+    public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float = 0.7, momentum: Float = 0.4, weights: [Float]? = nil, activationFunction: ActivationFunction = .Default, errorFunction: ErrorFunction = .Default(average: false)) {
         if inputs < 1 || hidden < 1 || outputs < 1 || learningRate <= 0 {
             print("Warning: Invalid arguments passed to FFNN initializer. Inputs, hidden, outputs and learningRate must all be positive and nonzero. Network will not perform correctly.")
         }
@@ -186,14 +188,14 @@ public final class FFNN: Storage {
         self.outputWeights = [Float](count: outputs * self.numHiddenNodes, repeatedValue: 0)
         self.previousOutputWeights = self.outputWeights
         
-        if weights != nil {
-            guard weights!.count == numHiddenWeights + numOutputWeights else {
+        if let weights = weights {
+            guard weights.count == numHiddenWeights + numOutputWeights else {
                 print("FFNN initialization error: Incorrect number of weights provided. Randomized weights will be used instead.")
                 self.randomizeWeights()
                 return
             }
-            self.hiddenWeights = Array(weights![0..<self.numHiddenWeights])
-            self.outputWeights = Array(weights![self.numHiddenWeights..<weights!.count])
+            self.hiddenWeights = Array(weights[0..<self.numHiddenWeights])
+            self.outputWeights = Array(weights[self.numHiddenWeights..<weights.count])
         } else {
             self.randomizeWeights()
         }
@@ -240,8 +242,13 @@ public final class FFNN: Storage {
             self.outputCache[i] = self.activation(self.outputCache[i])
         }
         
-        // Cache and return the final outputs
-        return self.outputCache
+        // Return the final outputs
+        switch self.activationFunction {
+        case .Softmax:
+            return softmax(self.outputCache)
+        default:
+            return self.outputCache
+        }
     }
     
     /// Trains the network by comparing its most recent output to the given 'answers', adjusting the network's weights as needed.
@@ -479,6 +486,8 @@ private extension FFNN {
             return linear(input)
         case .Sigmoid:
             return sigmoid(input)
+        case .Softmax:
+            return sigmoid(input)
 //        case .Gaussian:
 //            return gaussian(input)
         case .RationalSigmoid:
@@ -498,6 +507,8 @@ private extension FFNN {
         case .Linear:
             return linearDerivative(output)
         case .Sigmoid:
+            return sigmoidDerivative(output)
+        case .Softmax:
             return sigmoidDerivative(output)
 //        case .Gaussian:
 //            return gaussianDerivative(output)
@@ -532,7 +543,22 @@ private func randomWeight(numInputNodes numInputNodes: Int) -> Float {
     return randomFloat / 1_000_000
 }
 
-// MARK Error functions
+// MARK: Softmax Function
+
+private func softmax(outputs: [Float]) -> [Float] {
+    // exp(n)/sum(exp(n))
+    var sum: Float = 0
+    for output in outputs {
+        sum += exp(output)
+    }
+    var softmaxOutputs = [Float]()
+    for output in outputs {
+        softmaxOutputs.append(exp(output) / sum)
+    }
+    return softmaxOutputs
+}
+
+// MARK: Error Functions
 
 private func crossEntropy(a: Float, b: Float) -> Float {
     return log(a) * b

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 func sineWave(errorThreshold errorThreshold: Float) {
     
     print("******** Feed-Forward Neural Network: Sine Wave Example ********")
