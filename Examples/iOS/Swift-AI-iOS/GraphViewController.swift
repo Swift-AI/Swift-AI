@@ -93,7 +93,7 @@ class GraphViewController: UIViewController {
                 }
                 if epoch % 10 == 0 {
                     let ys = self.computePoints()
-                    dispatch_async(dispatch_get_main_queue()) {
+                    dispatch_sync(dispatch_get_main_queue()) {
                         self.updatePoints(ys)
                     }
                 }
@@ -161,6 +161,7 @@ class GraphViewController: UIViewController {
             point.frame = CGRect(x: xPos, y: yPos, width: 6, height: 6)
             point.backgroundColor = UIColor.swiftDarkOrange().CGColor
             point.cornerRadius = 3
+            point.actions = ["transform": NSNull()]
             self.graphView.graphContainer.layer.insertSublayer(point, below: self.graphView.negXLabel.layer)
             // Store point
             self.points.append(point)
@@ -169,7 +170,7 @@ class GraphViewController: UIViewController {
         // Update the points on screen
         dispatch_async(self.networkQueue) {
             let ys = self.computePoints()
-            dispatch_async(dispatch_get_main_queue()) {
+            dispatch_sync(dispatch_get_main_queue()) {
                 self.updatePoints(ys)
             }
         }
