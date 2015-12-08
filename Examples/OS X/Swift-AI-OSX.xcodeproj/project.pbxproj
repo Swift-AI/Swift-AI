@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4258CD7D1C035289004A2682 /* SimpleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4258CD7C1C035289004A2682 /* SimpleTest.swift */; };
 		65414A3C1C15BCC700EC0CAF /* Genetic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65414A3B1C15BCC700EC0CAF /* Genetic.swift */; };
+		65F26CA01C16E3CB00E95D2E /* GeneticExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F26C9F1C16E3CB00E95D2E /* GeneticExample.swift */; };
 		F02FD22F1C02D38100A137C2 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD22E1C02D38100A137C2 /* main.swift */; };
 		F02FD2391C02D3BB00A137C2 /* SineWave.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2371C02D3BB00A137C2 /* SineWave.swift */; };
 		F02FD23A1C02D3BB00A137C2 /* XOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2381C02D3BB00A137C2 /* XOR.swift */; };
@@ -36,6 +37,7 @@
 		4258CD7C1C035289004A2682 /* SimpleTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTest.swift; sourceTree = "<group>"; };
 		4258CD7E1C035289004A2682 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65414A3B1C15BCC700EC0CAF /* Genetic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Genetic.swift; path = ../../../Source/Genetic.swift; sourceTree = "<group>"; };
+		65F26C9F1C16E3CB00E95D2E /* GeneticExample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneticExample.swift; sourceTree = "<group>"; };
 		F02FD22B1C02D38100A137C2 /* Swift-AI-OSX */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Swift-AI-OSX"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F02FD22E1C02D38100A137C2 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		F02FD2371C02D3BB00A137C2 /* SineWave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SineWave.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				F0BAD9641C03D039001AD2AE /* Swift-AI-Playground.playground */,
 				F02FD2381C02D3BB00A137C2 /* XOR.swift */,
 				F02FD2371C02D3BB00A137C2 /* SineWave.swift */,
+				65F26C9F1C16E3CB00E95D2E /* GeneticExample.swift */,
 			);
 			name = Examples;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 				F02FD22F1C02D38100A137C2 /* main.swift in Sources */,
 				F02FD2391C02D3BB00A137C2 /* SineWave.swift in Sources */,
 				F0C5B8AF1C0647FC0016FF6F /* Storage.swift in Sources */,
+				65F26CA01C16E3CB00E95D2E /* GeneticExample.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

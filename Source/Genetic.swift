@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias FitnessFunction = (Vector) -> Double
+
 
 public class Genetic{
 
@@ -18,16 +18,15 @@ public class Genetic{
     let mutationRate : Double
     let mutationSize : Double
     let crossRate : Double
-    let function : FitnessFunction
+    let function : ([Double]) -> Double
     let generations : Int
-    
-    var currentPopulation : [Vector]
+    let integerProblem : Bool
+    var currentPopulation : [[Double]]
     var bestFitness : Double = DBL_MAX
-    init(populationSize: Int, selectionRate : Double, mutationRate : Double, mutationSize: Double, crossRate : Double, function : FitnessFunction, generations: Int, initialPopulation: [Vector]){
+    public init(populationSize: Int, selectionRate : Double, mutationRate : Double, mutationSize: Double, crossRate : Double, function : ([Double]) -> Double, generations: Int, initialPopulation: [[Double]], integerProblem: Bool){
         
         self.populationSize = populationSize
         
-        //  TODO: - Check that are [0 1]
         self.selectionRate = selectionRate
         self.mutationRate = mutationRate
         self.crossRate = crossRate
@@ -36,52 +35,68 @@ public class Genetic{
         
         self.currentPopulation = initialPopulation
         self.generations = generations
+        self.integerProblem = integerProblem
     }
     
     
-    func cross(father : Vector, mother: Vector ) -> Vector {
-        let child  = father.copy()
-        for (index, _) in father.flat.enumerate() {
-            if randomOne() > self.crossRate {
-                child[index] = mother[index]
-                continue
+    func cross(father : [Double], mother: [Double] ) -> [Double] {
+        var child : [Double] = []
+        for (index,element) in father.enumerate() {
+            
+            if self.randomOne() < self.crossRate{
+                child.append(element)
+            }else{
+                child.append(mother[index])
             }
+            
         }
         return child
     }
     
-    func mutate(father : Vector) -> Vector {
-        let child  = father.copy()
-        for (index, value) in father.flat.enumerate() {
-            if randomOne() > self.mutationRate {
-                child[index] = randomBounded(value * self.mutationSize)
-            }
-        }
-        return child
-    }
-    
-    func randomOne() -> Double{
-         return Double(arc4random_uniform(UInt32.max))/Double(UInt32.max)
-    }
-    
-    func random(max: Int) -> Double {
-       return  Double(arc4random_uniform(UInt32(max)))
-        
-    }
-    
-    func randomBounded(max: Double) -> Double{
 
-        
-        return  Double(max) * ( 1 - 2 * randomOne())
+    
+    func mutate(father : [Double]) -> [Double] {
+        var child : [Double] = []
+        var mutated = false
+        for (_,element) in father.enumerate() {
+            mutated = false
+            if self.randomOne() < self.mutationRate {
+                child.append(element)
+            }else{
+                mutated = true
+                child.append(randomBalanced(element))
+            }
+        }
+        if mutated {
+           // print("Mutated \(father) into \(child)")
+        }
+        return child
     }
     
-    func evolve(){
+    func randomOne() -> Double {
+         return Double(Double(arc4random_uniform(UInt32.max))/Double(UInt32.max))
+    }
+    
+    func random(max: Double) -> Double {
+        
+        return  randomOne() * max
+        
+    }
+    
+    func randomBalanced(max: Double) -> Double {
+        var r = random(max * self.mutationSize) - max
+        if self.integerProblem {
+            r = round(r)
+        }
+        return  r
+    }
+    
+
+    public func evolve() -> [Double]{
         var generation = 0
+        let step = self.generations / 100
         repeat{
             
-            /*
-            1st: selection of
-            */
             var ordered = currentPopulation.map({ element in
                 return (element,self.function(element))
             })
@@ -90,39 +105,49 @@ public class Genetic{
             })
             var size = Int(self.selectionRate * Double(self.populationSize))
             if size > ordered.count {
-            
+                
                 size = ordered.count
-            
+                
             }
             let selection = ordered[0 ..< size]
             
             currentPopulation.removeAll()
             for (e,_) in selection {
+                
                 currentPopulation.append(e)
             }
-            
+
             repeat{
                 
-                let father = selection[Int(random(selection.count))].0
-                let mother = selection[Int(random(selection.count))].0
+                let father = selection[Int(random(Double(selection.count)))].0
+                let mother = selection[Int(random(Double(selection.count)))].0
                 
                 var child = self.cross(father, mother: mother)
                 child = self.mutate(child)
                 
                 self.currentPopulation.append(child)
-
-            
+                
+                
             } while (currentPopulation.count < self.populationSize)
-        
-            generation++
-            print("Generation \(generation) - best: \(ordered[0].1)")
-        if ordered[0].1 == 0 {
-            break
+            
+            
+            generation = generation + 1
+            if((generation) % step == 0){
+                //print("Generation \(generation) - best: \(ordered[0].1)")
             }
-        }while(generation < self.generations)
+        }while(generation < self.generations )
         
-            print(currentPopulation[0].flat)
+        /*
+        last reorder
+        */
+        var ordered = currentPopulation.map({ element in
+            return (element,self.function(element))
+        })
+        ordered = ordered.sort({ (first, second) -> Bool in
+            return first.1 < second.1
+        })
         
+        return ordered[0].0
     }
     
 }
