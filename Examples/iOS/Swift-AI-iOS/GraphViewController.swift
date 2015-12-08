@@ -91,7 +91,7 @@ class GraphViewController: UIViewController {
                     let answer = self.sineFunc(x)
                     try! self.network.backpropagate(answer: [answer])
                 }
-                if epoch % 10 == 0 {
+                if epoch % 2 == 0 {
                     let ys = self.computePoints()
                     dispatch_sync(dispatch_get_main_queue()) {
                         self.updatePoints(ys)
@@ -99,24 +99,6 @@ class GraphViewController: UIViewController {
                 }
                 ++epoch
             }
-        }
-    }
-    
-    /// Returns new y coordinates for each point from the network
-    /// This func must be called on self.networkQueue
-    func computePoints() -> [CGFloat] {
-        return (0..<self.numPoints).map { index -> CGFloat in
-            let x = (-500 + (Float(index) * 1000) / Float(self.numPoints)) / 100
-            let networkY = try! self.network.update(inputs: [x]).first!
-            return CGFloat(networkY * -250) + 125
-        }
-    }
-    
-    /// Updates the points on screen with the given y coordinates.
-    /// This func must be called on the main queue
-    func updatePoints(ys: [CGFloat]) {
-        for index in 0..<self.numPoints {
-            self.updatePoint(index, y: ys[index])
         }
     }
     
@@ -161,7 +143,8 @@ class GraphViewController: UIViewController {
             point.frame = CGRect(x: xPos, y: yPos, width: 6, height: 6)
             point.backgroundColor = UIColor.swiftDarkOrange().CGColor
             point.cornerRadius = 3
-            point.actions = ["transform": NSNull()]
+            // Remove implicit transform animations
+            point.actions = ["transform" : NSNull()]
             self.graphView.graphContainer.layer.insertSublayer(point, below: self.graphView.negXLabel.layer)
             // Store point
             self.points.append(point)
@@ -206,11 +189,12 @@ class GraphViewController: UIViewController {
         UIGraphicsEndImageContext()
     }
     
-    /// Resets the neural network, with new random weights
+    /// Resets the neural network, with new random weights.
     private func resetNetwork() {
         dispatch_async(self.networkQueue) { () -> Void in
             self.network = FFNN(inputs: 1, hidden: 10, outputs: 1, learningRate: 0.6, momentum: 0.8, weights: nil, activationFunction: .Sigmoid, errorFunction: .Default(average: false))
             if self.toContinue {
+                // Continue training if it was previously running
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.startTraining()
                 })
@@ -219,9 +203,22 @@ class GraphViewController: UIViewController {
         }
     }
     
-    /// Translates a the point at the given index to the specified y-value
-    private func updatePoint(index: Int, y: CGFloat) {
-        self.points[index].transform = CATransform3DMakeTranslation(0, y, 0)
+    /// Returns new y coordinates for each point from the network.
+    /// Note: must be called from the network queue.
+    private func computePoints() -> [CGFloat] {
+        return (0..<self.numPoints).map { index -> CGFloat in
+            let x = (-500 + (Float(index) * 1000) / Float(self.numPoints)) / 100
+            let networkY = try! self.network.update(inputs: [x]).first!
+            return CGFloat(networkY * -250) + 125
+        }
+    }
+    
+    /// Updates the points on screen with the given y coordinates.
+    /// Note: must be called from the main queue
+    private func updatePoints(ys: [CGFloat]) {
+        for index in 0..<self.numPoints {
+            self.points[index].transform = CATransform3DMakeTranslation(0, ys[index], 0)
+        }
     }
     
     /// The sine wave function for regression
