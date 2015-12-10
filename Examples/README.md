@@ -50,6 +50,16 @@ Yeah, that can happen. It's called a local minimum:
 
 A good [learning rate and momentum factor](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#standard) can help prevent that, but for this simple example it's best to just reset the network.
 
+### Handwriting
+##### Feed-Forward Neural Network
+
+This example shows how an artificial neural network can be trained to recognize handwritten digits.
+
+![Handwriting](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Handwriting.png?raw=true)
+
+(Usage and documentation coming soon)
+
+
 ### Evolution
 
 ##### Genetic Algorithm
