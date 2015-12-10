@@ -9,7 +9,8 @@ import UIKit
 
 class HandwritingViewController: UIViewController {
     
-    let network = FFNN(inputs: 784, hidden: 560, outputs: 10, learningRate: 0.7, momentum: 0.1, weights: nil, activationFunction: .Sigmoid, errorFunction: .CrossEntropy(average: true))
+    let networkQueue = dispatch_queue_create("networkQueue", DISPATCH_QUEUE_SERIAL)
+    let network = FFNN(inputs: 784, hidden: 280, outputs: 10, learningRate: 0.7, momentum: 0.1, weights: nil, activationFunction: .Sigmoid, errorFunction: .CrossEntropy(average: true))
     var images = [[Float]]()
     var labels = [UInt8]()
     
@@ -34,7 +35,12 @@ class HandwritingViewController: UIViewController {
         self.handwritingView.clearButton.addTarget(self, action: "clearCanvas", forControlEvents: .TouchUpInside)
         self.handwritingView.infoButton.addTarget(self, action: "infoTapped", forControlEvents: .TouchUpInside)
         
-//        (self.images, self.labels) = self.extractTrainingData()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+//        self.extractTrainingData()
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -87,9 +93,7 @@ class HandwritingViewController: UIViewController {
     }
     
     func startPause() {
-        
-        
-        
+//        self.trainNetwork()
     }
     
     func clearCanvas() {
@@ -107,7 +111,7 @@ class HandwritingViewController: UIViewController {
     }
     
     func timerExpired(sender: NSTimer) {
-//        self.clearCanvas()
+        self.clearCanvas()
     }
 
     
@@ -140,44 +144,79 @@ class HandwritingViewController: UIViewController {
 
 extension HandwritingViewController {
     
-    private func extractTrainingData() -> (images: [[Float]], labels: [UInt8]) {
-        // Create variables for storing data
-        var images = [[Float]]()
-        var labels = [UInt8]()
-        // Define image size
-        let numImages = 60_000
-        let imageSize = CGSize(width: 28, height: 28)
-        let numPixels = Int(imageSize.width * imageSize.height)
-        // Extract training data
-        let trainImagesURL = NSBundle.mainBundle().URLForResource("train-images-idx3-ubyte", withExtension: nil)!
-        let trainImagesData = NSData(contentsOfURL: trainImagesURL)!
-        // Extract training labels
-        let trainLabelsURL = NSBundle.mainBundle().URLForResource("train-images-idx3-ubyte", withExtension: nil)!
-        let trainLablelsData = NSData(contentsOfURL: trainLabelsURL)!
-        // Store image/label byte indices
-        var trainImageIndex = 16 // Start after header info
-        var trainLabelIndex = 8 // Start after header info
-        for _ in 0..<numImages {
-            // Extract image pixels
-            var pixelsArray = [UInt8](count: numPixels, repeatedValue: 0)
-            trainImagesData.getBytes(&pixelsArray, range: NSMakeRange(trainImageIndex, numPixels))
-            // Convert pixels to Floats
-            var pixelsFloatArray = [Float]()
-            for pixel in pixelsArray {
-                pixelsFloatArray.append(Float(pixel) / 255)
+    private func extractTrainingData() {
+        dispatch_async(self.networkQueue) {
+            // Create variables for storing data
+            var images = [[Float]]()
+            var labels = [UInt8]()
+            // Define image size
+            let numImages = 60_000
+            let imageSize = CGSize(width: 28, height: 28)
+            let numPixels = Int(imageSize.width * imageSize.height)
+            // Extract training data
+            let trainImagesURL = NSBundle.mainBundle().URLForResource("train-images-idx3-ubyte", withExtension: nil)!
+            let trainImagesData = NSData(contentsOfURL: trainImagesURL)!
+            // Extract training labels
+            let trainLabelsURL = NSBundle.mainBundle().URLForResource("train-labels-idx1-ubyte", withExtension: nil)!
+            let trainLablelsData = NSData(contentsOfURL: trainLabelsURL)!
+            // Store image/label byte indices
+            var trainImageIndex = 16 // Start after header info
+            var trainLabelIndex = 8 // Start after header info
+            for _ in 0..<numImages {
+                // Extract image pixels
+                var pixelsArray = [UInt8](count: numPixels, repeatedValue: 0)
+                trainImagesData.getBytes(&pixelsArray, range: NSMakeRange(trainImageIndex, numPixels))
+                // Convert pixels to Floats
+                var pixelsFloatArray = [Float](count: numPixels, repeatedValue: 0)
+                for (index, pixel) in pixelsArray.enumerate() {
+                    pixelsFloatArray[index] = Float(pixel) / 255
+                }
+                // Append image to array
+                images.append(pixelsFloatArray)
+                // Extract labels
+                var label = [UInt8](count: 1, repeatedValue: 0)
+                trainLablelsData.getBytes(&label, range: NSMakeRange(trainLabelIndex, 1))
+                // Append label to array
+                labels.append(label.first!)
+                // Increment counters
+                trainImageIndex += numPixels
+                trainLabelIndex++
             }
-            // Append image to array
-            images.append(pixelsFloatArray)
-            // Extract labels
-            var label = [UInt8](count: 1, repeatedValue: 0)
-            trainLablelsData.getBytes(&label, range: NSMakeRange(trainLabelIndex, 1))
-            // Append label to array
-            labels.append(label.first!)
-            // Increment counters
-            trainImageIndex += numPixels
-            trainLabelIndex++
+            self.images = images
+            self.labels = labels
+            print("Done")
         }
-        return (images, labels)
+    }
+    
+    private func trainNetwork() {
+        dispatch_async(self.networkQueue) {
+            // Convert training labels into Float answer arrays
+            var trainAnswers = [[Float]]()
+            for label in self.labels {
+                trainAnswers.append(self.labelToArray(label))
+            }
+            
+            do {
+                for _ in 0..<100 {
+                    var errorSum: Float = 0
+                    for (index, image) in self.images.enumerate() {
+                        try self.network.update(inputs: image)
+                        let answer = trainAnswers[index]
+                        errorSum += try self.network.backpropagate(answer: answer)
+                    }
+                    print(errorSum)
+                }
+            } catch {
+                print(error)
+            }
+            
+        }
+    }
+    
+    private func labelToArray(label: UInt8) -> [Float] {
+        var answer = [Float](count: 10, repeatedValue: 0)
+        answer[Int(label)] = 1
+        return answer
     }
 
 }

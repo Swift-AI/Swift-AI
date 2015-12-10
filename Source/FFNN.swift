@@ -27,6 +27,7 @@ public enum ActivationFunction: String {
     /// Sigmoid activation function
     case Sigmoid
     /// Softmax output function (Sigmoid hidden activation)
+    /// WARNING: Not yet fully implemented.
     case Softmax
     /// Rational sigmoid activation function
     case RationalSigmoid
