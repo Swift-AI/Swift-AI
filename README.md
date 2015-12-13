@@ -14,6 +14,7 @@ Swift AI includes a set of common tools used for machine learning and artificial
 - [ ] Convolutional Network
 - [ ] GPU-Accelerated Networks
 - [ ] Genetic Algorithms
+    * [NSGA-II] (http://www.iitk.ac.in/kangal/Deb_NSGA-II.pdf)
 - [x] [Fast Matrix Library](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/Matrix.md#matrix)
     * Matrix class with common operators
     * SIMD-accelerated operations
