@@ -29,7 +29,7 @@ Alternatively, the following methods may be used to read/write a neural network 
 
 - `fromFile` - A static method used to initialize a `FFNN` from file. This is the easiest way to package an application with a pre-trained neural network.
 
-This method accepts either an `NSURL` with the full filepath, or a `String` specifying only the filename. When a filename is given, it is assumed that the file resides in the user's default documents directory. This file will usually have been generated using the `writeToFile()` method below, but developers are free to build these files manually using the same format.
+This method accepts either an `NSURL` with the full filepath, or a `String` specifying only the filename. When a filename is given, it is assumed that the file resides in the user's default documents directory. This file will usually have been generated using the `writeToFile()` method below.
 ```
 let network = FFNN.fromFile(fileURL)
 ```
