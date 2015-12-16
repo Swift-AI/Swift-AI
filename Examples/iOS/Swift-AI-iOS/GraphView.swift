@@ -23,6 +23,7 @@ class GraphView: UIView {
     let sliderContainer = UIView()
     let functionLabel = APSpringButton()
     let slider = UISlider()
+    let offsetSlider = UISlider()
     // Buttons
     let buttonContainer = UIView()
     let startPauseButton = APSpringButton()
@@ -48,7 +49,7 @@ class GraphView: UIView {
         self.graphContainer.insertSubview(self.xAxis, atIndex: 0)
         self.graphContainer.insertSubview(self.yAxis, atIndex: 1)
         self.graphContainer.addSubviews([self.graphTargetView, self.negXLabel, self.posXLabel, self.negYLabel, self.posYLabel])
-        self.sliderContainer.addSubviews([self.functionLabel, self.slider])
+        self.sliderContainer.addSubviews([self.functionLabel, self.slider, self.offsetSlider])
         self.buttonContainer.addSubviews([self.startPauseButton, self.infoButton, self.resetButton])
         
         // Style View
@@ -85,6 +86,11 @@ class GraphView: UIView {
         self.slider.maximumValue = 3.0
         self.slider.value = 1.5
         self.slider.tintColor = UIColor.swiftGreen()
+        
+        self.offsetSlider.minimumValue = 0.0
+        self.offsetSlider.maximumValue = 2.0
+        self.offsetSlider.value = 0.0
+        self.offsetSlider.tintColor = UIColor.swiftGreen()
     
         self.buttonContainer.backgroundColor = .whiteColor()
         self.buttonContainer.layer.cornerRadius = 4
@@ -155,7 +161,7 @@ class GraphView: UIView {
             Constraint.lr : (of: self.yAxis, offset: 6),
             Constraint.bb : (of: self.yAxis, offset: 0)])
         
-        // Slider
+        // Sliders
         
         self.sliderContainer.constrainUsing(constraints: [
             Constraint.ll : (of: self.graphContainer, offset: 0),
@@ -165,13 +171,19 @@ class GraphView: UIView {
         
         self.functionLabel.constrainUsing(constraints: [
             Constraint.cxcx : (of: self.sliderContainer, offset: 0),
-            Constraint.w : (of: nil, offset: self.functionLabel.intrinsicContentSize().width + 30),
-            Constraint.bcy : (of: self.sliderContainer, offset: -7)])
+            Constraint.ll : (of: self.sliderContainer, offset: 0),
+            Constraint.rr : (of: self.sliderContainer, offset: 0),
+            Constraint.bcy : (of: self.sliderContainer, offset: -20)])
 
         self.slider.constrainUsing(constraints: [
             Constraint.ll : (of: self.sliderContainer, offset: 20),
             Constraint.rr : (of: self.sliderContainer, offset: -20),
-            Constraint.tcy : (of: self.sliderContainer, offset: 7)])
+            Constraint.tb : (of: self.functionLabel, offset: 4)])
+
+        self.offsetSlider.constrainUsing(constraints: [
+            Constraint.ll : (of: self.sliderContainer, offset: 20),
+            Constraint.rr : (of: self.sliderContainer, offset: -20),
+            Constraint.tb : (of: self.slider, offset: 7)])
         
         // Buttons
         
