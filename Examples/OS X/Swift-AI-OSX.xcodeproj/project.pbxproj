@@ -11,22 +11,32 @@
 		F02FD22F1C02D38100A137C2 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD22E1C02D38100A137C2 /* main.swift */; };
 		F02FD2391C02D3BB00A137C2 /* SineWave.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2371C02D3BB00A137C2 /* SineWave.swift */; };
 		F02FD23A1C02D3BB00A137C2 /* XOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2381C02D3BB00A137C2 /* XOR.swift */; };
+		F074BC3B1C2137570061F59A /* t10k-images-idx3-ubyte in CopyFiles */ = {isa = PBXBuildFile; fileRef = F074BC331C2137200061F59A /* t10k-images-idx3-ubyte */; };
+		F074BC3C1C2137570061F59A /* t10k-labels-idx1-ubyte in CopyFiles */ = {isa = PBXBuildFile; fileRef = F074BC341C2137200061F59A /* t10k-labels-idx1-ubyte */; };
+		F074BC3D1C2137570061F59A /* train-images-idx3-ubyte in CopyFiles */ = {isa = PBXBuildFile; fileRef = F074BC351C2137200061F59A /* train-images-idx3-ubyte */; };
+		F074BC3E1C2137570061F59A /* train-labels-idx1-ubyte in CopyFiles */ = {isa = PBXBuildFile; fileRef = F074BC361C2137200061F59A /* train-labels-idx1-ubyte */; };
+		F074BC401C214E900061F59A /* FFNNStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F074BC3F1C214E900061F59A /* FFNNStorage.swift */; };
 		F0969D101C0FD37A009C3B4A /* FFNN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0C1C0FD37A009C3B4A /* FFNN.swift */; };
 		F0969D111C0FD37A009C3B4A /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0D1C0FD37A009C3B4A /* Matrix.swift */; };
 		F0969D121C0FD37A009C3B4A /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0E1C0FD37A009C3B4A /* Operations.swift */; };
 		F0969D131C0FD37A009C3B4A /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0F1C0FD37A009C3B4A /* Vector.swift */; };
 		F0C5B8AF1C0647FC0016FF6F /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5B8AE1C0647FC0016FF6F /* Storage.swift */; };
+		F0F382461C212B0A0065D2AF /* Handwriting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F382451C212B0A0065D2AF /* Handwriting.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		F02FD2291C02D38100A137C2 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 7;
 			files = (
+				F074BC3B1C2137570061F59A /* t10k-images-idx3-ubyte in CopyFiles */,
+				F074BC3C1C2137570061F59A /* t10k-labels-idx1-ubyte in CopyFiles */,
+				F074BC3D1C2137570061F59A /* train-images-idx3-ubyte in CopyFiles */,
+				F074BC3E1C2137570061F59A /* train-labels-idx1-ubyte in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -38,12 +48,18 @@
 		F02FD22E1C02D38100A137C2 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		F02FD2371C02D3BB00A137C2 /* SineWave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SineWave.swift; sourceTree = "<group>"; };
 		F02FD2381C02D3BB00A137C2 /* XOR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XOR.swift; sourceTree = "<group>"; };
+		F074BC331C2137200061F59A /* t10k-images-idx3-ubyte */ = {isa = PBXFileReference; lastKnownFileType = file; name = "t10k-images-idx3-ubyte"; path = "../MNIST-TrainingData/t10k-images-idx3-ubyte"; sourceTree = "<group>"; };
+		F074BC341C2137200061F59A /* t10k-labels-idx1-ubyte */ = {isa = PBXFileReference; lastKnownFileType = file; name = "t10k-labels-idx1-ubyte"; path = "../MNIST-TrainingData/t10k-labels-idx1-ubyte"; sourceTree = "<group>"; };
+		F074BC351C2137200061F59A /* train-images-idx3-ubyte */ = {isa = PBXFileReference; lastKnownFileType = file; name = "train-images-idx3-ubyte"; path = "../MNIST-TrainingData/train-images-idx3-ubyte"; sourceTree = "<group>"; };
+		F074BC361C2137200061F59A /* train-labels-idx1-ubyte */ = {isa = PBXFileReference; lastKnownFileType = file; name = "train-labels-idx1-ubyte"; path = "../MNIST-TrainingData/train-labels-idx1-ubyte"; sourceTree = "<group>"; };
+		F074BC3F1C214E900061F59A /* FFNNStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FFNNStorage.swift; path = ../../../Source/FFNNStorage.swift; sourceTree = "<group>"; };
 		F0969D0C1C0FD37A009C3B4A /* FFNN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FFNN.swift; path = ../../../Source/FFNN.swift; sourceTree = "<group>"; };
 		F0969D0D1C0FD37A009C3B4A /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Matrix.swift; path = ../../../Source/Matrix.swift; sourceTree = "<group>"; };
 		F0969D0E1C0FD37A009C3B4A /* Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operations.swift; path = ../../../Source/Operations.swift; sourceTree = "<group>"; };
 		F0969D0F1C0FD37A009C3B4A /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Vector.swift; path = ../../../Source/Vector.swift; sourceTree = "<group>"; };
 		F0BAD9641C03D039001AD2AE /* Swift-AI-Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = "Swift-AI-Playground.playground"; path = "../../Swift-AI-Playground.playground"; sourceTree = "<group>"; };
 		F0C5B8AE1C0647FC0016FF6F /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Storage.swift; path = ../../../Source/Storage.swift; sourceTree = "<group>"; };
+		F0F382451C212B0A0065D2AF /* Handwriting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Handwriting.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +123,8 @@
 				F0BAD9641C03D039001AD2AE /* Swift-AI-Playground.playground */,
 				F02FD2381C02D3BB00A137C2 /* XOR.swift */,
 				F02FD2371C02D3BB00A137C2 /* SineWave.swift */,
+				F0F382451C212B0A0065D2AF /* Handwriting.swift */,
+				F0F3824B1C212C100065D2AF /* MNIST Data */,
 			);
 			name = Examples;
 			sourceTree = "<group>";
@@ -116,11 +134,23 @@
 			children = (
 				F0C5B8AE1C0647FC0016FF6F /* Storage.swift */,
 				F0969D0C1C0FD37A009C3B4A /* FFNN.swift */,
+				F074BC3F1C214E900061F59A /* FFNNStorage.swift */,
 				F0969D0F1C0FD37A009C3B4A /* Vector.swift */,
 				F0969D0D1C0FD37A009C3B4A /* Matrix.swift */,
 				F0969D0E1C0FD37A009C3B4A /* Operations.swift */,
 			);
 			name = Sources;
+			sourceTree = "<group>";
+		};
+		F0F3824B1C212C100065D2AF /* MNIST Data */ = {
+			isa = PBXGroup;
+			children = (
+				F074BC331C2137200061F59A /* t10k-images-idx3-ubyte */,
+				F074BC341C2137200061F59A /* t10k-labels-idx1-ubyte */,
+				F074BC351C2137200061F59A /* train-images-idx3-ubyte */,
+				F074BC361C2137200061F59A /* train-labels-idx1-ubyte */,
+			);
+			name = "MNIST Data";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,10 +251,12 @@
 			files = (
 				F0969D101C0FD37A009C3B4A /* FFNN.swift in Sources */,
 				F02FD23A1C02D3BB00A137C2 /* XOR.swift in Sources */,
+				F0F382461C212B0A0065D2AF /* Handwriting.swift in Sources */,
 				F0969D131C0FD37A009C3B4A /* Vector.swift in Sources */,
 				F0969D111C0FD37A009C3B4A /* Matrix.swift in Sources */,
 				F0969D121C0FD37A009C3B4A /* Operations.swift in Sources */,
 				F02FD22F1C02D38100A137C2 /* main.swift in Sources */,
+				F074BC401C214E900061F59A /* FFNNStorage.swift in Sources */,
 				F02FD2391C02D3BB00A137C2 /* SineWave.swift in Sources */,
 				F0C5B8AF1C0647FC0016FF6F /* Storage.swift in Sources */,
 			);
