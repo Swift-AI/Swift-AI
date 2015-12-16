@@ -20,7 +20,18 @@ class GraphViewController: UIViewController {
     /// Serial queue for synchronizing access to neural network from multiple threads
     private let networkQueue = dispatch_queue_create("com.SwiftAI.networkQueue", DISPATCH_QUEUE_SERIAL)
     /// A multiplier, for altering the target function
-    private var functionMultiplier: Float = 1.5
+    private var functionMultiplier: Float = 1.5 {
+        didSet {
+            self.updateFunctionLabel()
+            self.updateTarget()
+        }
+    }
+    private var functionOffset: Float = 0.0 {
+        didSet {
+            self.updateFunctionLabel()
+            self.updateTarget()
+        }
+    }
     /// State variable to start/stop the network's training when needed
     private var paused = true
     /// State variable to resume trainig after a reset, if needed
@@ -39,6 +50,7 @@ class GraphViewController: UIViewController {
         self.graphView.resetButton.addTarget(self, action: "resetAll", forControlEvents: .TouchUpInside)
         // Configure slider for multiplier
         self.graphView.slider.addTarget(self, action: "sliderMoved:", forControlEvents: .ValueChanged)
+        self.graphView.offsetSlider.addTarget(self, action: "offsetSliderMoved:", forControlEvents: .ValueChanged)
         // Set function label text
         self.graphView.functionLabel.setTitle("y = sin (\(self.functionMultiplier)x)", forState: .Normal)
         // Calculate number of points to plot, based on screen size (#hack)
@@ -74,9 +86,10 @@ class GraphViewController: UIViewController {
     
     func sliderMoved(sender: UISlider) {
         self.functionMultiplier = sender.value
-        let constantString = Double(self.functionMultiplier).toString(decimalPlaces: 1)
-        self.graphView.functionLabel.setTitle("y = sin (" + constantString + "x)", forState: .Normal)
-        self.updateTarget()
+    }
+    
+    func offsetSliderMoved(sender: UISlider) {
+        self.functionOffset = sender.value
     }
     
     func startTraining() {
@@ -125,6 +138,13 @@ class GraphViewController: UIViewController {
     }
     
     // MARK:- Private methods
+    
+    /// Update Function Label
+    private func updateFunctionLabel() {
+        let frequencyString = Double(self.functionMultiplier).toString(decimalPlaces: 1)
+        let phaseString =  (self.functionOffset > 0.0) ? " + " + Double(self.functionOffset).toString(decimalPlaces: 1) + "π" : ""
+        self.graphView.functionLabel.setTitle("y = sin (\(frequencyString)x\(phaseString))", forState: .Normal)
+    }
     
     /// Creates a new set of points to plot on screen
     private func initPoints() {
@@ -223,7 +243,7 @@ class GraphViewController: UIViewController {
     
     /// The sine wave function for regression
     private func sineFunc(x: Float) -> Float {
-        return (0.5 * sin(self.functionMultiplier * x)) + 0.5
+        return (0.5 * sin(self.functionMultiplier * x + functionOffset * Float(M_PI))) + 0.5
     }
 }
 
