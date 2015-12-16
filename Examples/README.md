@@ -38,7 +38,7 @@ You can control the target function by adjusting the slider:
 
 Initially, you're given a randomly-generated neural network. Tapping 'Start' initiates a training process, which consists of two phases:
 - **Update**: For every `x` position on the graph, the neural network is asked to make its 'best guess' for the corresponding `y` value. These points are plotted in red on the screen.
-- **Backpropagation**: For every `x` position, the network's output `y` is compared to the 'target' value. The resulting error is propagated through the network and its weights are adjusted accordingly (more details in the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Source#training)).
+- **Backpropagation**: For every `x` position, the network's output `y` is compared to the 'target' value. The resulting error is propagated through the network and its weights are adjusted accordingly (more details in the [documentation](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#training).
 
 Within a few seconds, the network is able to "learn" a good approximation of the target function. Note that the target values are never actually stored by the neural network - rather, it uses them to learn by example.
 
