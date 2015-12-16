@@ -254,6 +254,7 @@ public final class FFNN {
         for (outputIndex, output) in self.outputCache.enumerate() {
             switch self.activationFunction {
             case .Softmax:
+                // FIXME: This isn't working correctly
                 self.outputErrorsCache[outputIndex] = output - answer[outputIndex]
             default:
                 self.outputErrorsCache[outputIndex] = self.activationDerivative(output) * (answer[outputIndex] - output)
@@ -354,17 +355,17 @@ public final class FFNN {
 
 // MARK:- FFNN private methods
 
-private extension FFNN {
+public extension FFNN {
     
     /// Returns an NSURL for a document with the given filename in the default documents directory.
-    private static func getFileURL(filename: String) -> NSURL {
+    public static func getFileURL(filename: String) -> NSURL {
         let manager = NSFileManager.defaultManager()
         let dirURL = try! manager.URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
         return dirURL.URLByAppendingPathComponent(filename)
     }
     
     /// Reads a FFNN stored in a file at the given URL.
-    private static func read(url: NSURL) -> FFNN? {
+    public static func read(url: NSURL) -> FFNN? {
         guard let data = NSData(contentsOfURL: url) else {
             return nil
         }
@@ -398,7 +399,7 @@ private extension FFNN {
     }
     
     /// Writes the current state of the FFNN to a file at the given URL.
-    private func write(url: NSURL) {
+    public func write(url: NSURL) {
         var storage = [String : AnyObject]()
         storage["inputs"] = self.numInputs
         storage["hidden"] = self.numHidden

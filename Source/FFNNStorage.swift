@@ -1,3 +1,5 @@
+import Foundation
+
 // MARK:- Storage protocol
 extension FFNN: Storage {
 

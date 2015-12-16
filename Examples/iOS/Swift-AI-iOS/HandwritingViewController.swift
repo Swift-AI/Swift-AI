@@ -10,7 +10,7 @@ import UIKit
 class HandwritingViewController: UIViewController {
     
     let networkQueue = dispatch_queue_create("networkQueue", DISPATCH_QUEUE_SERIAL)
-    let network = FFNN(inputs: 784, hidden: 280, outputs: 10, learningRate: 0.7, momentum: 0.1, weights: nil, activationFunction: .Sigmoid, errorFunction: .CrossEntropy(average: true))
+    var network: FFNN!
     var images = [[Float]]()
     var labels = [UInt8]()
     
@@ -31,8 +31,11 @@ class HandwritingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let url = NSBundle.mainBundle().URLForResource("handwriting-ffnn", withExtension: nil)!
+        self.network = FFNN.fromFile(url)
+
         self.handwritingView.startPauseButton.addTarget(self, action: "startPause", forControlEvents: .TouchUpInside)
-        self.handwritingView.clearButton.addTarget(self, action: "clearCanvas", forControlEvents: .TouchUpInside)
+        self.handwritingView.clearButton.addTarget(self, action: "resetTapped", forControlEvents: .TouchUpInside)
         self.handwritingView.infoButton.addTarget(self, action: "infoTapped", forControlEvents: .TouchUpInside)
         
     }
@@ -40,7 +43,6 @@ class HandwritingViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-//        self.extractTrainingData()
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -93,16 +95,11 @@ class HandwritingViewController: UIViewController {
     }
     
     func startPause() {
-//        self.trainNetwork()
+        // Nothing right now
     }
     
-    func clearCanvas() {
-        UIView.animateWithDuration(0.1, delay: 0, options: [.CurveEaseIn], animations: { () -> Void in
-            self.handwritingView.canvas.alpha = 0
-        }) { (Bool) -> Void in
-            self.handwritingView.canvas.image = nil
-            self.handwritingView.canvas.alpha = 1
-        }
+    func resetTapped() {
+        self.clearCanvas()
     }
     
     func infoTapped() {
@@ -111,12 +108,103 @@ class HandwritingViewController: UIViewController {
     }
     
     func timerExpired(sender: NSTimer) {
-        self.clearCanvas()
+        self.classifyImage()
     }
 
+}
+
+// MARK:- Classification and drawing methods
+
+extension HandwritingViewController {
     
+    private func classifyImage() {
+        // Extract and resize image from drawing canvas
+        guard let imageArray = self.scanImage() else {
+            self.clearCanvas()
+            return
+        }
+        do {
+            let output = try self.network.update(inputs: imageArray)
+            if let label = self.outputToLabel(output) {
+                self.handwritingView.outputLabel.text = "\(label)"
+            } else {
+                self.handwritingView.outputLabel.text = "Error"
+            }
+        } catch {
+            print(error)
+        }
+        
+        // Clear the canvas
+        self.clearCanvas()
+    }
     
-    // MARK:- Private methods
+    private func outputToLabel(output: [Float]) -> Int? {
+        guard let max = output.maxElement() else {
+            return nil
+        }
+        return output.indexOf(max)
+    }
+    
+    private func scanImage() -> [Float]? {
+        var inputArray = [Float]()
+        var pixelsArray = [[Float]]()
+        guard let image = self.handwritingView.canvas.image else {
+            return nil
+        }
+        let scaledImage = self.scaleImageToSize(image: image, size: CGSize(width: 28, height: 28))
+        let pixelData = CGDataProviderCopyData(CGImageGetDataProvider(scaledImage.CGImage))
+        let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
+        let bytesPerRow = CGImageGetBytesPerRow(scaledImage.CGImage)
+        let bytesPerPixel = (CGImageGetBitsPerPixel(scaledImage.CGImage) / 8)
+        var position = 0
+        for _ in 0..<Int(scaledImage.size.height) {
+            var columnArray = [Float]()
+            for _ in 0..<Int(scaledImage.size.width) {
+//                let red = CGFloat(data[position])
+//                let green = CGFloat(data[position + 1])
+//                let blue = CGFloat(data[position + 2])
+                let alpha = CGFloat(data[position + 3])
+//                let gray = 1.0 - Float(((red / 255) + (green / 255) + (blue / 255)) / 3)
+                columnArray.append(alpha == 0 ? Float(alpha) : 1.0)
+                position += bytesPerPixel
+            }
+            pixelsArray.append(columnArray)
+            if position % bytesPerRow != 0 {
+                position += (bytesPerRow - (position % bytesPerRow))
+            }
+        }
+        // Rearrange pixels into rows instead of columns
+        let numRows = pixelsArray[0].count
+        for row in 0..<numRows {
+            for column in pixelsArray {
+                inputArray.append(column[row])
+            }
+        }
+        // inputArray: Pixels are ordered Left->Right, Top->Bottom
+        return inputArray
+    }
+    
+    private func scaleImageToSize(image image: UIImage, size: CGSize) -> UIImage {
+        let newRect = CGRectIntegral(CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let imageRef = image.CGImage
+        UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
+        let context = UIGraphicsGetCurrentContext()
+        CGContextSetInterpolationQuality(context, CGInterpolationQuality.None) // kCGInterpolationNone)
+        CGContextDrawImage(context, newRect, imageRef)
+        let newImageRef = CGBitmapContextCreateImage(context)! as CGImage
+        let newImage = UIImage(CGImage: newImageRef, scale: 1.0, orientation: UIImageOrientation.DownMirrored)
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+    
+    private func clearCanvas() {
+        UIView.animateWithDuration(0.1, delay: 0, options: [.CurveEaseIn], animations: { () -> Void in
+            self.handwritingView.canvas.alpha = 0
+            }) { (Bool) -> Void in
+                self.handwritingView.canvas.image = nil
+                self.handwritingView.canvas.alpha = 1
+        }
+    }
     
     private func drawLine(fromPoint fromPoint: CGPoint, toPoint: CGPoint) {
         // Begin context
@@ -136,87 +224,6 @@ class HandwritingViewController: UIViewController {
         self.handwritingView.canvas.image = UIGraphicsGetImageFromCurrentImageContext()
         // End context
         UIGraphicsEndImageContext()
-    }
-    
-}
-
-// MARK:- Training methods
-
-extension HandwritingViewController {
-    
-    private func extractTrainingData() {
-        dispatch_async(self.networkQueue) {
-            // Create variables for storing data
-            var images = [[Float]]()
-            var labels = [UInt8]()
-            // Define image size
-            let numImages = 60_000
-            let imageSize = CGSize(width: 28, height: 28)
-            let numPixels = Int(imageSize.width * imageSize.height)
-            // Extract training data
-            let trainImagesURL = NSBundle.mainBundle().URLForResource("train-images-idx3-ubyte", withExtension: nil)!
-            let trainImagesData = NSData(contentsOfURL: trainImagesURL)!
-            // Extract training labels
-            let trainLabelsURL = NSBundle.mainBundle().URLForResource("train-labels-idx1-ubyte", withExtension: nil)!
-            let trainLablelsData = NSData(contentsOfURL: trainLabelsURL)!
-            // Store image/label byte indices
-            var trainImageIndex = 16 // Start after header info
-            var trainLabelIndex = 8 // Start after header info
-            for _ in 0..<numImages {
-                // Extract image pixels
-                var pixelsArray = [UInt8](count: numPixels, repeatedValue: 0)
-                trainImagesData.getBytes(&pixelsArray, range: NSMakeRange(trainImageIndex, numPixels))
-                // Convert pixels to Floats
-                var pixelsFloatArray = [Float](count: numPixels, repeatedValue: 0)
-                for (index, pixel) in pixelsArray.enumerate() {
-                    pixelsFloatArray[index] = Float(pixel) / 255
-                }
-                // Append image to array
-                images.append(pixelsFloatArray)
-                // Extract labels
-                var label = [UInt8](count: 1, repeatedValue: 0)
-                trainLablelsData.getBytes(&label, range: NSMakeRange(trainLabelIndex, 1))
-                // Append label to array
-                labels.append(label.first!)
-                // Increment counters
-                trainImageIndex += numPixels
-                trainLabelIndex++
-            }
-            self.images = images
-            self.labels = labels
-            print("Done")
-        }
-    }
-    
-    private func trainNetwork() {
-        dispatch_async(self.networkQueue) {
-            // Convert training labels into Float answer arrays
-            var trainAnswers = [[Float]]()
-            for label in self.labels {
-                trainAnswers.append(self.labelToArray(label))
-            }
-            
-            do {
-                for _ in 0..<100 {
-                    var errorSum: Float = 0
-                    for (index, image) in self.images.enumerate() {
-                        try self.network.update(inputs: image)
-                        let answer = trainAnswers[index]
-                        errorSum += try self.network.backpropagate(answer: answer)
-                    }
-                    print(errorSum)
-                }
-            } catch {
-                print(error)
-            }
-            
-        }
-    }
-    
-    private func labelToArray(label: UInt8) -> [Float] {
-        var answer = [Float](count: 10, repeatedValue: 0)
-        answer[Int(label)] = 1
-        return answer
     }
 
 }
