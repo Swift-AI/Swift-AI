@@ -10,10 +10,7 @@ import UIKit
 class HandwritingViewController: UIViewController {
     
     var network: FFNN!
-    var images = [[Float]]()
-    var labels = [UInt8]()
-    
-    let brushWidth: CGFloat = 20
+    let brushWidth: CGFloat = 25
     
     // Drawing state variables
     private var lastDrawPoint = CGPointZero
@@ -173,8 +170,7 @@ extension HandwritingViewController {
         guard let max = output.maxElement() else {
             return nil
         }
-        let sum = output.reduce(0) {$0 + $1}
-        return (output.indexOf(max)!, Double(max / sum))
+        return (output.indexOf(max)!, Double(max / 1.0))
     }
     
     private func scanImage() -> [Float]? {
