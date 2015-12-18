@@ -92,12 +92,8 @@ public final class FFNN {
     private let numHiddenNodes: Int
     /// The total number of weights connecting all input nodes to all hidden nodes.
     private let numHiddenWeights: Int
-    /// Stores the number of hidden weights as Int32, to avoid casting repeatedly.
-    private let hiddenWeightsCount: Int32
     /// The total number of weights connecting all hidden nodes to all output nodes.
     private let numOutputWeights: Int
-    /// Stores the number of output weights as Int32, to avoid casting repeatedly.
-    private let outputWeightsCount: Int32
     
     /// The current weights leading into all of the hidden nodes, serialized in a single array.
     private var hiddenWeights: [Float]
@@ -167,9 +163,6 @@ public final class FFNN {
         self.hiddenErrorsCache = [Float](count: self.numHiddenNodes, repeatedValue: 0)
         self.newOutputWeights = [Float](count: self.numOutputWeights, repeatedValue: 0)
         self.newHiddenWeights = [Float](count: self.numHiddenWeights, repeatedValue: 0)
-        
-        self.hiddenWeightsCount = Int32(self.numHiddenWeights)
-        self.outputWeightsCount = Int32(self.numOutputWeights)
         
         self.activationFunction = activationFunction
         self.errorFunction = errorFunction
@@ -278,8 +271,9 @@ public final class FFNN {
             let mfLRErrIn = self.mfLR * self.outputErrorsCache[errorIndex] * self.hiddenOutputCache[hiddenOutputIndex]
             self.newOutputWeights[weightIndex] = offset + mfLRErrIn
         }
-        cblas_scopy(self.outputWeightsCount, self.outputWeights, 1, &self.previousOutputWeights, 1)
-        cblas_scopy(self.outputWeightsCount, self.newOutputWeights, 1, &self.outputWeights, 1)
+        
+        vDSP_mmov(outputWeights, &previousOutputWeights, 1, vDSP_Length(numOutputWeights), 1, 1)
+        vDSP_mmov(newOutputWeights, &outputWeights, 1, vDSP_Length(numOutputWeights), 1, 1)
         
         // Update hidden weights
         for weightIndex in 0..<self.hiddenWeights.count {
@@ -290,8 +284,9 @@ public final class FFNN {
             let mfLRErrIn = self.mfLR * self.hiddenErrorsCache[errorIndex + 1] * self.inputCache[inputIndex]
             self.newHiddenWeights[weightIndex] = offset + mfLRErrIn
         }
-        cblas_scopy(self.hiddenWeightsCount, self.hiddenWeights, 1, &self.previousHiddenWeights, 1)
-        cblas_scopy(self.hiddenWeightsCount, self.newHiddenWeights, 1, &self.hiddenWeights, 1)
+        
+        vDSP_mmov(hiddenWeights, &previousHiddenWeights, 1, vDSP_Length(numHiddenWeights), 1, 1)
+        vDSP_mmov(newHiddenWeights, &hiddenWeights, 1, vDSP_Length(numHiddenWeights), 1, 1)
 
         // Sum and return the output errors
         return self.outputErrorsCache.reduce(0, combine: { (sum, error) -> Float in

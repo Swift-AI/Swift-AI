@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		4258CD7D1C035289004A2682 /* SimpleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4258CD7C1C035289004A2682 /* SimpleTest.swift */; };
+		954085991C23C804000B206F /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5B8AE1C0647FC0016FF6F /* Storage.swift */; };
+		9540859A1C23C804000B206F /* FFNN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0C1C0FD37A009C3B4A /* FFNN.swift */; };
+		9540859B1C23C804000B206F /* FFNNStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F074BC3F1C214E900061F59A /* FFNNStorage.swift */; };
+		9540859C1C23C804000B206F /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0F1C0FD37A009C3B4A /* Vector.swift */; };
+		9540859D1C23C804000B206F /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0D1C0FD37A009C3B4A /* Matrix.swift */; };
+		9540859E1C23C804000B206F /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0E1C0FD37A009C3B4A /* Operations.swift */; };
 		F02FD22F1C02D38100A137C2 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD22E1C02D38100A137C2 /* main.swift */; };
 		F02FD2391C02D3BB00A137C2 /* SineWave.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2371C02D3BB00A137C2 /* SineWave.swift */; };
 		F02FD23A1C02D3BB00A137C2 /* XOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2381C02D3BB00A137C2 /* XOR.swift */; };
@@ -241,7 +247,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9540859A1C23C804000B206F /* FFNN.swift in Sources */,
+				9540859B1C23C804000B206F /* FFNNStorage.swift in Sources */,
+				9540859D1C23C804000B206F /* Matrix.swift in Sources */,
+				9540859E1C23C804000B206F /* Operations.swift in Sources */,
+				9540859C1C23C804000B206F /* Vector.swift in Sources */,
 				4258CD7D1C035289004A2682 /* SimpleTest.swift in Sources */,
+				954085991C23C804000B206F /* Storage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
