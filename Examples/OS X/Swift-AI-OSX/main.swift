@@ -6,9 +6,8 @@
 
 // This project contains examples for using Swift AI.
 // To run an example, simply un-comment the line calling the desired function.
+// Note: This project should always be run in 'Release' mode, or training will take a very long time.
 
-
-// MARK:- FFNN Examples
 
 /// Classic XOR Example - trains a FFNN to function as a two-input XOR logic gate.
 //xorTwoWay()
@@ -18,4 +17,7 @@
 /// Caution: Lower error thresholds improve accuracy, but can take exponentially longer to train.
 //sineWave(errorThreshold: 2.0)
 
+/// Trains a neural network to recognize handwritten digits, using the MNIST dataset.
+/// Outputs a file called 'handwriting-ffnn' to your Documents directory.
+/// Import 'handwriting-ffnn' into the Swift AI iOS app to test the training!
 handwriting()

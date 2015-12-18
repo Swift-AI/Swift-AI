@@ -10,7 +10,7 @@ import Foundation
 
 class HandwritingTrainer {
     
-    let network = FFNN(inputs: 784, hidden: 280, outputs: 10, learningRate: 0.7, momentum: 0.1, weights: nil, activationFunction: .Sigmoid, errorFunction: .CrossEntropy(average: true))
+    let network = FFNN(inputs: 784, hidden: 280, outputs: 10, learningRate: 1.0, momentum: 0.5, weights: nil, activationFunction: .Sigmoid, errorFunction: .CrossEntropy(average: true))
     var trainImages = [[Float]]()
     var trainLabels = [UInt8]()
     var testImages = [[Float]]()
@@ -104,22 +104,63 @@ class HandwritingTrainer {
             testAnswers.append(self.labelToArray(label))
         }
         do {
+            print("\nBefore training:")
+            var errorSum: Float = 0
+            var correct: Float = 0
+            var incorrect: Float = 0
+            for (index, image) in self.testImages.enumerate() {
+                let outputArray = try self.network.update(inputs: image)
+                if let outputLabel = self.outputToLabel(outputArray) {
+                    if outputLabel == self.testLabels[index] {
+                        correct += 1
+                    } else {
+                        incorrect += 1
+                    }
+                } else {
+                    incorrect += 1
+                }
+                let answerArray = testAnswers[index]
+                errorSum += self.calculateError(output: outputArray, answer: answerArray)
+            }
+            let percent = correct * 100 / (correct + incorrect)
+            print("Error sum: \(errorSum)")
+            print("Correct: \(Int(correct))")
+            print("Incorrect: \(Int(incorrect))")
+            print("Accuracy: \(percent)%")
+            
             var epoch = 1
             while true {
-                print("Epoch: \(epoch)")
+                print("\nEpoch \(epoch): Learning rate \(self.network.learningRate)")
                 for (index, image) in self.trainImages.enumerate() {
                     try self.network.update(inputs: image)
                     let answer = trainAnswers[index]
                     try self.network.backpropagate(answer: answer)
                 }
                 var errorSum: Float = 0
+                var correct: Float = 0
+                var incorrect: Float = 0
                 for (index, image) in self.testImages.enumerate() {
-                    let output = try self.network.update(inputs: image)
-                    let answer = testAnswers[index]
-                    errorSum += self.calculateError(output: output, answer: answer)
+                    let outputArray = try self.network.update(inputs: image)
+                    if let outputLabel = self.outputToLabel(outputArray) {
+                        if outputLabel == self.testLabels[index] {
+                            correct += 1
+                        } else {
+                            incorrect += 1
+                        }
+                    } else {
+                        incorrect += 1
+                    }
+                    let answerArray = testAnswers[index]
+                    errorSum += self.calculateError(output: outputArray, answer: answerArray)
                 }
-                print(errorSum)
-                if errorSum < 700 {
+                let percent = correct * 100 / (correct + incorrect)
+                print("Error sum: \(errorSum)")
+                print("Correct: \(Int(correct))")
+                print("Incorrect: \(Int(incorrect))")
+                print("Accuracy: \(percent)%")
+                self.network.learningRate *= 0.75
+                self.network.momentumFactor *= 0.75
+                if percent > 98.0 || epoch == 10 {
                     self.network.writeToFile("handwriting-ffnn")
                     break
                 }
@@ -128,6 +169,7 @@ class HandwritingTrainer {
         } catch {
             print(error)
         }
+        print("\nTraining completed! Neural network stored at ~/Documents/handwriting-ffnn")
     }
     
     private func calculateError(output output: [Float], answer: [Float]) -> Float {
@@ -142,6 +184,13 @@ class HandwritingTrainer {
         var answer = [Float](count: 10, repeatedValue: 0)
         answer[Int(label)] = 1
         return answer
+    }
+    
+    private func outputToLabel(output: [Float]) -> UInt8? {
+        guard let max = output.maxElement() else {
+            return nil
+        }
+        return UInt8(output.indexOf(max)!)
     }
     
 }

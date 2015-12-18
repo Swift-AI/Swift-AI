@@ -14,10 +14,11 @@ class HandwritingViewController: UIViewController {
     var images = [[Float]]()
     var labels = [UInt8]()
     
-    let brushWidth: CGFloat = 15.0
+    let brushWidth: CGFloat = 20
     
     // Drawing state variables
     private var lastDrawPoint = CGPointZero
+    private var boundingBox: CGRect?
     private var swiped = false
     private var drawing = false
     private var timer = NSTimer()
@@ -55,7 +56,14 @@ class HandwritingViewController: UIViewController {
             return
         }
         self.timer.invalidate()
-        self.lastDrawPoint = touch.locationInView(self.handwritingView.canvas)
+        let location = touch.locationInView(self.handwritingView.canvas)
+        if self.boundingBox == nil {
+            self.boundingBox = CGRect(x: location.x - self.brushWidth / 2,
+                y: location.y - self.brushWidth / 2,
+                width: self.brushWidth,
+                height: self.brushWidth)
+        }
+        self.lastDrawPoint = location
         self.drawing = true
     }
 
@@ -74,6 +82,16 @@ class HandwritingViewController: UIViewController {
         } else {
             self.drawLine(fromPoint: currentPoint, toPoint: currentPoint)
             self.swiped = true
+        }
+        if currentPoint.x < self.boundingBox!.minX {
+            self.updateRect(&self.boundingBox!, minX: currentPoint.x - self.brushWidth, maxX: nil, minY: nil, maxY: nil)
+        } else if currentPoint.x > self.boundingBox!.maxX {
+            self.updateRect(&self.boundingBox!, minX: nil, maxX: currentPoint.x + self.brushWidth, minY: nil, maxY: nil)
+        }
+        if currentPoint.y < self.boundingBox!.minY {
+            self.updateRect(&self.boundingBox!, minX: nil, maxX: nil, minY: currentPoint.y - self.brushWidth, maxY: nil)
+        } else if currentPoint.y > self.boundingBox!.maxY {
+            self.updateRect(&self.boundingBox!, minX: nil, maxX: nil, minY: nil, maxY: currentPoint.y + self.brushWidth)
         }
         self.lastDrawPoint = currentPoint
         self.timer.invalidate()
@@ -109,6 +127,7 @@ class HandwritingViewController: UIViewController {
     
     func timerExpired(sender: NSTimer) {
         self.classifyImage()
+        self.boundingBox = nil
     }
 
 }
@@ -125,8 +144,8 @@ extension HandwritingViewController {
         }
         do {
             let output = try self.network.update(inputs: imageArray)
-            if let label = self.outputToLabel(output) {
-                self.handwritingView.outputLabel.text = "\(label)"
+            if let (label, confidence) = self.outputToLabel(output) {
+                self.updateOutputLabels("\(label)", confidence: "\((confidence * 100).toString(decimalPlaces: 2))%")
             } else {
                 self.handwritingView.outputLabel.text = "Error"
             }
@@ -138,61 +157,84 @@ extension HandwritingViewController {
         self.clearCanvas()
     }
     
-    private func outputToLabel(output: [Float]) -> Int? {
+    private func updateOutputLabels(output: String, confidence: String) {
+        UIView.animateWithDuration(0.1, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+            self.handwritingView.outputLabel.transform = CGAffineTransformMakeScale(1.1, 1.1)
+            self.handwritingView.outputLabel.text = output
+            self.handwritingView.confidenceLabel.transform = CGAffineTransformMakeScale(1.1, 1.1)
+            self.handwritingView.confidenceLabel.text = confidence
+        }, completion: nil)
+        UIView.animateWithDuration(0.3, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+            self.handwritingView.outputLabel.transform = CGAffineTransformIdentity
+            self.handwritingView.confidenceLabel.transform = CGAffineTransformIdentity
+            }, completion: nil)
+    }
+    
+    private func outputToLabel(output: [Float]) -> (label: Int, confidence: Double)? {
         guard let max = output.maxElement() else {
             return nil
         }
-        return output.indexOf(max)
+        let sum = output.reduce(0) {$0 + $1}
+        return (output.indexOf(max)!, Double(max / sum))
     }
     
     private func scanImage() -> [Float]? {
-        var inputArray = [Float]()
-        var pixelsArray = [[Float]]()
+        var pixelsArray = [Float]()
         guard let image = self.handwritingView.canvas.image else {
             return nil
         }
-        let scaledImage = self.scaleImageToSize(image: image, size: CGSize(width: 28, height: 28))
-        let pixelData = CGDataProviderCopyData(CGImageGetDataProvider(scaledImage.CGImage))
+        // Extract drawing from canvas and remove surrounding whitespace
+        let croppedImage = self.cropImage(image, toRect: self.boundingBox!)
+        // Scale character to max 20px in either dimension
+        let scaledImage = self.scaleImageToSize(croppedImage, maxLength: 20)
+        // Center character in 28x28 white box
+        let character = self.addBorderToImage(scaledImage)
+        
+        self.handwritingView.imageView.image = character
+        
+        let pixelData = CGDataProviderCopyData(CGImageGetDataProvider(character.CGImage))
         let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
-        let bytesPerRow = CGImageGetBytesPerRow(scaledImage.CGImage)
-        let bytesPerPixel = (CGImageGetBitsPerPixel(scaledImage.CGImage) / 8)
+        let bytesPerRow = CGImageGetBytesPerRow(character.CGImage)
+        let bytesPerPixel = (CGImageGetBitsPerPixel(character.CGImage) / 8)
         var position = 0
-        for _ in 0..<Int(scaledImage.size.height) {
-            var columnArray = [Float]()
-            for _ in 0..<Int(scaledImage.size.width) {
-//                let red = CGFloat(data[position])
-//                let green = CGFloat(data[position + 1])
-//                let blue = CGFloat(data[position + 2])
-                let alpha = CGFloat(data[position + 3])
-//                let gray = 1.0 - Float(((red / 255) + (green / 255) + (blue / 255)) / 3)
-                columnArray.append(alpha == 0 ? Float(alpha) : 1.0)
+        for _ in 0..<Int(character.size.height) {
+            for _ in 0..<Int(character.size.width) {
+                let alpha = Float(data[position + 3])
+                pixelsArray.append(alpha / 255)
                 position += bytesPerPixel
             }
-            pixelsArray.append(columnArray)
             if position % bytesPerRow != 0 {
                 position += (bytesPerRow - (position % bytesPerRow))
             }
         }
-        // Rearrange pixels into rows instead of columns
-        let numRows = pixelsArray[0].count
-        for row in 0..<numRows {
-            for column in pixelsArray {
-                inputArray.append(column[row])
-            }
-        }
-        // inputArray: Pixels are ordered Left->Right, Top->Bottom
-        return inputArray
+        return pixelsArray
     }
     
-    private func scaleImageToSize(image image: UIImage, size: CGSize) -> UIImage {
+    private func cropImage(image: UIImage, toRect: CGRect) -> UIImage {
+        let imageRef = CGImageCreateWithImageInRect(image.CGImage!, toRect)
+        let newImage = UIImage(CGImage: imageRef!)
+        return newImage
+    }
+    
+    private func scaleImageToSize(image: UIImage, maxLength: CGFloat) -> UIImage {
+        let size = CGSize(width: min(20 * image.size.width / image.size.height, 20), height: min(20 * image.size.height / image.size.width, 20))
         let newRect = CGRectIntegral(CGRect(x: 0, y: 0, width: size.width, height: size.height))
-        let imageRef = image.CGImage
         UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetInterpolationQuality(context, CGInterpolationQuality.None) // kCGInterpolationNone)
-        CGContextDrawImage(context, newRect, imageRef)
+        CGContextSetInterpolationQuality(context, CGInterpolationQuality.None)
+        image.drawInRect(newRect)
         let newImageRef = CGBitmapContextCreateImage(context)! as CGImage
-        let newImage = UIImage(CGImage: newImageRef, scale: 1.0, orientation: UIImageOrientation.DownMirrored)
+        let newImage = UIImage(CGImage: newImageRef, scale: 1.0, orientation: UIImageOrientation.Up)
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+    
+    private func addBorderToImage(image: UIImage) -> UIImage {
+        UIGraphicsBeginImageContext(CGSize(width: 28, height: 28))
+        let white = UIImage(named: "white")!
+        white.drawAtPoint(CGPointZero)
+        image.drawAtPoint(CGPointMake((28 - image.size.width) / 2, (28 - image.size.height) / 2))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return newImage
     }
@@ -224,6 +266,13 @@ extension HandwritingViewController {
         self.handwritingView.canvas.image = UIGraphicsGetImageFromCurrentImageContext()
         // End context
         UIGraphicsEndImageContext()
+    }
+    
+    private func updateRect(inout rect: CGRect, minX: CGFloat?, maxX: CGFloat?, minY: CGFloat?, maxY: CGFloat?) {
+        rect = CGRect(x: minX ?? rect.minX,
+            y: minY ?? rect.minY,
+            width: (maxX ?? rect.maxX) - (minX ?? rect.minX),
+            height: (maxY ?? rect.maxY) - (minY ?? rect.minY))
     }
 
 }

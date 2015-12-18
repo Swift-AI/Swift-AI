@@ -49,7 +49,7 @@ class GraphViewController: UIViewController {
         self.graphView.infoButton.addTarget(self, action: "infoTapped", forControlEvents: .TouchUpInside)
         self.graphView.resetButton.addTarget(self, action: "resetAll", forControlEvents: .TouchUpInside)
         // Configure slider for multiplier
-        self.graphView.slider.addTarget(self, action: "sliderMoved:", forControlEvents: .ValueChanged)
+        self.graphView.frequencySlider.addTarget(self, action: "frequencySliderMoved:", forControlEvents: .ValueChanged)
         self.graphView.offsetSlider.addTarget(self, action: "offsetSliderMoved:", forControlEvents: .ValueChanged)
         // Set function label text
         self.graphView.functionLabel.setTitle("y = sin (\(self.functionMultiplier)x)", forState: .Normal)
@@ -84,7 +84,7 @@ class GraphViewController: UIViewController {
         }
     }
     
-    func sliderMoved(sender: UISlider) {
+    func frequencySliderMoved(sender: UISlider) {
         self.functionMultiplier = sender.value
     }
     
