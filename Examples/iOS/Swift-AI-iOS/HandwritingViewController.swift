@@ -9,7 +9,6 @@ import UIKit
 
 class HandwritingViewController: UIViewController {
     
-    let networkQueue = dispatch_queue_create("networkQueue", DISPATCH_QUEUE_SERIAL)
     var network: FFNN!
     var images = [[Float]]()
     var labels = [UInt8]()
