@@ -14,12 +14,12 @@ class InfoView: UIView {
     let label1 = UILabel()
     let field1 = UITextView()
     
-    let dismissLabel = UILabel()
+    let dismissButton = APSpringButton()
     let dismissArrow = UIImageView()
     
     func configureSubviews() {
         // Add Subviews
-        self.addSubviews([self.blurView, self.label1, self.field1, self.dismissLabel, self.dismissArrow])
+        self.addSubviews([self.blurView, self.label1, self.field1, self.dismissArrow, self.dismissButton])
         
         // Style View
         
@@ -37,10 +37,10 @@ class InfoView: UIView {
         self.field1.userInteractionEnabled = false
         self.field1.contentInset = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 0)
         
-        self.dismissLabel.text = "Pull to dismiss"
-        self.dismissLabel.textColor = .whiteColor()
-        self.dismissLabel.font = UIFont.swiftFontOfSize(14)
-        self.dismissLabel.backgroundColor = .clearColor()
+        self.dismissButton.setTitle("Pull to dismiss", forState: .Normal)
+        self.dismissButton.titleLabel?.textColor = .whiteColor()
+        self.dismissButton.titleLabel?.font = UIFont.swiftFontOfSize(14)
+        self.dismissButton.backgroundColor = .clearColor()
         
         self.dismissArrow.image = UIImage(named: "dismiss_arrow")
         
@@ -63,15 +63,15 @@ class InfoView: UIView {
             Constraint.ll : (of: self, offset: 15),
             Constraint.rr : (of: self, offset: -15),
             Constraint.tb : (of: self.label1, offset: 10),
-            Constraint.bt : (of: self.dismissLabel, offset: -15)])
+            Constraint.bt : (of: self.dismissButton, offset: -15)])
         
-        self.dismissLabel.constrainUsing(constraints: [
+        self.dismissButton.constrainUsing(constraints: [
             Constraint.cxcx : (of: self, offset: 0),
-            Constraint.bb : (of: self, offset: -25)])
+            Constraint.bb : (of: self, offset: -20)])
         
         self.dismissArrow.constrainUsing(constraints: [
             Constraint.cxcx : (of: self, offset: 0),
-            Constraint.tb : (of: self.dismissLabel, offset: 3)])
+            Constraint.tb : (of: self.dismissButton, offset: -5)])
         
         super.updateConstraints()
     }

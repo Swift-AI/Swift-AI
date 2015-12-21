@@ -22,11 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         graphViewController.title = "Regression"
         let handwritingViewController = HandwritingViewController()
         handwritingViewController.title = "Handwriting"
+        let handwritingLearnViewController = HandwritingLearnViewController()
+        handwritingLearnViewController.title = "Handwriting-Test"
         let gaViewController = GAViewController()
         gaViewController.title = "Evolution"
     
         // Initialize drawer controller
-        let drawerNavigationController = DrawerNavigationController(viewControllers: [graphViewController, handwritingViewController, gaViewController])
+        let drawerNavigationController = DrawerNavigationController(viewControllers: [graphViewController, handwritingViewController, handwritingLearnViewController, gaViewController])
         
         // Initialize main window
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)

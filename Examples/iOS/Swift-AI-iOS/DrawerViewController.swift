@@ -38,6 +38,8 @@ class DrawerViewController: UIViewController, UITableViewDataSource, UITableView
             cell.descriptionLabel.text = "Artificial Neural Network"
         case 1:
             cell.descriptionLabel.text = "Artificial Neural Network"
+        case 2:
+            cell.descriptionLabel.text = "Artificial Neural Network"
         default:
             cell.descriptionLabel.text = "Genetic Algorithm"
         }

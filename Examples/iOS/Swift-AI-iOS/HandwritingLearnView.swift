@@ -1,22 +1,19 @@
 //
-//  HandwritingView.swift
+//  HandwritingLearnView.swift
 //  Swift-AI-iOS
 //
-//  Created by Collin Hundley on 12/3/15.
+//  Created by Collin Hundley on 12/18/15.
+//  Copyright © 2015 Appsidian. All rights reserved.
 //
 
 import UIKit
 import APKit
 
-class HandwritingView: UIView {
+class HandwritingLearnView: UIView {
     
+    let textField = UITextField()
     let canvasContainer = UIView()
     let canvas = UIImageView()
-    let snapshotBox = UIView()
-    let outputContainer = UIView()
-    let outputLabel = UILabel()
-    let confidenceLabel = UILabel()
-    let imageView = UIImageView()
     
     // Buttons
     let buttonContainer = UIView()
@@ -39,15 +36,23 @@ class HandwritingView: UIView {
     
     func configureSubviews() {
         // Add Subviews
-        self.addSubviews([self.canvasContainer, self.outputContainer, self.buttonContainer, self.imageView])
-        self.canvasContainer.addSubviews([self.canvas, self.snapshotBox])
-        self.outputContainer.addSubviews([self.outputLabel, self.confidenceLabel])
+        self.addSubviews([self.textField, self.canvasContainer, self.buttonContainer])
+        self.canvasContainer.addSubview(self.canvas)
         self.buttonContainer.addSubviews([self.startPauseButton, self.clearButton, self.infoButton])
         
         // Style View
         self.backgroundColor = UIColor.swiftLightGray()
         
         // Style Subviews
+        self.textField.backgroundColor = .whiteColor()
+        self.textField.textAlignment = .Center
+        self.textField.font = UIFont.swiftFontOfSize(60)
+        self.textField.keyboardType = .NumberPad
+        self.textField.layer.cornerRadius = 3
+        self.textField.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.textField.layer.shadowOpacity = 0.4
+        self.textField.layer.shadowOffset = CGSize(width: 1, height: 3)
+        
         self.canvasContainer.backgroundColor = .whiteColor()
         self.canvasContainer.layer.cornerRadius = 3
         self.canvasContainer.layer.shadowColor = UIColor.swiftMediumGray().CGColor
@@ -55,33 +60,6 @@ class HandwritingView: UIView {
         self.canvasContainer.layer.shadowOffset = CGSize(width: 1, height: 3)
         
         self.canvas.backgroundColor = .clearColor()
-        
-        self.snapshotBox.backgroundColor = UIColor.clearColor()
-        self.snapshotBox.layer.borderColor = UIColor.swiftGreen().CGColor
-        self.snapshotBox.layer.borderWidth = 2
-        self.snapshotBox.layer.cornerRadius = 6
-        self.snapshotBox.alpha = 0
-        
-        self.outputContainer.backgroundColor = .whiteColor()
-        self.outputContainer.layer.cornerRadius = 4
-        self.outputContainer.layer.shadowColor = UIColor.swiftMediumGray().CGColor
-        self.outputContainer.layer.shadowOpacity = 0.3
-        self.outputContainer.layer.shadowOffset = CGSize(width: 1, height: 3)
-        
-        self.outputLabel.textColor = .blackColor()
-        self.outputLabel.textAlignment = .Center
-        self.outputLabel.font = UIFont.swiftFontOfSize(100)
-        
-        self.confidenceLabel.textColor = .blackColor()
-        self.confidenceLabel.textAlignment = .Right
-        self.confidenceLabel.font = UIFont.swiftFontOfSize(15)
-        
-        self.imageView.backgroundColor = UIColor.whiteColor()
-        self.imageView.layer.cornerRadius = 4
-        self.imageView.layer.shadowColor = UIColor.swiftMediumGray().CGColor
-        self.imageView.layer.shadowOpacity = 0.3
-        self.imageView.layer.shadowOffset = CGSize(width: 1, height: 3)
-        self.imageView.contentMode = .ScaleAspectFit
         
         self.buttonContainer.backgroundColor = .whiteColor()
         self.buttonContainer.layer.cornerRadius = 4
@@ -115,31 +93,19 @@ class HandwritingView: UIView {
         self.configureSubviews()
         
         // Add Constraints
+        self.textField.constrainUsing(constraints: [
+            Constraint.cxcx : (of: self, offset: 0),
+            Constraint.w : (of: nil, offset: 60),
+            Constraint.tt : (of: self, offset: 15),
+            Constraint.h : (of: nil, offset: 60)])
+        
         self.canvasContainer.constrainUsing(constraints: [
             Constraint.ll : (of: self, offset: 10),
             Constraint.rr : (of: self, offset: -10),
-            Constraint.tt : (of: self, offset: 15),
+            Constraint.tb : (of: self.textField, offset: 10),
             Constraint.hw : (of: self, offset: -20)])
         
         self.canvas.fillSuperview()
-        
-        self.imageView.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 10),
-            Constraint.rcx : (of: self, offset: -7),
-            Constraint.tb : (of: self.canvasContainer, offset: 15),
-            Constraint.bt : (of: self.buttonContainer, offset: -15)])
-        
-        self.outputContainer.constrainUsing(constraints: [
-            Constraint.lcx : (of: self, offset: 7),
-            Constraint.rr : (of: self, offset: -10),
-            Constraint.tb : (of: self.canvasContainer, offset: 15),
-            Constraint.bt : (of: self.buttonContainer, offset: -15)])
-        
-        self.outputLabel.centerInSuperview()
-        
-        self.confidenceLabel.constrainUsing(constraints: [
-            Constraint.rr : (of: self.outputContainer, offset: 0),
-            Constraint.bb : (of: self.outputContainer, offset: 0)])
         
         self.buttonContainer.constrainUsing(constraints: [
             Constraint.ll : (of: self.canvasContainer, multiplier: 1, offset: 0),
@@ -171,9 +137,8 @@ class HandwritingView: UIView {
     // Note: Shadow paths defined here where views have frames
     override func layoutSubviews() {
         super.layoutSubviews()
+        self.textField.layer.shadowPath = UIBezierPath(roundedRect: self.textField.bounds, cornerRadius: self.textField.layer.cornerRadius).CGPath
         self.canvasContainer.layer.shadowPath = UIBezierPath(roundedRect: self.canvasContainer.bounds, cornerRadius: self.canvasContainer.layer.cornerRadius).CGPath
-        self.outputContainer.layer.shadowPath = UIBezierPath(roundedRect: self.outputContainer.bounds, cornerRadius: self.outputContainer.layer.cornerRadius).CGPath
-        self.imageView.layer.shadowPath = UIBezierPath(roundedRect: self.imageView.bounds, cornerRadius: self.imageView.layer.cornerRadius).CGPath
         self.buttonContainer.layer.shadowPath = UIBezierPath(roundedRect: self.buttonContainer.bounds, cornerRadius: self.buttonContainer.layer.cornerRadius).CGPath
     }
 }

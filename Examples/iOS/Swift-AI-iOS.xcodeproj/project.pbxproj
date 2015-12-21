@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F016BF931C24A2B2002E88B1 /* HandwritingLearnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F016BF921C24A2B2002E88B1 /* HandwritingLearnViewController.swift */; };
+		F016BF961C24A2DE002E88B1 /* handwriting-learn-ffnn in Resources */ = {isa = PBXBuildFile; fileRef = F016BF951C24A2DE002E88B1 /* handwriting-learn-ffnn */; };
+		F016BF981C24A2EB002E88B1 /* HandwritingLearnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F016BF971C24A2EB002E88B1 /* HandwritingLearnView.swift */; };
 		F02FD20C1C02B93400A137C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD20B1C02B93400A137C2 /* AppDelegate.swift */; };
 		F02FD20E1C02B93400A137C2 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02FD20D1C02B93400A137C2 /* GraphViewController.swift */; };
 		F02FD2141C02B93400A137C2 /* Swift_AI_iOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F02FD2121C02B93400A137C2 /* Swift_AI_iOS.xcdatamodeld */; };
@@ -54,6 +57,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F016BF921C24A2B2002E88B1 /* HandwritingLearnViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandwritingLearnViewController.swift; sourceTree = "<group>"; };
+		F016BF951C24A2DE002E88B1 /* handwriting-learn-ffnn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "handwriting-learn-ffnn"; sourceTree = SOURCE_ROOT; };
+		F016BF971C24A2EB002E88B1 /* HandwritingLearnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandwritingLearnView.swift; sourceTree = "<group>"; };
 		F02FD2081C02B93400A137C2 /* Swift AI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift AI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F02FD20B1C02B93400A137C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F02FD20D1C02B93400A137C2 /* GraphViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +105,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F016BF941C24A2B9002E88B1 /* Handwriting Learner */ = {
+			isa = PBXGroup;
+			children = (
+				F016BF921C24A2B2002E88B1 /* HandwritingLearnViewController.swift */,
+				F016BF971C24A2EB002E88B1 /* HandwritingLearnView.swift */,
+				F016BF951C24A2DE002E88B1 /* handwriting-learn-ffnn */,
+			);
+			name = "Handwriting Learner";
+			sourceTree = "<group>";
+		};
 		F02FD1FF1C02B93400A137C2 = {
 			isa = PBXGroup;
 			children = (
@@ -160,6 +176,7 @@
 				F0C5B8A21C0638BB0016FF6F /* NavigationBar.swift */,
 				F0C5B89E1C06374E0016FF6F /* Graphs */,
 				F0969D341C1157CF009C3B4A /* Handwriting */,
+				F016BF941C24A2B9002E88B1 /* Handwriting Learner */,
 				F0C5B8A61C0640B50016FF6F /* Genetic Algorithm */,
 			);
 			name = Views;
@@ -268,6 +285,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F09470531C0E6785004F4202 /* OpenSans-Bold.ttf in Resources */,
+				F016BF961C24A2DE002E88B1 /* handwriting-learn-ffnn in Resources */,
 				F09470541C0E6785004F4202 /* OpenSans-Italic.ttf in Resources */,
 				F074BC441C2153780061F59A /* handwriting-ffnn in Resources */,
 				F09470551C0E6785004F4202 /* OpenSans-Light.ttf in Resources */,
@@ -296,7 +314,9 @@
 				F094704A1C0D2A2F004F4202 /* InfoView.swift in Sources */,
 				F02FD20E1C02B93400A137C2 /* GraphViewController.swift in Sources */,
 				F0C5B8A51C0640B10016FF6F /* GAViewController.swift in Sources */,
+				F016BF981C24A2EB002E88B1 /* HandwritingLearnView.swift in Sources */,
 				F074BC421C214F120061F59A /* FFNNStorage.swift in Sources */,
+				F016BF931C24A2B2002E88B1 /* HandwritingLearnViewController.swift in Sources */,
 				F0969D381C115815009C3B4A /* HandwritingView.swift in Sources */,
 				F0C5B8A31C0638BB0016FF6F /* NavigationBar.swift in Sources */,
 				F0BAD9EA1C0565AE001AD2AE /* GraphView.swift in Sources */,
