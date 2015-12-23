@@ -26,7 +26,7 @@ We've created [example projects](https://github.com/collinhundley/Swift-AI/tree/
 - [iOS](https://github.com/collinhundley/Swift-AI/tree/master/Examples#ios):
     * 2D function regression (feed-forward neural network)
     * Handwriting recognition (feed-forward neural network)
-    * Evolution simultaion (genetic algorithm)
+    * Evolution simulation (genetic algorithm)
 - [OS X](https://github.com/collinhundley/Swift-AI/tree/master/Examples#os-x):
     * XOR logic gate modeling (feed-forward neural network)
     * 2D function regression (feed-forward neural network)
