@@ -16,8 +16,6 @@ public enum FFNNError: ErrorType {
     case InvalidWeightsError(String)
 }
 
-
-
 /// An enum containing all supported activation functions.
 public enum ActivationFunction: String {
     /// No activation function (returns zero)
@@ -37,7 +35,6 @@ public enum ActivationFunction: String {
     case HyperbolicTangent
 }
 
-
 /// An enum containing all supported error functions.
 public enum ErrorFunction {
     /// Default error function (sum)
@@ -56,10 +53,6 @@ public final class FFNN {
     let numHidden: Int
     /// The number of output nodes from the network (read only).
     let numOutputs: Int
-    
-    private let actFunction: ActFunction
-    private var hiddenLayer: Layer
-    private var outputLayer: Layer
     
     /// The 'learning rate' parameter to apply during backpropagation.
     /// This parameter may be safely tuned at any time, except for during a backpropagation cycle.
@@ -87,10 +80,10 @@ public final class FFNN {
      memory allocations for temporary variables during the update and backpropagation cycles.
      Some known properties are computed in advance in order to to avoid casting, integer division
      and modulus operations inside loops.
-    */
-    
-    /// (1 - momentumFactor) * learningRate.
-    /// Used frequently during backpropagation.
+     */
+     
+     /// (1 - momentumFactor) * learningRate.
+     /// Used frequently during backpropagation.
     private var mfLR: Float
     
     /// The number of input nodes, INCLUDING the bias node.
@@ -102,11 +95,13 @@ public final class FFNN {
     /// The total number of weights connecting all hidden nodes to all output nodes.
     private let numOutputWeights: Int
     
-
+    /// The current weights leading into all of the hidden nodes, serialized in a single array.
+    private var hiddenWeights: [Float]
     /// The weights leading into all of the hidden nodes from the previous round of training, serialized in a single array.
     /// Used for applying momentum during backpropagation.
     private var previousHiddenWeights: [Float]
-
+    /// The current weights leading into all of the output nodes, serialized in a single array.
+    private var outputWeights: [Float]
     /// The weights leading into all of the output nodes from the previous round of training, serialized in a single array.
     /// Used for applying momentum during backpropagation.
     private var previousOutputWeights: [Float]
@@ -137,7 +132,7 @@ public final class FFNN {
     private var hiddenErrorIndices = [Int]()
     /// The input indices corresponding to each hidden weight.
     private var inputIndices = [Int]()
-
+    
     
     /// Initializes a feed-forward neural network.
     public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float = 0.7, momentum: Float = 0.4, weights: [Float]? = nil, activationFunction: ActivationFunction = .Default, errorFunction: ErrorFunction = .Default(average: false)) {
@@ -161,8 +156,6 @@ public final class FFNN {
         
         self.inputCache = [Float](count: self.numInputNodes, repeatedValue: 0)
         self.hiddenOutputCache = [Float](count: self.numHiddenNodes, repeatedValue: 0)
-        hiddenOutputCache[0] = 1.0  // Bias should never change!!!
-        
         self.outputCache = [Float](count: outputs, repeatedValue: 0)
         
         self.outputErrorsCache = [Float](count: self.numOutputs, repeatedValue: 0)
@@ -172,23 +165,6 @@ public final class FFNN {
         self.newHiddenWeights = [Float](count: self.numHiddenWeights, repeatedValue: 0)
         
         self.activationFunction = activationFunction
-        switch self.activationFunction {
-        case .None:
-            self.actFunction = NoneFunction()
-        case .Default:
-            self.actFunction = Sigmoid()
-        case .Linear:
-            self.actFunction = Linear()
-        case .Sigmoid:
-            self.actFunction = Sigmoid()
-        case .Softmax:
-            self.actFunction = Softmax()
-        case .RationalSigmoid:
-            self.actFunction = RationalSigmoid()
-        case .HyperbolicTangent:
-            self.actFunction = HyperbolicTangent()
-        }
-        
         self.errorFunction = errorFunction
         for weightIndex in 0..<self.numOutputWeights {
             self.outputErrorIndices.append(weightIndex / self.numHiddenNodes)
@@ -200,11 +176,10 @@ public final class FFNN {
             self.inputIndices.append(weightIndex % self.numInputNodes)
         }
         
-        self.previousHiddenWeights = [Float](count: self.numHiddenWeights, repeatedValue: 0)
-        self.previousOutputWeights = [Float](count: outputs * self.numHiddenNodes, repeatedValue: 0)
-        
-        self.hiddenLayer = Layer(inputs: inputs, outputs: hidden, activation: self.activationFunction)
-        self.outputLayer = Layer(inputs: hidden, outputs: outputs, activation: self.activationFunction)
+        self.hiddenWeights = [Float](count: self.numHiddenWeights, repeatedValue: 0)
+        self.previousHiddenWeights = self.hiddenWeights
+        self.outputWeights = [Float](count: outputs * self.numHiddenNodes, repeatedValue: 0)
+        self.previousOutputWeights = self.outputWeights
         
         if let weights = weights {
             guard weights.count == numHiddenWeights + numOutputWeights else {
@@ -212,11 +187,12 @@ public final class FFNN {
                 self.randomizeWeights()
                 return
             }
-            hiddenLayer.matrix = Array(weights[0..<self.numHiddenWeights])
-            outputLayer.matrix = Array(weights[self.numHiddenWeights..<weights.count])
+            self.hiddenWeights = Array(weights[0..<self.numHiddenWeights])
+            self.outputWeights = Array(weights[self.numHiddenWeights..<weights.count])
         } else {
             self.randomizeWeights()
         }
+        
     }
     
     /// Propagates the given inputs through the neural network, returning the network's output.
@@ -227,29 +203,32 @@ public final class FFNN {
         guard inputs.count == self.numInputs else {
             throw FFNNError.InvalidAnswerError("Invalid number of inputs given: \(inputs.count). Expected: \(self.numInputs)")
         }
-
+        
         // Cache the inputs
         // Note: A bias node is inserted at index 0, followed by each of the given inputs
-        //TODO: inputCache could be removed once backpropagation gets updated in order to not need it and use only inputs vector
         self.inputCache[0] = 1.0
         for i in 1..<self.numInputNodes {
             self.inputCache[i] = inputs[i - 1]
         }
         
-        // Forward the hidden layer
-        // The ouput goes into hiddenOutputCache array from secon element.
-        // hiddenOutputCache's first element will always be 1.0 for bias
-        // inputs has no bias in it, so we call the layer function that will copy it into a biased vector
+        // Calculate the weighted sums for the hidden layer
+        vDSP_mmul(self.hiddenWeights, 1,
+            self.inputCache, 1,
+            &self.hiddenOutputCache, 1,
+            vDSP_Length(self.numHidden), vDSP_Length(1), vDSP_Length(self.numInputNodes))
         
-        hiddenLayer.forward(inputs, output: &hiddenOutputCache + 1)
-
-        //  Calculate the output layer
-        //  We have the inputs already biased, the layer function will not copy its input
-        //  We also do not have to put the output into a biased vector since this is our final output
+        // Apply the activation function to the hidden layer nodes
+        // Note: Array elements are shifted one index to the right, in order to efficiently insert the bias node at index 0
+        self.activateHidden()
         
-        outputLayer.forward(biasedInput: hiddenOutputCache, output: &outputCache)
+        //  Calculate the weighted sums for the output layer
+        vDSP_mmul(self.outputWeights, 1,
+            self.hiddenOutputCache, 1,
+            &self.outputCache, 1,
+            vDSP_Length(self.numOutputs), vDSP_Length(1), vDSP_Length(self.numHiddenNodes))
         
-        
+        // Apply the activation function to the output layer nodes
+        self.activateOutput()
         
         // Return the final outputs
         return self.outputCache
@@ -271,35 +250,34 @@ public final class FFNN {
                 // FIXME: This isn't working correctly
                 self.outputErrorsCache[outputIndex] = output - answer[outputIndex]
             default:
-                self.outputErrorsCache[outputIndex] = actFunction.derivative(output) * (answer[outputIndex] - output)
+                self.outputErrorsCache[outputIndex] = self.activationDerivative(output) * (answer[outputIndex] - output)
             }
         }
         
         // Calculate hidden errors
         vDSP_mmul(self.outputErrorsCache, 1,
-            outputLayer.matrix, 1,
+            self.outputWeights, 1,
             &self.hiddenErrorSumsCache, 1,
             vDSP_Length(1), vDSP_Length(self.numHiddenNodes), vDSP_Length(self.numOutputs))
         for (errorIndex, error) in self.hiddenErrorSumsCache.enumerate() {
-            self.hiddenErrorsCache[errorIndex] = actFunction.derivative(self.hiddenOutputCache[errorIndex]) * error
+            self.hiddenErrorsCache[errorIndex] = self.activationDerivative(self.hiddenOutputCache[errorIndex]) * error
         }
         
         // Update output weights
-        for weightIndex in 0..<outputLayer.matrix.count {
-            let offset = outputLayer.matrix[weightIndex] + (self.momentumFactor * (outputLayer.matrix[weightIndex] - self.previousOutputWeights[weightIndex]))
+        for weightIndex in 0..<self.outputWeights.count {
+            let offset = self.outputWeights[weightIndex] + (self.momentumFactor * (self.outputWeights[weightIndex] - self.previousOutputWeights[weightIndex]))
             let errorIndex = self.outputErrorIndices[weightIndex]
             let hiddenOutputIndex = self.hiddenOutputIndices[weightIndex]
             let mfLRErrIn = self.mfLR * self.outputErrorsCache[errorIndex] * self.hiddenOutputCache[hiddenOutputIndex]
             self.newOutputWeights[weightIndex] = offset + mfLRErrIn
         }
         
-        vDSP_mmov(outputLayer.matrix, &previousOutputWeights, 1, vDSP_Length(numOutputWeights), 1, 1)
-        vDSP_mmov(newOutputWeights, &outputLayer.matrix, 1, vDSP_Length(numOutputWeights), 1, 1)
-    
+        vDSP_mmov(outputWeights, &previousOutputWeights, 1, vDSP_Length(numOutputWeights), 1, 1)
+        vDSP_mmov(newOutputWeights, &outputWeights, 1, vDSP_Length(numOutputWeights), 1, 1)
         
         // Update hidden weights
-        for weightIndex in 0..<hiddenLayer.matrix.count {
-            let offset = hiddenLayer.matrix[weightIndex] + (self.momentumFactor * (hiddenLayer.matrix[weightIndex]  - self.previousHiddenWeights[weightIndex]))
+        for weightIndex in 0..<self.hiddenWeights.count {
+            let offset = self.hiddenWeights[weightIndex] + (self.momentumFactor * (self.hiddenWeights[weightIndex]  - self.previousHiddenWeights[weightIndex]))
             let errorIndex = self.hiddenErrorIndices[weightIndex]
             let inputIndex = self.inputIndices[weightIndex]
             // Note: +1 on errorIndex to offset for bias 'error', which is ignored
@@ -307,8 +285,8 @@ public final class FFNN {
             self.newHiddenWeights[weightIndex] = offset + mfLRErrIn
         }
         
-        vDSP_mmov(hiddenLayer.matrix, &previousHiddenWeights, 1, vDSP_Length(numHiddenWeights), 1, 1)
-        vDSP_mmov(newHiddenWeights, &hiddenLayer.matrix, 1, vDSP_Length(numHiddenWeights), 1, 1)
+        vDSP_mmov(hiddenWeights, &previousHiddenWeights, 1, vDSP_Length(numHiddenWeights), 1, 1)
+        vDSP_mmov(newHiddenWeights, &hiddenWeights, 1, vDSP_Length(numHiddenWeights), 1, 1)
         
         // Sum and return the output errors
         return self.outputErrorsCache.reduce(0, combine: { (sum, error) -> Float in
@@ -317,7 +295,7 @@ public final class FFNN {
     }
     
     /// Trains the network using the given set of inputs and corresponding outputs.
-    /// - Parameters: 
+    /// - Parameters:
     ///     - inputs: A 2D array of `Float`s.
     ///             Inner array: A single set of inputs for the network. Outer array: The full set of training data to be used for training.
     ///     - answers: A 2D array of `Float`s.
@@ -347,12 +325,12 @@ public final class FFNN {
                 break
             }
         }
-        return hiddenLayer.matrix + outputLayer.matrix
+        return self.hiddenWeights + self.outputWeights
     }
     
     /// Returns a serialized array of the network's current weights.
     public func getWeights() -> [Float] {
-        return hiddenLayer.matrix + outputLayer.matrix
+        return self.hiddenWeights + self.outputWeights
     }
     
     /// Resets the network with the given weights (i.e. from a pre-trained network).
@@ -365,8 +343,8 @@ public final class FFNN {
             throw FFNNError.InvalidWeightsError("Invalid number of weights provided: \(weights.count). Expected: \(self.numHiddenWeights + self.numOutputWeights)")
         }
         
-        hiddenLayer.matrix = Array(weights[0..<hiddenLayer.matrix.count])
-        outputLayer.matrix = Array(weights[hiddenLayer.matrix.count..<weights.count])
+        self.hiddenWeights = Array(weights[0..<self.hiddenWeights.count])
+        self.outputWeights = Array(weights[self.hiddenWeights.count..<weights.count])
     }
 }
 
@@ -423,8 +401,8 @@ public extension FFNN {
         storage["outputs"] = self.numOutputs
         storage["learningRate"] = self.learningRate
         storage["momentum"] = self.momentumFactor
-        storage["hiddenWeights"] = hiddenLayer.matrix
-        storage["outputWeights"] = outputLayer.matrix
+        storage["hiddenWeights"] = self.hiddenWeights
+        storage["outputWeights"] = self.outputWeights
         storage["activationFunction"] = self.activationFunction.rawValue
         
         let data: NSData = NSKeyedArchiver.archivedDataWithRootObject(storage)
@@ -439,7 +417,7 @@ public extension FFNN {
             for (inputIndex, input) in result.enumerate() {
                 let outputs = try self.update(inputs: input)
                 for (outputIndex, output) in outputs.enumerate() {
-                    errorSum += abs(actFunction.derivative(output) * (expected[inputIndex][outputIndex] - output))
+                    errorSum += abs(self.activationDerivative(output) * (expected[inputIndex][outputIndex] - output))
                 }
             }
             if average {
@@ -459,18 +437,117 @@ public extension FFNN {
         }
         return errorSum
     }
-
+    
+    /// Applies the activation function to the hidden layer nodes.
+    private func activateHidden() {
+        switch self.activationFunction {
+        case .None:
+            for (var i = self.numHidden; i > 0; --i) {
+                self.hiddenOutputCache[i] = 0.0
+            }
+            self.hiddenOutputCache[0] = 1.0
+        case .Default:
+            for (var i = self.numHidden; i > 0; --i) {
+                self.hiddenOutputCache[i] = sigmoid(self.hiddenOutputCache[i - 1])
+            }
+            self.hiddenOutputCache[0] = 1.0
+        case .Linear:
+            for (var i = self.numHidden; i > 0; --i) {
+                self.hiddenOutputCache[i] = linear(self.hiddenOutputCache[i - 1])
+            }
+            self.hiddenOutputCache[0] = 1.0
+        case .Sigmoid, .Softmax:
+            // For Softmax, apply Sigmoid activation for hidden layers
+            for (var i = self.numHidden; i > 0; --i) {
+                self.hiddenOutputCache[i] = sigmoid(self.hiddenOutputCache[i - 1])
+            }
+            self.hiddenOutputCache[0] = 1.0
+        case .RationalSigmoid:
+            for (var i = self.numHidden; i > 0; --i) {
+                self.hiddenOutputCache[i] = rationalSigmoid(self.hiddenOutputCache[i - 1])
+            }
+            self.hiddenOutputCache[0] = 1.0
+        case .HyperbolicTangent:
+            for (var i = self.numHidden; i > 0; --i) {
+                self.hiddenOutputCache[i] = hyperbolicTangent(self.hiddenOutputCache[i - 1])
+            }
+            self.hiddenOutputCache[0] = 1.0
+        }
+    }
+    
+    /// Applies the activation function to the output layer nodes.
+    private func activateOutput() {
+        switch self.activationFunction {
+        case .None:
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = 0.0
+            }
+        case .Default:
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = sigmoid(self.outputCache[i])
+            }
+        case .Linear:
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = linear(self.outputCache[i])
+            }
+        case .Sigmoid:
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = sigmoid(self.outputCache[i])
+            }
+        case .Softmax:
+            var sum: Float = 0
+            let max = self.outputCache.maxElement()!
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = self.outputCache[i] - max
+            }
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = exp(self.outputCache[i])
+                sum += self.outputCache[i]
+            }
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = self.outputCache[i] / sum
+            }
+        case .RationalSigmoid:
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = rationalSigmoid(self.outputCache[i])
+            }
+        case .HyperbolicTangent:
+            for i in 0..<self.numOutputs {
+                self.outputCache[i] = hyperbolicTangent(self.outputCache[i])
+            }
+        }
+    }
+    
+    /// Calculates the derivative of the activation function, from the given `y` value.
+    private func activationDerivative(output: Float) -> Float {
+        switch self.activationFunction {
+        case .None:
+            return 0.0
+        case .Default:
+            return sigmoidDerivative(output)
+        case .Linear:
+            return linearDerivative(output)
+        case .Sigmoid:
+            return sigmoidDerivative(output)
+        case .Softmax:
+            return sigmoidDerivative(output)
+        case .RationalSigmoid:
+            return rationalSigmoidDerivative(output)
+        case .HyperbolicTangent:
+            return hyperbolicTangentDerivative(output)
+        }
+    }
     
     /// Randomizes all of the network's weights, from each layer.
     private func randomizeWeights() {
         for i in 0..<self.numHiddenWeights {
-            hiddenLayer.matrix[i] = randomWeight(numInputNodes: self.numInputNodes)
+            self.hiddenWeights[i] = randomWeight(numInputNodes: self.numInputNodes)
         }
         for i in 0..<self.numOutputWeights {
-            outputLayer.matrix[i] = randomWeight(numInputNodes: self.numHiddenNodes)
+            self.outputWeights[i] = randomWeight(numInputNodes: self.numHiddenNodes)
         }
     }
-
+    
 }
 
 // TODO: Generate random weights along a normal distribution, rather than a uniform distribution.
@@ -487,188 +564,48 @@ private func randomWeight(numInputNodes numInputNodes: Int) -> Float {
 
 // MARK: Error Functions
 
-@inline(__always) private func crossEntropy(a: Float, b: Float) -> Float {
+private func crossEntropy(a: Float, b: Float) -> Float {
     return log(a) * b
 }
 
+// MARK: Activation Functions and Derivatives
 
-// MARK: - Activation Functions and Derivatives
-
-private protocol ActFunction {
-    /// Calculate the activation for a single node having value x
-    func activate(x: Float) -> Float
-    
-    /// Calculates the derivative of the activation function, from the given `y` value.
-    func derivative(y: Float) -> Float
+/// Linear activation function (raw sum)
+private func linear(x: Float) -> Float {
+    return x
 }
 
-extension ActFunction {
-    // Default protocol implementation for nodes activations
-    @inline(__always) private func activateNodes(nodes: UnsafeMutablePointer<Float>, nodesCount: Int) {
-        var currentNode = nodes
-        for _ in 0..<nodesCount {
-            currentNode.memory = activate(currentNode.memory)
-            currentNode = currentNode.successor()
-        }
-    }
+/// Derivative for the linear activation function
+private func linearDerivative(y: Float) -> Float {
+    return 1.0
 }
 
-private struct NoneFunction: ActFunction {
-    /// None activation function
-    @inline(__always) private func activate(x: Float) -> Float {
-        return 0.0
-    }
-    
-    /// Derivative for the none activation function
-    @inline(__always) private func derivative(y: Float) -> Float {
-        return 0.0
-    }
+/// Sigmoid activation function
+private func sigmoid(x: Float) -> Float {
+    return 1 / (1 + exp(-x))
+}
+/// Derivative for the sigmoid activation function
+private func sigmoidDerivative(y: Float) -> Float {
+    return y * (1 - y)
 }
 
-
-private struct Linear: ActFunction {
-    /// Linear activation function (raw sum)
-    @inline(__always) private func activate(x: Float) -> Float {
-        return x
-    }
-    
-    /// Derivative for the linear activation function
-    @inline(__always) private func derivative(y: Float) -> Float {
-        return 1.0
-    }
+/// Rational sigmoid activation function
+private func rationalSigmoid(x: Float) -> Float {
+    return x / (1.0 + sqrt(1.0 + x * x))
 }
 
-
-private struct Sigmoid: ActFunction {
-    /// Sigmoid activation function
-    @inline(__always) func activate(x: Float) -> Float {
-        return 1 / (1 + exp(-x))
-    }
-    
-    /// Derivative for the sigmoid activation function
-    @inline(__always) private func derivative(y: Float) -> Float {
-        return y * (1 - y)
-    }
+/// Derivative for the rational sigmoid activation function
+private func rationalSigmoidDerivative(y: Float) -> Float {
+    let x = -(2 * y) / (y * y - 1)
+    return 1 / ((x * x) + sqrt((x * x) + 1) + 1)
 }
 
-
-private struct Softmax: ActFunction {
-    /// Softmax activation function
-    @inline(__always) private func activate(x: Float) -> Float {
-        return 1 / (1 + exp(-x))
-    }
-    
-    /// Derivative for the softmax activation function
-    @inline(__always) private func derivative(y: Float) -> Float {
-        return y * (1 - y)
-    }
+/// Hyperbolic tangent activation function
+private func hyperbolicTangent(x: Float) -> Float {
+    return tanh(x)
 }
 
-
-private struct RationalSigmoid: ActFunction {
-    
-    /// Rational sigmoid activation function
-    @inline(__always) private func activate(x: Float) -> Float {
-        return x / (1.0 + sqrt(1.0 + x * x))
-    }
-    
-    /// Derivative for the rational sigmoid activation function
-    @inline(__always) private func derivative(y: Float) -> Float {
-        let x = -(2 * y) / (y * y - 1)
-        return 1 / ((x * x) + sqrt((x * x) + 1) + 1)
-    }
-}
-
-
-private struct HyperbolicTangent: ActFunction {
-    /// Hyperbolic tangent activation function
-    @inline(__always) private func activate(x: Float) -> Float {
-        return tanh(x)
-    }
-    
-    /// Derivative for the hyperbolic tangent activation function
-    @inline(__always) private func derivative(y: Float) -> Float {
-        return 1 - (y * y)
-    }
-}
-
-//MARK: - Layer
-private struct Layer {
-    let activationFunction: ActFunction
-    let biasedInputsCount: Int
-    let inputsCount: Int
-    let outputsCount: Int
-    var biasedInput: [Float]
-    var matrix: [Float]
-    
-    init(inputs: Int, outputs: Int, activation: ActivationFunction, weights: [Float]) {
-        
-        switch activation {
-        case .None:
-            self.activationFunction = NoneFunction()
-        case .Default:
-            self.activationFunction = Sigmoid()
-        case .Linear:
-            self.activationFunction = Linear()
-        case .Sigmoid:
-            self.activationFunction = Sigmoid()
-        case .Softmax:
-            self.activationFunction = Softmax()
-        case .RationalSigmoid:
-            self.activationFunction = RationalSigmoid()
-        case .HyperbolicTangent:
-            self.activationFunction = HyperbolicTangent()
-        }
-        
-        self.biasedInputsCount = inputs + 1
-        self.inputsCount = inputs
-        self.outputsCount = outputs
-        self.biasedInput = Array<Float>(count: biasedInputsCount, repeatedValue: 1.0)   // First element will always remain 1.0 for bias
-        self.matrix = weights
-    }
-    
-    func forward(biasedInput input: UnsafePointer<Float>, output: UnsafeMutablePointer<Float>) {
-        // Vectorized calculation of node values
-        vDSP_mmul(matrix, 1,
-            input, 1,
-            output, 1,
-            vDSP_Length(outputsCount), vDSP_Length(1), vDSP_Length(biasedInputsCount))
-        
-        // Nodes Activation
-        activationFunction.activateNodes(output, nodesCount: outputsCount)
-        
-        //TODO: Implement Softmax_ing if layer requires it
-        
-        /*
-        switch self.activationFunction { ...
-        case .Softmax:
-        var sum: Float = 0
-        let max = self.outputCache.maxElement()!
-        for i in 0..<self.numOutputs {
-        self.outputCache[i] = self.outputCache[i] - max
-        }
-        for i in 0..<self.numOutputs {
-        self.outputCache[i] = exp(self.outputCache[i])
-        sum += self.outputCache[i]
-        }
-        for i in 0..<self.numOutputs {
-        self.outputCache[i] = self.outputCache[i] / sum
-        }
-        */
-    }
-    
-    mutating func forward(input: UnsafePointer<Float>, output: UnsafeMutablePointer<Float>) {
-        // Copy input into self bised input vector
-        vDSP_mmov(input, &biasedInput + 1, 1, vDSP_Length(inputsCount), 1, 1)
-        
-        forward(biasedInput: biasedInput, output: output)
-    }
-}
-
-extension Layer {
-    // Convenience initializer with all zero weights
-    init(inputs: Int, outputs: Int, activation: ActivationFunction) {
-        let zeroWeights = Array<Float>(count: (inputs + 1) * outputs, repeatedValue: 0.0)
-        self.init(inputs: inputs, outputs: outputs, activation: activation, weights: zeroWeights)
-    }
+/// Derivative for the hyperbolic tangent activation function
+private func hyperbolicTangentDerivative(y: Float) -> Float {
+    return 1 - (y * y)
 }
