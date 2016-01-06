@@ -1,6 +1,6 @@
 [![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Banner.png?raw=true)](https://github.com/collinhundley/Swift-AI#care-enough-to-donate)
 
-Swift AI is a high-performance AI and Machine Learning library written entirely in Swift.
+Swift AI is a high-performance AI and machine learning library written entirely in Swift.
 We currently support iOS and OS X, with support for more platforms coming soon!
 
 
@@ -54,9 +54,14 @@ If you're using Swift AI in one of your own projects, let us know! We'll add a l
 ## Contributing
 Contributions to the project are welcome. Please review the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) before submitting a pull request, and strive to maintain consistency with the structure and formatting of existing code. Official guidelines with more details will be provided soon.
 
+## Contact
+I develop iOS apps, and have some engineering experience. You can reach me here:
+
+![Email](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Email.png?raw=true)
+
 ## Care Enough to Donate?
 
-Take a little, give a little. I don't usually like handouts, but time is a big constraint. More donations = less contract work = more time building great open-source projects!
+Take a little, give a little. More donations = less contract work = more time building great open-source projects!
 
 >**What good will my money do?**
 
