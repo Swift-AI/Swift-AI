@@ -55,7 +55,7 @@ If you're using Swift AI in one of your own projects, let us know! We'll add a l
 Contributions to the project are welcome. Please review the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) before submitting a pull request, and strive to maintain consistency with the structure and formatting of existing code. Official guidelines with more details will be provided soon.
 
 ## Contact
-I develop iOS apps, and have some engineering experience. You can reach me here:
+I develop iOS apps, and have experience in engineering. You can reach me here:
 
 ![Email](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Email.png?raw=true)
 
