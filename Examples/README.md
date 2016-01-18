@@ -38,7 +38,7 @@ You can control the target function by adjusting the slider:
 
 Initially, you're given a randomly-generated neural network. Tapping 'Start' initiates a training process, which consists of two phases:
 - **Update**: For every `x` position on the graph, the neural network is asked to make its 'best guess' for the corresponding `y` value. These points are plotted in red on the screen.
-- **Backpropagation**: For every `x` position, the network's output `y` is compared to the 'target' value. The resulting error is propagated through the network and its weights are adjusted accordingly (more details in the [documentation](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#training).
+- **Backpropagation**: For every `x` position, the network's output `y` is compared to the 'target' value. The resulting error is propagated through the network and its weights are adjusted accordingly (more details in the [documentation](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#training)).
 
 Within a few seconds, the network is able to "learn" a good approximation of the target function. Note that the target values are never actually stored by the neural network - rather, it uses them to learn by example.
 
@@ -57,7 +57,18 @@ This example shows how an artificial neural network can be trained to recognize 
 
 ![Handwriting](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Handwriting.png?raw=true)
 
-(Usage and documentation coming soon)
+Draw a on the canvas with your finger, and the neural net will attempt to classify the character drawn. Here's how it works:
+
+- The image that you create is first rasterized and downscaled to a resolution of 28x28. This downscaled image is shown on the bottom left of the screen, so you have an idea of what the neural network is actually "seeing."
+
+> Why downscale the image?
+
+  * The less information you feed a neural network, the less prone it is to error. Imagine that you're teaching a child basic arithmetic: they're more likely to succeed if you only give them exactly the information they need (addition, subtraction, multiplication, division) than if you discuss the theory of multivariate calculus. Reducing the number of pixels in our image reduces the *dimensionality* of our data, allowing the neural net to learn more efficiently. 28x28 happens to be a good size so that our dataset is much smaller, but the characters are still totally recognizable.
+    
+- The app has been packaged with a pre-trained neural network. It was trained with the [MNIST dataset](http://yann.lecun.com/exdb/mnist/), and as such it can only recognize handwritten **digits (0-9)**. It could easily be trained to recognize alphabetic characters, symbols, emojis, etc., but the MNIST data was readily available and it's sufficient for this small demonstration.
+  * The trainer for this neural network is included in the [OS X app](https://github.com/collinhundley/Swift-AI/tree/master/Examples#os-x), so you're free to train it yourself and even use a different set of data.
+    
+- For each drawing given, the neural network is *forced* to classify it as a number between 0 and 9. So of course, sketching a letter, a smiley-face or an octopus isn't going to give you good results. With each classification, the level of confidence is shown beneath the output.
 
 
 ### Evolution
