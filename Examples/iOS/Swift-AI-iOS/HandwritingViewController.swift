@@ -10,7 +10,7 @@ import UIKit
 class HandwritingViewController: UIViewController {
     
     var network: FFNN!
-    let brushWidth: CGFloat = 25
+    let brushWidth: CGFloat = 20
     
     // Drawing state variables
     private var lastDrawPoint = CGPointZero
