@@ -25,13 +25,14 @@ Swift AI includes a set of common tools used for machine learning and artificial
 Please see the [**documentation**](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) for detailed instructions on how to use the various components of Swift AI.
 
 We've also created [**example projects**](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) to demonstrate the usage and potential applications of Swift AI:
-- [**iOS**](https://github.com/collinhundley/Swift-AI/tree/master/Examples#ios):
+- [iOS](https://github.com/collinhundley/Swift-AI/tree/master/Examples#ios):
     * 2D function regression (feed-forward neural network)
     * Handwriting recognition (feed-forward neural network)
     * Evolution simulation (genetic algorithm)
-- [**OS X**](https://github.com/collinhundley/Swift-AI/tree/master/Examples#os-x):
+- [OS X](https://github.com/collinhundley/Swift-AI/tree/master/Examples#os-x):
     * XOR logic gate modeling (feed-forward neural network)
     * 2D function regression (feed-forward neural network)
+    * Trainer for iOS handwriting recognizer (feed-forward neural network)
 - Swift Playground:
     * Graphing - used in conjunction with OS X regression examples
 
