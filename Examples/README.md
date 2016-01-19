@@ -38,7 +38,7 @@ You can control the target function by adjusting the slider:
 
 Initially, you're given a randomly-generated neural network. Tapping 'Start' initiates a training process, which consists of two phases:
 - **Update**: For every `x` position on the graph, the neural network is asked to make its 'best guess' for the corresponding `y` value. These points are plotted in red on the screen.
-- **Backpropagation**: For every `x` position, the network's output `y` is compared to the 'target' value. The resulting error is propagated through the network and its weights are adjusted accordingly (more details in the [documentation](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#training).
+- **Backpropagation**: For every `x` position, the network's output `y` is compared to the 'target' value. The resulting error is propagated through the network and its weights are adjusted accordingly (more details in the [documentation](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#training)).
 
 Within a few seconds, the network is able to "learn" a good approximation of the target function. Note that the target values are never actually stored by the neural network - rather, it uses them to learn by example.
 
@@ -57,7 +57,32 @@ This example shows how an artificial neural network can be trained to recognize 
 
 ![Handwriting](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Handwriting.png?raw=true)
 
-(Usage and documentation coming soon)
+> **How do I use it?**
+
+You simply draw a on the canvas with your finger, and the neural net will attempt to classify the character drawn.
+
+> **How does it work?**
+
+The image that you sketch is first rasterized and downscaled to a resolution of 28x28. This downscaled image is shown on the bottom left of the screen, so you have an idea of what the neural network is actually "seeing."
+
+> Why downscale the image?
+
+The less information you feed a neural network, the less prone it is to error. Imagine that you're teaching a child basic arithmetic: they're more likely to succeed if you only give them exactly the information they need (addition, subtraction, multiplication, division) than if you discuss the theory of multivariate calculus. Reducing the number of pixels in our image reduces the *dimensionality* of our data, allowing the neural net to learn more efficiently. 28x28 happens to be a good size so that our dataset is much smaller, but the characters are still totally recognizable.
+
+> Where does the training happen?
+
+The app has been packaged with a pre-trained neural network. It was trained with the [MNIST dataset](http://yann.lecun.com/exdb/mnist/), and as such it can only recognize **handwritten digits (0-9)**. It could easily be trained to recognize alphabetic characters, symbols, emojis, etc., but the MNIST data was readily available and it's sufficient for this small demonstration.
+
+The trainer for this neural network is included in the [OS X app](https://github.com/collinhundley/Swift-AI/tree/master/Examples#os-x), so you're free to train it again yourself and even use a different set of data.
+
+**Note:** For each drawing given, the neural network is *forced* to classify it as a number between 0 and 9. So of course, sketching a letter, a smiley-face or an octopus isn't going to give you good results. With each classification, the level of confidence is shown beneath the output.
+
+> **How accurate is it?**
+
+The database used to train this network includes a total of 70,000 handwriting samples from 500 different people. 60,000 samples were used for training and 10,000 *unseen* samples were used for validation, as discussed in the [documentation](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#training). The training was halted when accuracy on the validation set reached 98%.
+
+You might not experience 98% accuracy with your own handwriting. This is primarily because the images produced by the digital canvas don't *quite* look the same as the pen-drawn images from the database. The size of your drawing and thickness of the brush also have an impact on image recognition, although I've tried to ship the app with good settings.
+
 
 
 ### Evolution

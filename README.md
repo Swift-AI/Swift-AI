@@ -14,15 +14,14 @@ Swift AI includes a set of common tools used for machine learning and artificial
 - [ ] Convolutional Network
 - [ ] GPU-Accelerated Networks
 - [ ] Genetic Algorithms
-    * [NSGA-II] (http://www.iitk.ac.in/kangal/Deb_NSGA-II.pdf)
 - [x] [Fast Matrix Library](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/Matrix.md#matrix)
-    * Matrix class with common operators
+    * Matrix class supporting common operators
     * SIMD-accelerated operations
 - [ ] Fourier Transform Functions
 
 
 ## Usage and Examples
-We've created [example projects](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) to demonstrate the usage and potential applications of Swift AI:
+I've created [example projects](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) to demonstrate the usage and potential applications of Swift AI:
 - [iOS](https://github.com/collinhundley/Swift-AI/tree/master/Examples#ios):
     * 2D function regression (feed-forward neural network)
     * Handwriting recognition (feed-forward neural network)
@@ -49,13 +48,13 @@ Swift AI currently depends on Apple's [Accelerate](https://developer.apple.com/l
 In order to provide support for more platforms (Linux, Windows, etc.), alternative BLAS solutions are being considered. A vanilla Swift implementation is one possibility, but SIMD instructions will be preferred for their significant performance boost. Check back for more updates on this soon.
 
 ## Using Swift AI?
-If you're using Swift AI in one of your own projects, let us know! We'll add a link to your profile/website/app right here on the front page.
+If you're using Swift AI in one of your own projects, let me know! I'll add a link to your profile/website/app right here on the front page. Feel free to email me at the address shown below.
 
 ## Contributing
 Contributions to the project are welcome. Please review the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) before submitting a pull request, and strive to maintain consistency with the structure and formatting of existing code. Official guidelines with more details will be provided soon.
 
 ## Contact
-I develop iOS apps, and have some engineering experience. You can reach me here:
+I develop iOS apps, and have experience in engineering. You can reach me here:
 
 ![Email](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Email.png?raw=true)
 
