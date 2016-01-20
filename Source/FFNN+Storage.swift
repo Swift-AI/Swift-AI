@@ -1,3 +1,14 @@
+//
+//  FFNN+Storage.swift
+//
+//  Created by Collin Hundley on 11/25/15.
+//
+
+/*
+    NOTE: This file extends `FFNN` to adopt the `Storage` protocol, for reading/writing neural networks to file.
+    To reduce dependencies between source files, the extension is defined here rather than in `FFNN.swift` directly.
+*/
+
 import Foundation
 
 // MARK:- Storage protocol

@@ -5,6 +5,10 @@
 //  Created by Collin Hundley on 11/14/15.
 //
 
+/*
+    NOTE: Include `Storage.swift` and `FFNN+Storage.swift` to add support for reading/writing files.
+*/
+
 import Accelerate
 import Foundation
 
