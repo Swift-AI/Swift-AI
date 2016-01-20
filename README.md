@@ -40,8 +40,7 @@ if /* massive function for checking the letter A */ {
 
 Hopefully you've realized by now that this method simply isn't feasible. In the best case scenario, you might end up thousands of lines of very unreliable code for recognizing only *your* exact handwriting. In comparison, Swift AI's iOS example app demonstrates how far superior functionality can be accomplished with very few lines of code, using machine learning. And requiring exactly *zero* explicit rules to be written by the developer.
 
-So how can Swift AI be used in the real world? Here are a few ideas to get you started:
-
+So how can Swift AI be used in the real world? Here are a few ideas to get you started:\
 - Handwriting recognition
 - Gesture recognition
 - Facial detection
@@ -52,14 +51,14 @@ So how can Swift AI be used in the real world? Here are a few ideas to get you s
 - Video game AI
 - Weather forecasting
 - Fraud detection
-- [Buidling amazing robots!](https://www.youtube.com/watch?v=99DOwLcbKl8)
+- [Buidling smart robots!](https://www.youtube.com/watch?v=99DOwLcbKl8)
 
 
 ## Usage and Examples
 
-Please see the [**documentation**](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) for detailed instructions on how to use the various components of Swift AI.
+Please see the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) for detailed instructions on how to use the various components of Swift AI.
 
-We've also created [**example projects**](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) to demonstrate the usage and potential applications of this library:
+We've also created [example projects](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) to demonstrate the usage and potential applications of this library:
 - [iOS](https://github.com/collinhundley/Swift-AI/tree/master/Examples#ios):
     * 2D function regression (feed-forward neural network)
     * Handwriting recognition (feed-forward neural network)
