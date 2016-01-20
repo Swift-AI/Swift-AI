@@ -38,7 +38,7 @@ if /* massive function for checking the letter A */ {
 } else if ...
 ```
 
-Hopefully you've realized by now that this method simply isn't feasible. In the best case scenario, you might end up thousands of lines of very unreliable code for recognizing only *your* exact handwriting. In comparison, Swift AI's iOS example app demonstrates how far superior functionality can be accomplished with very few lines of code, using machine learning. And requiring exactly *zero* explicit rules to be written by the developer.
+Hopefully you've realized by now that this method simply isn't feasible. In the best case scenario, you might end up thousands of lines of very unreliable code for recognizing only *your* exact handwriting. In comparison, Swift AI's [iOS example app](https://github.com/collinhundley/Swift-AI/tree/master/Examples#ios) demonstrates how far superior functionality can be accomplished with very few lines of code, using machine learning. And requiring exactly *zero* explicit rules to be written by the developer.
 
 So how can Swift AI be used in the real world? Here are a few ideas to get you started:\
 - Handwriting recognition
