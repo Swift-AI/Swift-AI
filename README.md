@@ -53,7 +53,7 @@ Here are a few ideas to get you started:
 - Video game AI
 - Weather forecasting
 - Fraud detection
-- [Buidling smart robots!](https://www.youtube.com/watch?v=99DOwLcbKl8)
+- [Building smart robots!](https://www.youtube.com/watch?v=99DOwLcbKl8)
 
 
 ## Usage and Examples
