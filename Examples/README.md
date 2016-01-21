@@ -1,14 +1,14 @@
 [![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Banner.png?raw=true)](https://github.com/collinhundley/Swift-AI#care-enough-to-donate)
 
 # Examples
-This collection of example projects has been prepared to demonstrate real-world usage of Swift AI.  If you have more ideas, open an [issue](https://github.com/collinhundley/Swift-AI/issues) or submit a [pull request](https://github.com/collinhundley/Swift-AI/pulls).  We'd love to hear your feedback!
+This collection of example projects has been prepared to demonstrate real-world usage of Swift AI.  If you have more ideas, open an [issue](https://github.com/collinhundley/Swift-AI/issues) or submit a [pull request](https://github.com/collinhundley/Swift-AI/pulls).  I'd love to hear your feedback!
 
 ## iOS
 The Swift AI iOS app serves two purposes:
 - Provide visual representations of the "learning" process involved in machine learning.
 - Demonstrate the possibilities of integrating artificial intelligence into iOS apps.
 
-**Important:** This app has been optimized for iPhone6/6s/+, and also supports iPhone 5/5s. I make no guarantee regarding compatibility with iPhone 4s, and it's likely that performance will suffer.
+**Important:** This app has been optimized for iPhone 6/6s/+, and also supports iPhone 5/5s. I make no guarantee regarding compatibility with iPhone 4s, and it's likely that performance will suffer.
 
 **iOS Simulator:** I recommend that you always build to a real iOS device, as some examples won't work well on the Simulator. These include examples requiring high graphics performance (such as Regression), examples using gestures (Handwriting), and any examples requiring the camera.
 
