@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		4258CD7D1C035289004A2682 /* SimpleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4258CD7C1C035289004A2682 /* SimpleTest.swift */; };
+		8A76C1B71C53C28C000BBE38 /* FFNN+Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A76C1B61C53C28C000BBE38 /* FFNN+Storage.swift */; };
 		954085991C23C804000B206F /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5B8AE1C0647FC0016FF6F /* Storage.swift */; };
 		9540859A1C23C804000B206F /* FFNN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0C1C0FD37A009C3B4A /* FFNN.swift */; };
-		9540859B1C23C804000B206F /* FFNNStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F074BC3F1C214E900061F59A /* FFNNStorage.swift */; };
 		9540859C1C23C804000B206F /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0F1C0FD37A009C3B4A /* Vector.swift */; };
 		9540859D1C23C804000B206F /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0D1C0FD37A009C3B4A /* Matrix.swift */; };
 		9540859E1C23C804000B206F /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0E1C0FD37A009C3B4A /* Operations.swift */; };
@@ -21,7 +21,6 @@
 		F074BC3C1C2137570061F59A /* t10k-labels-idx1-ubyte in CopyFiles */ = {isa = PBXBuildFile; fileRef = F074BC341C2137200061F59A /* t10k-labels-idx1-ubyte */; };
 		F074BC3D1C2137570061F59A /* train-images-idx3-ubyte in CopyFiles */ = {isa = PBXBuildFile; fileRef = F074BC351C2137200061F59A /* train-images-idx3-ubyte */; };
 		F074BC3E1C2137570061F59A /* train-labels-idx1-ubyte in CopyFiles */ = {isa = PBXBuildFile; fileRef = F074BC361C2137200061F59A /* train-labels-idx1-ubyte */; };
-		F074BC401C214E900061F59A /* FFNNStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F074BC3F1C214E900061F59A /* FFNNStorage.swift */; };
 		F0969D101C0FD37A009C3B4A /* FFNN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0C1C0FD37A009C3B4A /* FFNN.swift */; };
 		F0969D111C0FD37A009C3B4A /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0D1C0FD37A009C3B4A /* Matrix.swift */; };
 		F0969D121C0FD37A009C3B4A /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D0E1C0FD37A009C3B4A /* Operations.swift */; };
@@ -50,6 +49,7 @@
 		4258CD7A1C035289004A2682 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4258CD7C1C035289004A2682 /* SimpleTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTest.swift; sourceTree = "<group>"; };
 		4258CD7E1C035289004A2682 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8A76C1B61C53C28C000BBE38 /* FFNN+Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "FFNN+Storage.swift"; path = "../../../Source/FFNN+Storage.swift"; sourceTree = "<group>"; };
 		F02FD22B1C02D38100A137C2 /* Swift-AI-OSX */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Swift-AI-OSX"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F02FD22E1C02D38100A137C2 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		F02FD2371C02D3BB00A137C2 /* SineWave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SineWave.swift; sourceTree = "<group>"; };
@@ -58,7 +58,6 @@
 		F074BC341C2137200061F59A /* t10k-labels-idx1-ubyte */ = {isa = PBXFileReference; lastKnownFileType = file; name = "t10k-labels-idx1-ubyte"; path = "../MNIST-TrainingData/t10k-labels-idx1-ubyte"; sourceTree = "<group>"; };
 		F074BC351C2137200061F59A /* train-images-idx3-ubyte */ = {isa = PBXFileReference; lastKnownFileType = file; name = "train-images-idx3-ubyte"; path = "../MNIST-TrainingData/train-images-idx3-ubyte"; sourceTree = "<group>"; };
 		F074BC361C2137200061F59A /* train-labels-idx1-ubyte */ = {isa = PBXFileReference; lastKnownFileType = file; name = "train-labels-idx1-ubyte"; path = "../MNIST-TrainingData/train-labels-idx1-ubyte"; sourceTree = "<group>"; };
-		F074BC3F1C214E900061F59A /* FFNNStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FFNNStorage.swift; path = ../../../Source/FFNNStorage.swift; sourceTree = "<group>"; };
 		F0969D0C1C0FD37A009C3B4A /* FFNN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FFNN.swift; path = ../../../Source/FFNN.swift; sourceTree = "<group>"; };
 		F0969D0D1C0FD37A009C3B4A /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Matrix.swift; path = ../../../Source/Matrix.swift; sourceTree = "<group>"; };
 		F0969D0E1C0FD37A009C3B4A /* Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Operations.swift; path = ../../../Source/Operations.swift; sourceTree = "<group>"; };
@@ -140,7 +139,7 @@
 			children = (
 				F0C5B8AE1C0647FC0016FF6F /* Storage.swift */,
 				F0969D0C1C0FD37A009C3B4A /* FFNN.swift */,
-				F074BC3F1C214E900061F59A /* FFNNStorage.swift */,
+				8A76C1B61C53C28C000BBE38 /* FFNN+Storage.swift */,
 				F0969D0F1C0FD37A009C3B4A /* Vector.swift */,
 				F0969D0D1C0FD37A009C3B4A /* Matrix.swift */,
 				F0969D0E1C0FD37A009C3B4A /* Operations.swift */,
@@ -248,7 +247,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9540859A1C23C804000B206F /* FFNN.swift in Sources */,
-				9540859B1C23C804000B206F /* FFNNStorage.swift in Sources */,
 				9540859D1C23C804000B206F /* Matrix.swift in Sources */,
 				9540859E1C23C804000B206F /* Operations.swift in Sources */,
 				9540859C1C23C804000B206F /* Vector.swift in Sources */,
@@ -267,8 +265,8 @@
 				F0969D131C0FD37A009C3B4A /* Vector.swift in Sources */,
 				F0969D111C0FD37A009C3B4A /* Matrix.swift in Sources */,
 				F0969D121C0FD37A009C3B4A /* Operations.swift in Sources */,
+				8A76C1B71C53C28C000BBE38 /* FFNN+Storage.swift in Sources */,
 				F02FD22F1C02D38100A137C2 /* main.swift in Sources */,
-				F074BC401C214E900061F59A /* FFNNStorage.swift in Sources */,
 				F02FD2391C02D3BB00A137C2 /* SineWave.swift in Sources */,
 				F0C5B8AF1C0647FC0016FF6F /* Storage.swift in Sources */,
 			);
