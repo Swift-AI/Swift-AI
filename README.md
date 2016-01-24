@@ -28,7 +28,7 @@ I get this question a lot, so I want to address it here:
 
 Swift AI focuses on a useful branch of artificial intelligence known as *machine learning*: the science of training computers to take actions without explicit programming. Used appropriately, these tools can give your applications abilities that would normally be impossible or *unrealistic* using conventional programming techniques.
 
-As an example, consider an app that recognizes handwritten letters on a piece of paper: using the computer science you leaned in school, you might be tempted to write each of the rules for classifying each character individually. This would consist of extracting pixel data from the image, reading them in individually, and writing an *extremely* complicated mathematical model that relates pixel darkness/position into a probability for the letter `A`, and then likewise for `B`, `C`, `D`, etc. Sound fun? Here's what your program might eventually look like:
+As an example, consider an app that recognizes handwritten letters on a piece of paper: using the computer science you learned in school, you might be tempted to write each of the rules for classifying each character individually. This would consist of extracting pixel data from the image, reading them in individually, and writing an *extremely* complicated mathematical model that relates pixel darkness/position into a probability for the letter `A`, and then likewise for `B`, `C`, `D`, etc. Sound fun? Here's what your program might eventually look like:
 
 ```
 if /* massive function for checking the letter A */ {
