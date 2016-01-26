@@ -28,7 +28,7 @@ I get this question a lot, so I want to address it here:
 
 Swift AI focuses on a useful branch of artificial intelligence known as *machine learning*: the science of training computers to take actions without explicit programming. Used appropriately, these tools can give your applications abilities that would normally be impossible or *unrealistic* using conventional programming techniques.
 
-As an example, consider an app that recognizes handwritten letters on a piece of paper: using the computer science you leaned in school, you might be tempted to write each of the rules for classifying each character individually. This would consist of extracting pixel data from the image, reading them in individually, and writing an *extremely* complicated mathematical model that relates pixel darkness/position into a probability for the letter `A`, and then likewise for `B`, `C`, `D`, etc. Sound fun? Here's what your program might eventually look like:
+As an example, consider an app that recognizes handwritten letters on a piece of paper: using the computer science you learned in school, you might be tempted to write each of the rules for classifying each character individually. This would consist of extracting pixel data from the image, reading them in individually, and writing an *extremely* complicated mathematical model that relates pixel darkness/position into a probability for the letter `A`, and then likewise for `B`, `C`, `D`, etc. Sound fun? Here's what your program might eventually look like:
 
 ```
 if /* massive function for checking the letter A */ {
@@ -40,7 +40,9 @@ if /* massive function for checking the letter A */ {
 
 Hopefully you've realized by now that this method simply isn't feasible. In the best case scenario, you might end up with thousands of lines of very unreliable code for recognizing only *your* exact handwriting. In comparison, Swift AI's [iOS example app](https://github.com/collinhundley/Swift-AI/tree/master/Examples#ios) demonstrates how far superior functionality can be accomplished with very few lines of code, using machine learning. And requiring exactly *zero* explicit rules to be written by the developer.
 
-So how can Swift AI be used in the real world? Here are a few ideas to get you started:
+>**So how can Swift AI be used in the real world?**
+
+Here are a few ideas to get you started:
 - Handwriting recognition
 - Gesture recognition
 - Facial detection
@@ -51,7 +53,7 @@ So how can Swift AI be used in the real world? Here are a few ideas to get you s
 - Video game AI
 - Weather forecasting
 - Fraud detection
-- [Buidling smart robots!](https://www.youtube.com/watch?v=99DOwLcbKl8)
+- [Building smart robots!](https://www.youtube.com/watch?v=99DOwLcbKl8)
 
 
 ## Usage and Examples
