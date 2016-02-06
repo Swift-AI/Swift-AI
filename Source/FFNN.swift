@@ -129,14 +129,13 @@ public final class FFNN {
     private var newOutputWeights: [Float]
     
     /// The output error indices corresponding to each output weight.
-    private var outputErrorIndices = [Int]()
+    private var outputErrorIndices = [UInt8]()
     /// The hidden output indices corresponding to each output weight.
-    private var hiddenOutputIndices = [Int]()
+    private var hiddenOutputIndices = [UInt8]()
     /// The hidden error indices corresponding to each hidden weight.
-    private var hiddenErrorIndices = [Int]()
+    private var hiddenErrorIndices = [UInt8]()
     /// The input indices corresponding to each hidden weight.
-    private var inputIndices = [Int]()
-    
+    private var inputIndices = [UInt8]()
     
     /// Initializes a feed-forward neural network.
     public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float = 0.7, momentum: Float = 0.4, weights: [Float]? = nil, activationFunction: ActivationFunction = .Default, errorFunction: ErrorFunction = .Default(average: false)) {
@@ -170,15 +169,39 @@ public final class FFNN {
         
         self.activationFunction = activationFunction
         self.errorFunction = errorFunction
-        for weightIndex in 0..<self.numOutputWeights {
-            self.outputErrorIndices.append(weightIndex / self.numHiddenNodes)
-            self.hiddenOutputIndices.append(weightIndex % self.numHiddenNodes)
-        }
         
-        for weightIndex in 0..<self.numHiddenWeights {
-            self.hiddenErrorIndices.append(weightIndex / self.numInputNodes)
-            self.inputIndices.append(weightIndex % self.numInputNodes)
-        }
+        // Initilze indicies using Accelerate
+        var outputWeightIndex = [Float](count: self.numOutputWeights, repeatedValue: 0)
+        vDSP_vramp([0], [1], &outputWeightIndex, 1, vDSP_Length(self.numOutputWeights))
+        let numHiddenNodesTemp = [Float](count: self.numOutputWeights, repeatedValue: Float(self.numHiddenNodes))
+        
+        var floatOutputErrorIndicies = [Float](count: self.numOutputWeights, repeatedValue: 0)
+        vvdivf(&floatOutputErrorIndicies, outputWeightIndex, numHiddenNodesTemp, [Int32(self.numOutputWeights)])
+        var outputErrorIndiciesTemp = [UInt8](count: self.numOutputWeights, repeatedValue: 0)
+        vDSP_vfixu8(floatOutputErrorIndicies, 1, &outputErrorIndiciesTemp, 1, vDSP_Length(self.numOutputWeights))
+        self.outputErrorIndices += outputErrorIndiciesTemp
+        
+        var floatHiddenOutputIndicies = [Float](count: self.numOutputWeights, repeatedValue: 0)
+        vvfmodf(&floatHiddenOutputIndicies, outputWeightIndex, numHiddenNodesTemp, [Int32(self.numOutputWeights)])
+        var hiddenOutputIndicesTemp = [UInt8](count: self.numOutputWeights, repeatedValue: 0)
+        vDSP_vfixu8(floatHiddenOutputIndicies, 1, &hiddenOutputIndicesTemp, 1, vDSP_Length(self.numOutputWeights))
+        self.hiddenOutputIndices += hiddenOutputIndicesTemp
+        
+        var hiddenWeightIndex = [Float](count: self.numHiddenWeights, repeatedValue: 0)
+        vDSP_vramp([0], [1], &hiddenWeightIndex, 1, vDSP_Length(self.numHiddenWeights))
+        let numInputNodesTemp = [Float](count: self.numHiddenWeights, repeatedValue: Float(self.numInputNodes))
+        
+        var floatHiddenErrorIndices = [Float](count: self.numHiddenWeights, repeatedValue: 0)
+        vvdivf(&floatHiddenErrorIndices, hiddenWeightIndex, numInputNodesTemp, [Int32(self.numHiddenWeights)])
+        var hiddenErrorIndicesTemp = [UInt8](count: self.numHiddenWeights, repeatedValue: 0)
+        vDSP_vfixu8(floatHiddenErrorIndices, 1, &hiddenErrorIndicesTemp, 1, vDSP_Length(self.numHiddenWeights))
+        self.hiddenErrorIndices += hiddenErrorIndicesTemp
+        
+        var floatInputIndicies = [Float](count: self.numHiddenWeights, repeatedValue: 0)
+        vvfmodf(&floatInputIndicies, hiddenWeightIndex, numInputNodesTemp, [Int32(self.numHiddenWeights)])
+        var inputIndicesTemp = [UInt8](count: self.numHiddenWeights, repeatedValue: 0)
+        vDSP_vfixu8(floatInputIndicies, 1, &inputIndicesTemp, 1, vDSP_Length(self.numHiddenWeights))
+        self.inputIndices += inputIndicesTemp
         
         self.hiddenWeights = [Float](count: self.numHiddenWeights, repeatedValue: 0)
         self.previousHiddenWeights = self.hiddenWeights
@@ -198,7 +221,7 @@ public final class FFNN {
         }
         
     }
-    
+
     /// Propagates the given inputs through the neural network, returning the network's output.
     /// - Parameter inputs: An array of `Float`s, each element corresponding to one input node.
     /// - Returns: The network's output after applying the given inputs, as an array of `Float`s.
@@ -270,8 +293,8 @@ public final class FFNN {
         // Update output weights
         for weightIndex in 0..<self.outputWeights.count {
             let offset = self.outputWeights[weightIndex] + (self.momentumFactor * (self.outputWeights[weightIndex] - self.previousOutputWeights[weightIndex]))
-            let errorIndex = self.outputErrorIndices[weightIndex]
-            let hiddenOutputIndex = self.hiddenOutputIndices[weightIndex]
+            let errorIndex = Int(self.outputErrorIndices[weightIndex])
+            let hiddenOutputIndex = Int(self.hiddenOutputIndices[weightIndex])
             let mfLRErrIn = self.mfLR * self.outputErrorsCache[errorIndex] * self.hiddenOutputCache[hiddenOutputIndex]
             self.newOutputWeights[weightIndex] = offset + mfLRErrIn
         }
@@ -282,8 +305,8 @@ public final class FFNN {
         // Update hidden weights
         for weightIndex in 0..<self.hiddenWeights.count {
             let offset = self.hiddenWeights[weightIndex] + (self.momentumFactor * (self.hiddenWeights[weightIndex]  - self.previousHiddenWeights[weightIndex]))
-            let errorIndex = self.hiddenErrorIndices[weightIndex]
-            let inputIndex = self.inputIndices[weightIndex]
+            let errorIndex = Int(self.hiddenErrorIndices[weightIndex])
+            let inputIndex = Int(self.inputIndices[weightIndex])
             // Note: +1 on errorIndex to offset for bias 'error', which is ignored
             let mfLRErrIn = self.mfLR * self.hiddenErrorsCache[errorIndex + 1] * self.inputCache[inputIndex]
             self.newHiddenWeights[weightIndex] = offset + mfLRErrIn
