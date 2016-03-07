@@ -3,6 +3,8 @@
 Swift AI is a high-performance AI and machine learning library written entirely in Swift.
 We currently support iOS and OS X, with support for more platforms coming soon!
 
+[![codebeat](https://codebeat.co/badges/3c04a12d-7355-4b4f-bddf-a563fd5a005d)](https://codebeat.co/projects/github-com-collinhundley-swift-ai)
+
 
 ## Features
 Swift AI includes a set of common tools used for machine learning and artificial intelligence research. These tools are designed to be flexible, powerful and suitable for a wide range of applications.
