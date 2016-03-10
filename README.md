@@ -1,6 +1,6 @@
 [![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Banner.png?raw=true)](https://github.com/collinhundley/Swift-AI#care-enough-to-donate)
 
-Swift AI is a high-performance AI and Machine Learning library written entirely in Swift.
+Swift AI is a high-performance AI and machine learning library written entirely in Swift.
 We currently support iOS and OS X, with support for more platforms coming soon!
 
 
@@ -14,22 +14,61 @@ Swift AI includes a set of common tools used for machine learning and artificial
 - [ ] Convolutional Network
 - [ ] GPU-Accelerated Networks
 - [ ] Genetic Algorithms
-    * [NSGA-II] (http://www.iitk.ac.in/kangal/Deb_NSGA-II.pdf)
 - [x] [Fast Matrix Library](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/Matrix.md#matrix)
-    * Matrix class with common operators
+    * Matrix class supporting common operators
     * SIMD-accelerated operations
 - [ ] Fourier Transform Functions
 
 
+## What It's For
+
+> "This is a really *cool* project, but what can I actually do with it? I know nothing about A.I."
+
+I get this question a lot, so I want to address it here:
+
+Swift AI focuses on a useful branch of artificial intelligence known as *machine learning*: the science of training computers to take actions without explicit programming. Used appropriately, these tools can give your applications abilities that would normally be impossible or *unrealistic* using conventional programming techniques.
+
+As an example, consider an app that recognizes handwritten letters on a piece of paper: using the computer science you learned in school, you might be tempted to write each of the rules for classifying each character individually. This would consist of extracting pixel data from the image, reading them in individually, and writing an *extremely* complicated mathematical model that relates pixel darkness/position into a probability for the letter `A`, and then likewise for `B`, `C`, `D`, etc. Sound fun? Here's what your program might eventually look like:
+
+```
+if /* massive function for checking the letter A */ {
+    return "A"
+} else if /* massive, completely unique function for checking the letter B */ { 
+    return "B"
+} else if ...
+```
+
+Hopefully you've realized by now that this method simply isn't feasible. In the best case scenario, you might end up with thousands of lines of very unreliable code for recognizing only *your* exact handwriting. In comparison, Swift AI's [iOS example app](https://github.com/collinhundley/Swift-AI/tree/master/Examples#ios) demonstrates how far superior functionality can be accomplished with very few lines of code, using machine learning. And requiring exactly *zero* explicit rules to be written by the developer.
+
+>**So how can Swift AI be used in the real world?**
+
+Here are a few ideas to get you started:
+- Handwriting recognition
+- Gesture recognition
+- Facial detection
+- Drone stabilization and navigation systems
+- Predicting and identifying medical conditions
+- Song identification (e.g., Shazam)
+- Speech recognition
+- Video game AI
+- Weather forecasting
+- Fraud detection
+- [Building smart robots!](https://www.youtube.com/watch?v=99DOwLcbKl8)
+
+
 ## Usage and Examples
-We've created [example projects](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) to demonstrate the usage and potential applications of Swift AI:
+
+Please see the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) for detailed instructions on how to use the various components of Swift AI.
+
+We've also created [example projects](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) to demonstrate the usage and potential applications of this library:
 - [iOS](https://github.com/collinhundley/Swift-AI/tree/master/Examples#ios):
     * 2D function regression (feed-forward neural network)
     * Handwriting recognition (feed-forward neural network)
-    * Evolution simultaion (genetic algorithm)
+    * Evolution simulation (genetic algorithm)
 - [OS X](https://github.com/collinhundley/Swift-AI/tree/master/Examples#os-x):
     * XOR logic gate modeling (feed-forward neural network)
     * 2D function regression (feed-forward neural network)
+    * Trainer for iOS handwriting recognizer (feed-forward neural network)
 - Swift Playground:
     * Graphing - used in conjunction with OS X regression examples
 
@@ -49,14 +88,19 @@ Swift AI currently depends on Apple's [Accelerate](https://developer.apple.com/l
 In order to provide support for more platforms (Linux, Windows, etc.), alternative BLAS solutions are being considered. A vanilla Swift implementation is one possibility, but SIMD instructions will be preferred for their significant performance boost. Check back for more updates on this soon.
 
 ## Using Swift AI?
-If you're using Swift AI in one of your own projects, let us know! We'll add a link to your profile/website/app right here on the front page.
+If you're using Swift AI in one of your own projects, let me know! I'll add a link to your profile/website/app right here on the front page. Feel free to email me at the address shown below.
 
 ## Contributing
 Contributions to the project are welcome. Please review the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) before submitting a pull request, and strive to maintain consistency with the structure and formatting of existing code. Official guidelines with more details will be provided soon.
 
+## Contact
+I develop iOS apps, and have experience in engineering. You can reach me here:
+
+![Email](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Email.png?raw=true)
+
 ## Care Enough to Donate?
 
-Take a little, give a little. I don't usually like handouts, but time is a big constraint. More donations = less contract work = more time building great open-source projects!
+Take a little, give a little. More donations = less contract work = more time building great open-source projects!
 
 >**What good will my money do?**
 

@@ -10,7 +10,7 @@ import UIKit
 class HandwritingViewController: UIViewController {
     
     var network: FFNN!
-    let brushWidth: CGFloat = 25
+    let brushWidth: CGFloat = 20
     
     // Drawing state variables
     private var lastDrawPoint = CGPointZero
@@ -80,14 +80,14 @@ class HandwritingViewController: UIViewController {
             self.swiped = true
         }
         if currentPoint.x < self.boundingBox!.minX {
-            self.updateRect(&self.boundingBox!, minX: currentPoint.x - self.brushWidth, maxX: nil, minY: nil, maxY: nil)
+            self.updateRect(&self.boundingBox!, minX: currentPoint.x - self.brushWidth - 20, maxX: nil, minY: nil, maxY: nil)
         } else if currentPoint.x > self.boundingBox!.maxX {
-            self.updateRect(&self.boundingBox!, minX: nil, maxX: currentPoint.x + self.brushWidth, minY: nil, maxY: nil)
+            self.updateRect(&self.boundingBox!, minX: nil, maxX: currentPoint.x + self.brushWidth + 20, minY: nil, maxY: nil)
         }
         if currentPoint.y < self.boundingBox!.minY {
-            self.updateRect(&self.boundingBox!, minX: nil, maxX: nil, minY: currentPoint.y - self.brushWidth, maxY: nil)
+            self.updateRect(&self.boundingBox!, minX: nil, maxX: nil, minY: currentPoint.y - self.brushWidth - 20, maxY: nil)
         } else if currentPoint.y > self.boundingBox!.maxY {
-            self.updateRect(&self.boundingBox!, minX: nil, maxX: nil, minY: nil, maxY: currentPoint.y + self.brushWidth)
+            self.updateRect(&self.boundingBox!, minX: nil, maxX: nil, minY: nil, maxY: currentPoint.y + self.brushWidth + 20)
         }
         self.lastDrawPoint = currentPoint
         self.timer.invalidate()
@@ -235,11 +235,25 @@ extension HandwritingViewController {
     }
     
     private func clearCanvas() {
-        UIView.animateWithDuration(0.1, delay: 0, options: [.CurveEaseIn], animations: { () -> Void in
+        // Show snapshot box
+        if let box = self.boundingBox {
+            self.handwritingView.snapshotBox.frame = box
+            self.handwritingView.snapshotBox.transform = CGAffineTransformMakeScale(0.96, 0.96)
+            UIView.animateWithDuration(0.1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+                self.handwritingView.snapshotBox.alpha = 1
+                self.handwritingView.snapshotBox.transform = CGAffineTransformMakeScale(1.06, 1.06)
+            }, completion: nil)
+            UIView.animateWithDuration(0.3, delay: 0.1, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+                self.handwritingView.snapshotBox.transform = CGAffineTransformIdentity
+            }, completion: nil)
+        }
+        
+        UIView.animateWithDuration(0.1, delay: 0.4, options: [.CurveEaseIn], animations: { () -> Void in
             self.handwritingView.canvas.alpha = 0
-            }) { (Bool) -> Void in
-                self.handwritingView.canvas.image = nil
-                self.handwritingView.canvas.alpha = 1
+            self.handwritingView.snapshotBox.alpha = 0
+        }) { (Bool) -> Void in
+            self.handwritingView.canvas.image = nil
+            self.handwritingView.canvas.alpha = 1
         }
     }
     

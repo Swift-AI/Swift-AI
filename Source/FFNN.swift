@@ -5,6 +5,10 @@
 //  Created by Collin Hundley on 11/14/15.
 //
 
+/*
+    NOTE: Include `Storage.swift` and `FFNN+Storage.swift` to add support for reading/writing files.
+*/
+
 import Accelerate
 import Foundation
 
@@ -80,10 +84,10 @@ public final class FFNN {
      memory allocations for temporary variables during the update and backpropagation cycles.
      Some known properties are computed in advance in order to to avoid casting, integer division
      and modulus operations inside loops.
-    */
-    
-    /// (1 - momentumFactor) * learningRate.
-    /// Used frequently during backpropagation.
+     */
+     
+     /// (1 - momentumFactor) * learningRate.
+     /// Used frequently during backpropagation.
     private var mfLR: Float
     
     /// The number of input nodes, INCLUDING the bias node.
@@ -132,7 +136,7 @@ public final class FFNN {
     private var hiddenErrorIndices = [Int]()
     /// The input indices corresponding to each hidden weight.
     private var inputIndices = [Int]()
-
+    
     
     /// Initializes a feed-forward neural network.
     public init(inputs: Int, hidden: Int, outputs: Int, learningRate: Float = 0.7, momentum: Float = 0.4, weights: [Float]? = nil, activationFunction: ActivationFunction = .Default, errorFunction: ErrorFunction = .Default(average: false)) {
@@ -203,7 +207,7 @@ public final class FFNN {
         guard inputs.count == self.numInputs else {
             throw FFNNError.InvalidAnswerError("Invalid number of inputs given: \(inputs.count). Expected: \(self.numInputs)")
         }
-
+        
         // Cache the inputs
         // Note: A bias node is inserted at index 0, followed by each of the given inputs
         self.inputCache[0] = 1.0
@@ -220,7 +224,7 @@ public final class FFNN {
         // Apply the activation function to the hidden layer nodes
         // Note: Array elements are shifted one index to the right, in order to efficiently insert the bias node at index 0
         self.activateHidden()
-
+        
         //  Calculate the weighted sums for the output layer
         vDSP_mmul(self.outputWeights, 1,
             self.hiddenOutputCache, 1,
@@ -287,7 +291,7 @@ public final class FFNN {
         
         vDSP_mmov(hiddenWeights, &previousHiddenWeights, 1, vDSP_Length(numHiddenWeights), 1, 1)
         vDSP_mmov(newHiddenWeights, &hiddenWeights, 1, vDSP_Length(numHiddenWeights), 1, 1)
-
+        
         // Sum and return the output errors
         return self.outputErrorsCache.reduce(0, combine: { (sum, error) -> Float in
             return sum + abs(error)
@@ -295,7 +299,7 @@ public final class FFNN {
     }
     
     /// Trains the network using the given set of inputs and corresponding outputs.
-    /// - Parameters: 
+    /// - Parameters:
     ///     - inputs: A 2D array of `Float`s.
     ///             Inner array: A single set of inputs for the network. Outer array: The full set of training data to be used for training.
     ///     - answers: A 2D array of `Float`s.
@@ -547,7 +551,7 @@ public extension FFNN {
             self.outputWeights[i] = randomWeight(numInputNodes: self.numHiddenNodes)
         }
     }
-
+    
 }
 
 // TODO: Generate random weights along a normal distribution, rather than a uniform distribution.
@@ -609,4 +613,3 @@ private func hyperbolicTangent(x: Float) -> Float {
 private func hyperbolicTangentDerivative(y: Float) -> Float {
     return 1 - (y * y)
 }
-
