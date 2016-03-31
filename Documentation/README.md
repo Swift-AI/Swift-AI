@@ -12,7 +12,7 @@ These links will give you documentation and code snippets for each of the tools 
 
 - [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#multi-layer-feed-forward-neural-network)
     * FFNN.swift
--[Recurrent Neural Network]
+- [Recurrent Neural Network]
 - Genetic Algorithms
     * GA.swift
 - [Matrix and Vector Library](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/Matrix.md#matrix)
