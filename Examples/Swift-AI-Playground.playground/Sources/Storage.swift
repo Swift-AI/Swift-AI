@@ -9,7 +9,7 @@ import Foundation
 
 public protocol Storage {
     
-    typealias StorageType
+    associatedtype StorageType
     func writeToFile(filename: String)
     func writeToFile(url: NSURL)
     static func fromFile(filename: String) -> StorageType?

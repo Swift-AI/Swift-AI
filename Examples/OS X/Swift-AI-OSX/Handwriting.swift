@@ -84,7 +84,7 @@ class HandwritingTrainer {
             }
             // Increment counters
             imagePosition += numPixels
-            labelPosition++
+            labelPosition += 1
         }
         self.trainImages = trainImages
         self.trainLabels = trainLabels
@@ -271,7 +271,7 @@ class HandwritingLearner {
             }
             // Increment counters
             imagePosition += numPixels
-            labelPosition++
+            labelPosition += 1
         }
         self.trainImages = trainImages
         self.trainLabels = trainLabels

@@ -226,7 +226,7 @@ public final class FFNN: Storage {
         
         // Apply the activation function to the hidden layer nodes
         // Note: Array elements are shifted one index to the right, in order to efficiently insert the bias node at index 0
-        for (var i = self.numHidden; i > 0; --i) {
+        for i in (1...self.numHidden).reverse() {
             self.hiddenOutputCache[i] = self.activation(self.hiddenOutputCache[i - 1])
         }
         self.hiddenOutputCache[0] = 1.0

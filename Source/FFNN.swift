@@ -446,33 +446,33 @@ public extension FFNN {
     private func activateHidden() {
         switch self.activationFunction {
         case .None:
-            for (var i = self.numHidden; i > 0; --i) {
+            for i in (1...self.numHidden).reverse() {
                 self.hiddenOutputCache[i] = 0.0
             }
             self.hiddenOutputCache[0] = 1.0
         case .Default:
-            for (var i = self.numHidden; i > 0; --i) {
+            for i in (1...self.numHidden).reverse() {
                 self.hiddenOutputCache[i] = sigmoid(self.hiddenOutputCache[i - 1])
             }
             self.hiddenOutputCache[0] = 1.0
         case .Linear:
-            for (var i = self.numHidden; i > 0; --i) {
+            for i in (1...self.numHidden).reverse() {
                 self.hiddenOutputCache[i] = linear(self.hiddenOutputCache[i - 1])
             }
             self.hiddenOutputCache[0] = 1.0
         case .Sigmoid, .Softmax:
             // For Softmax, apply Sigmoid activation for hidden layers
-            for (var i = self.numHidden; i > 0; --i) {
+            for i in (1...self.numHidden).reverse() {
                 self.hiddenOutputCache[i] = sigmoid(self.hiddenOutputCache[i - 1])
             }
             self.hiddenOutputCache[0] = 1.0
         case .RationalSigmoid:
-            for (var i = self.numHidden; i > 0; --i) {
+            for i in (1...self.numHidden).reverse() {
                 self.hiddenOutputCache[i] = rationalSigmoid(self.hiddenOutputCache[i - 1])
             }
             self.hiddenOutputCache[0] = 1.0
         case .HyperbolicTangent:
-            for (var i = self.numHidden; i > 0; --i) {
+            for i in (1...self.numHidden).reverse() {
                 self.hiddenOutputCache[i] = hyperbolicTangent(self.hiddenOutputCache[i - 1])
             }
             self.hiddenOutputCache[0] = 1.0
