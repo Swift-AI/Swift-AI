@@ -139,7 +139,7 @@ class GraphViewController: UIViewController {
         infoView.label2.text = "How do I use it?"
         infoView.field2.text = "The green wave is the function we'd like to model, the red wave is the neural network's output. Here we watch the network's learning process - live - on the graph.\n\n - Tap 'Start' to begin the training \n - Tap 'Pause' to pause the training\n - Tap 'Reset' to create a new network\n - Adjust the sliders to change the target"
         infoView.label3.text = "How does it work?"
-        infoView.field3.text = "For each X coordinate on the graph, the neural network 'guesses' the Y value. The error is then propagated through the network, and over time our model converges on the target function."
+        infoView.field3.text = "For each X coordinate on the graph, the neural network 'guesses' the Y value. The error is then propagated through the network, and over time our model converges closer to the target function."
         DrawerNavigationController.globalDrawerController().presentInfoView(infoView)
     }
     
