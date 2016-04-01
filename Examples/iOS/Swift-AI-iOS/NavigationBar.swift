@@ -3,11 +3,9 @@
 //  Swift-AI-iOS
 //
 //  Created by Collin Hundley on 11/25/15.
-//  Copyright © 2015 Appsidian. All rights reserved.
 //
 
 import UIKit
-import APKit
 
 class NavigationBar: UIView {
     
@@ -30,7 +28,7 @@ class NavigationBar: UIView {
     
     func configureSubviews() {
         // Add Subviews
-        self.addSubviews([self.titleLabel, self.hamburgerButton])
+        self.addSubviews(self.titleLabel, self.hamburgerButton)
         self.layer.insertSublayer(self.gradient, atIndex: 0)
         
         // Style View
@@ -38,7 +36,7 @@ class NavigationBar: UIView {
         
         // Style Subviews
         self.titleLabel.text = "Swift AI"
-        self.titleLabel.textColor = .white
+        self.titleLabel.textColor = .whiteColor()
         self.titleLabel.font = UIFont.swiftFontOfSize(20)
         
         self.hamburgerButton.setImage(UIImage(named: "hamburger"), forState: .Normal)
@@ -57,15 +55,25 @@ class NavigationBar: UIView {
         self.configureSubviews()
         
         // Add Constraints
-        self.titleLabel.constrainUsing(constraints: [
-            Constraint.cxcx : (of: self, offset: 0),
-            Constraint.cycy : (of: self, offset: 7)]) // Centers the y in area below status bar
+        titleLabel.addConstraints(
+            Constraint.cxcx.of(self),
+            Constraint.cycy.of(self, offset: 7)) // Centered in area below status bar
         
-        self.hamburgerButton.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 0),
-            Constraint.w : (of: nil, offset: 80),
-            Constraint.cycy : (of: self, offset: 7),
-            Constraint.h : (of: nil, offset: 50)])
+//        self.titleLabel.constrainUsing(constraints: [
+//            Constraint.cxcx : (of: self, offset: 0),
+//            Constraint.cycy : (of: self, offset: 7)])
+        
+        hamburgerButton.addConstraints(
+            Constraint.ll.of(self),
+            Constraint.w.of(80),
+            Constraint.cycy.of(self, offset: 7), // Centered in area below status bar
+            Constraint.h.of(50))
+        
+//        self.hamburgerButton.constrainUsing(constraints: [
+//            Constraint.ll : (of: self, offset: 0),
+//            Constraint.w : (of: nil, offset: 80),
+//            Constraint.cycy : (of: self, offset: 7),
+//            Constraint.h : (of: nil, offset: 50)])
         
         super.updateConstraints()
     }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import APKit
 
 class GraphViewController: UIViewController {
     
@@ -45,12 +44,12 @@ class GraphViewController: UIViewController {
         super.viewDidLoad()
 
         // Configure buttons
-        self.graphView.startPauseButton.addTarget(self, action: "startPause", forControlEvents: .TouchUpInside)
-        self.graphView.infoButton.addTarget(self, action: "infoTapped", forControlEvents: .TouchUpInside)
-        self.graphView.resetButton.addTarget(self, action: "resetAll", forControlEvents: .TouchUpInside)
+        self.graphView.startPauseButton.addTarget(self, action: #selector(startPause), forControlEvents: .TouchUpInside)
+        self.graphView.infoButton.addTarget(self, action: #selector(infoTapped), forControlEvents: .TouchUpInside)
+        self.graphView.resetButton.addTarget(self, action: #selector(resetAll), forControlEvents: .TouchUpInside)
         // Configure slider for multiplier
-        self.graphView.frequencySlider.addTarget(self, action: "frequencySliderMoved:", forControlEvents: .ValueChanged)
-        self.graphView.offsetSlider.addTarget(self, action: "offsetSliderMoved:", forControlEvents: .ValueChanged)
+        self.graphView.frequencySlider.addTarget(self, action: #selector(frequencySliderMoved), forControlEvents: .ValueChanged)
+        self.graphView.offsetSlider.addTarget(self, action: #selector(offsetSliderMoved), forControlEvents: .ValueChanged)
         // Set function label text
         self.graphView.functionLabel.setTitle("y = sin (\(self.functionMultiplier)x)", forState: .Normal)
         // Calculate number of points to plot, based on screen size (#hack)
@@ -110,7 +109,7 @@ class GraphViewController: UIViewController {
                         self.updatePoints(ys)
                     }
                 }
-                ++epoch
+                epoch += 1
             }
         }
     }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import APKit
 
 class HandwritingView: UIView {
     
@@ -39,10 +38,10 @@ class HandwritingView: UIView {
     
     func configureSubviews() {
         // Add Subviews
-        self.addSubviews([self.canvasContainer, self.outputContainer, self.buttonContainer, self.imageView])
-        self.canvasContainer.addSubviews([self.canvas, self.snapshotBox])
-        self.outputContainer.addSubviews([self.outputLabel, self.confidenceLabel])
-        self.buttonContainer.addSubviews([self.startPauseButton, self.clearButton, self.infoButton])
+        self.addSubviews(self.canvasContainer, self.outputContainer, self.buttonContainer, self.imageView)
+        self.canvasContainer.addSubviews(self.canvas, self.snapshotBox)
+        self.outputContainer.addSubviews(self.outputLabel, self.confidenceLabel)
+        self.buttonContainer.addSubviews(self.startPauseButton, self.clearButton, self.infoButton)
         
         // Style View
         self.backgroundColor = UIColor.swiftLightGray()
@@ -115,55 +114,96 @@ class HandwritingView: UIView {
         self.configureSubviews()
         
         // Add Constraints
-        self.canvasContainer.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 10),
-            Constraint.rr : (of: self, offset: -10),
-            Constraint.tt : (of: self, offset: 15),
-            Constraint.hw : (of: self, offset: -20)])
+        canvasContainer.addConstraints(
+            Constraint.llrr.of(self, offset: 10),
+            Constraint.tt.of(self, offset: 15),
+            Constraint.hw.of(self, offset: -20))
+        
+//        self.canvasContainer.constrainUsing(constraints: [
+//            Constraint.ll : (of: self, offset: 10),
+//            Constraint.rr : (of: self, offset: -10),
+//            Constraint.tt : (of: self, offset: 15),
+//            Constraint.hw : (of: self, offset: -20)])
         
         self.canvas.fillSuperview()
         
-        self.imageView.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 10),
-            Constraint.rcx : (of: self, offset: -7),
-            Constraint.tb : (of: self.canvasContainer, offset: 15),
-            Constraint.bt : (of: self.buttonContainer, offset: -15)])
+        imageView.addConstraints(
+            Constraint.ll.of(self, offset: 10),
+            Constraint.rcx.of(self, offset: -7),
+            Constraint.tb.of(canvasContainer, offset: 15),
+            Constraint.bt.of(buttonContainer, offset: -15))
         
-        self.outputContainer.constrainUsing(constraints: [
-            Constraint.lcx : (of: self, offset: 7),
-            Constraint.rr : (of: self, offset: -10),
-            Constraint.tb : (of: self.canvasContainer, offset: 15),
-            Constraint.bt : (of: self.buttonContainer, offset: -15)])
+//        self.imageView.constrainUsing(constraints: [
+//            Constraint.ll : (of: self, offset: 10),
+//            Constraint.rcx : (of: self, offset: -7),
+//            Constraint.tb : (of: self.canvasContainer, offset: 15),
+//            Constraint.bt : (of: self.buttonContainer, offset: -15)])
+        
+        outputContainer.addConstraints(
+            Constraint.lcx.of(self, offset: 7),
+            Constraint.rr.of(self, offset: -10),
+            Constraint.tb.of(canvasContainer, offset: 15),
+            Constraint.bt.of(buttonContainer, offset: -15))
+        
+//        self.outputContainer.constrainUsing(constraints: [
+//            Constraint.lcx : (of: self, offset: 7),
+//            Constraint.rr : (of: self, offset: -10),
+//            Constraint.tb : (of: self.canvasContainer, offset: 15),
+//            Constraint.bt : (of: self.buttonContainer, offset: -15)])
         
         self.outputLabel.centerInSuperview()
         
-        self.confidenceLabel.constrainUsing(constraints: [
-            Constraint.rr : (of: self.outputContainer, offset: 0),
-            Constraint.bb : (of: self.outputContainer, offset: 0)])
+        confidenceLabel.addConstraints(
+            Constraint.rr.of(outputContainer),
+            Constraint.bb.of(outputContainer))
         
-        self.buttonContainer.constrainUsing(constraints: [
-            Constraint.ll : (of: self.canvasContainer, multiplier: 1, offset: 0),
-            Constraint.rr : (of: self.canvasContainer, multiplier: 1, offset: 0),
-            Constraint.bb : (of: self, multiplier: 1, offset: -15),
-            Constraint.hw : (of: self.buttonContainer, multiplier: 0.18, offset: 0)])
+//        self.confidenceLabel.constrainUsing(constraints: [
+//            Constraint.rr : (of: self.outputContainer, offset: 0),
+//            Constraint.bb : (of: self.outputContainer, offset: 0)])
         
-        self.startPauseButton.constrainUsing(constraints: [
-            Constraint.ll : (of: self.buttonContainer, offset: 5),
-            Constraint.w : (of: self.clearButton, offset: 0),
-            Constraint.tt : (of: self.buttonContainer, offset: 5),
-            Constraint.bb : (of: self.buttonContainer, offset: -5)])
+        buttonContainer.addConstraints(
+            Constraint.llrr.of(canvasContainer),
+            Constraint.bb.of(self, offset: -15),
+            Constraint.hw.of(buttonContainer, multiplier: 0.18))
         
-        self.clearButton.constrainUsing(constraints: [
-            Constraint.lr : (of: self.startPauseButton, offset: 5),
-            Constraint.w : (of: self.infoButton, offset: 0),
-            Constraint.tt : (of: self.buttonContainer, offset: 5),
-            Constraint.bb : (of: self.buttonContainer, offset: -5)])
+//        self.buttonContainer.constrainUsing(constraints: [
+//            Constraint.ll : (of: self.canvasContainer, multiplier: 1, offset: 0),
+//            Constraint.rr : (of: self.canvasContainer, multiplier: 1, offset: 0),
+//            Constraint.bb : (of: self, multiplier: 1, offset: -15),
+//            Constraint.hw : (of: self.buttonContainer, multiplier: 0.18, offset: 0)])
         
-        self.infoButton.constrainUsing(constraints: [
-            Constraint.lr : (of: self.clearButton, offset: 5),
-            Constraint.rr : (of: self.buttonContainer, offset: -5),
-            Constraint.tt : (of: self.buttonContainer, offset: 5),
-            Constraint.bb : (of: self.buttonContainer, offset: -5)])
+        startPauseButton.addConstraints(
+            Constraint.ll.of(buttonContainer, offset: 5),
+            Constraint.w.of(clearButton),
+            Constraint.ttbb.of(buttonContainer, offset: 5))
+        
+//        self.startPauseButton.constrainUsing(constraints: [
+//            Constraint.ll : (of: self.buttonContainer, offset: 5),
+//            Constraint.w : (of: self.clearButton, offset: 0),
+//            Constraint.tt : (of: self.buttonContainer, offset: 5),
+//            Constraint.bb : (of: self.buttonContainer, offset: -5)])
+        
+        clearButton.addConstraints(
+            Constraint.lr.of(startPauseButton, offset: 5),
+            Constraint.w.of(infoButton),
+            Constraint.ttbb.of(buttonContainer, offset: 5))
+        
+//        self.clearButton.constrainUsing(constraints: [
+//            Constraint.lr : (of: self.startPauseButton, offset: 5),
+//            Constraint.w : (of: self.infoButton, offset: 0),
+//            Constraint.tt : (of: self.buttonContainer, offset: 5),
+//            Constraint.bb : (of: self.buttonContainer, offset: -5)])
+        
+        infoButton.addConstraints(
+            Constraint.lr.of(clearButton, offset: 5),
+            Constraint.rr.of(buttonContainer, offset: -5),
+            Constraint.ttbb.of(buttonContainer, offset: 5))
+        
+//        self.infoButton.constrainUsing(constraints: [
+//            Constraint.lr : (of: self.clearButton, offset: 5),
+//            Constraint.rr : (of: self.buttonContainer, offset: -5),
+//            Constraint.tt : (of: self.buttonContainer, offset: 5),
+//            Constraint.bb : (of: self.buttonContainer, offset: -5)])
         
         super.updateConstraints()
     }

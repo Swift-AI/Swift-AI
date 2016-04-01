@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import APKit
 
 class DrawerView: UIView {
     
@@ -22,8 +21,8 @@ class DrawerView: UIView {
     
     convenience init() {
         self.init(frame: CGRectZero)
-        self.headerView = APBorderView(border: .Bottom, color: .white, weight: 1)
-        self.footerView = APBorderView(border: .Top, color: .white, weight: 1)
+        self.headerView = APBorderView(border: .Bottom, color: .whiteColor(), weight: 1)
+        self.footerView = APBorderView(border: .Top, color: .whiteColor(), weight: 1)
     }
     
     override init(frame: CGRect) {
@@ -37,15 +36,15 @@ class DrawerView: UIView {
     
     func configureSubviews() {
         // Add Subviews
-        self.addSubviews([self.headerView, self.tableView, self.footerView])
-        self.headerView.addSubviews([self.headerLabel])
+        self.addSubviews(self.headerView, self.tableView, self.footerView)
+        self.headerView.addSubviews(self.headerLabel)
         self.footerView.addSubview(self.footerLabel)
         
         // Style View
         self.backgroundColor = .drawerColor()
         
         // Style Subviews
-        self.headerView.backgroundColor = .clear
+        self.headerView.backgroundColor = .clearColor()
 
         self.headerLabel.text = "Example Projects"
         self.headerLabel.font = UIFont.swiftFontOfSize(18)
@@ -54,7 +53,7 @@ class DrawerView: UIView {
         self.tableView.backgroundColor = .drawerColor()
         self.tableView.scrollEnabled = false
         
-        self.footerView.backgroundColor = .clear
+        self.footerView.backgroundColor = .clearColor()
         
         let text = NSMutableAttributedString(string: "Feedback or ideas?\nLet us know on Github")
         text.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.StyleSingle.rawValue, range: NSMakeRange(text.length - 6, 6))
@@ -71,30 +70,49 @@ class DrawerView: UIView {
         self.configureSubviews()
         
         // Add Constraints
-        self.headerView.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 0),
-            Constraint.rr : (of: self, offset: 0),
-            Constraint.tt : (of: self, offset: 0),
-            Constraint.h : (of: nil, offset: 60)])
+        headerView.addConstraints(
+            Constraint.llrr.of(self),
+            Constraint.tt.of(self),
+            Constraint.h.of(60))
         
-        self.headerLabel.centerInSuperview()
+//        self.headerView.constrainUsing(constraints: [
+//            Constraint.ll : (of: self, offset: 0),
+//            Constraint.rr : (of: self, offset: 0),
+//            Constraint.tt : (of: self, offset: 0),
+//            Constraint.h : (of: nil, offset: 60)])
         
-        self.tableView.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 0),
-            Constraint.rr : (of: self, offset: 0),
-            Constraint.tb : (of: self.headerView, offset: 0),
-            Constraint.h : (of: nil, offset: CGFloat(self.tableView.numberOfRowsInSection(0) * 70))])
+        headerLabel.centerInSuperview()
         
-        self.footerView.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 0),
-            Constraint.rr : (of: self, offset: 0),
-            Constraint.bb : (of: self, offset: 0),
-            Constraint.h : (of: nil, offset: 60)])
+        tableView.addConstraints(
+            Constraint.llrr.of(self),
+            Constraint.tb.of(headerView),
+            Constraint.h.of(CGFloat(tableView.numberOfRowsInSection(0) * 70)))
         
-        self.footerLabel.constrainUsing(constraints: [
-            Constraint.ll : (of: self.footerView, offset: 15),
-            Constraint.rr : (of: self.footerView, offset: -15),
-            Constraint.cycy : (of: self.footerView, offset: 0)])
+//        self.tableView.constrainUsing(constraints: [
+//            Constraint.ll : (of: self, offset: 0),
+//            Constraint.rr : (of: self, offset: 0),
+//            Constraint.tb : (of: self.headerView, offset: 0),
+//            Constraint.h : (of: nil, offset: CGFloat(self.tableView.numberOfRowsInSection(0) * 70))])
+        
+        footerView.addConstraints(
+            Constraint.llrr.of(self),
+            Constraint.bb.of(self),
+            Constraint.h.of(60))
+        
+//        self.footerView.constrainUsing(constraints: [
+//            Constraint.ll : (of: self, offset: 0),
+//            Constraint.rr : (of: self, offset: 0),
+//            Constraint.bb : (of: self, offset: 0),
+//            Constraint.h : (of: nil, offset: 60)])
+        
+        footerLabel.addConstraints(
+            Constraint.llrr.of(footerView, offset: 15),
+            Constraint.cycy.of(footerView))
+        
+//        self.footerLabel.constrainUsing(constraints: [
+//            Constraint.ll : (of: self.footerView, offset: 15),
+//            Constraint.rr : (of: self.footerView, offset: -15),
+//            Constraint.cycy : (of: self.footerView, offset: 0)])
         
         super.updateConstraints()
     }

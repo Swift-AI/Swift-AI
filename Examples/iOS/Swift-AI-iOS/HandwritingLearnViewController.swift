@@ -25,7 +25,7 @@ class HandwritingLearnViewController: UIViewController {
         self.network = FFNN.fromFile(url)
         
         self.handwritingLearnView.textField.delegate = self
-        self.handwritingLearnView.textField.addTarget(self, action: "textChanged:", forControlEvents: .EditingChanged)
+        self.handwritingLearnView.textField.addTarget(self, action: #selector(textChanged), forControlEvents: .EditingChanged)
         
     }
     

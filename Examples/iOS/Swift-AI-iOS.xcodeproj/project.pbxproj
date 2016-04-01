@@ -28,12 +28,15 @@
 		F0969D361C11580C009C3B4A /* HandwritingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D351C11580C009C3B4A /* HandwritingViewController.swift */; };
 		F0969D381C115815009C3B4A /* HandwritingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0969D371C115815009C3B4A /* HandwritingView.swift */; };
 		F0BAD9EA1C0565AE001AD2AE /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BAD9E91C0565AE001AD2AE /* GraphView.swift */; };
+		F0BDAA771CAEDA3F0000F481 /* APConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BDAA741CAEDA3F0000F481 /* APConstraints.swift */; };
+		F0BDAA781CAEDA3F0000F481 /* APMultilineLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BDAA751CAEDA3F0000F481 /* APMultilineLabel.swift */; };
+		F0BDAA791CAEDA3F0000F481 /* APSpringButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BDAA761CAEDA3F0000F481 /* APSpringButton.swift */; };
+		F0BDAA7B1CAEDABA0000F481 /* APBorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BDAA7A1CAEDABA0000F481 /* APBorderView.swift */; };
+		F0BDAA7D1CAEDB600000F481 /* APMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BDAA7C1CAEDB600000F481 /* APMath.swift */; };
 		F0C5B8931C0634D10016FF6F /* DrawerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5B88F1C0634D10016FF6F /* DrawerCell.swift */; };
 		F0C5B8941C0634D10016FF6F /* DrawerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5B8901C0634D10016FF6F /* DrawerNavigationController.swift */; };
 		F0C5B8951C0634D10016FF6F /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5B8911C0634D10016FF6F /* DrawerView.swift */; };
 		F0C5B8961C0634D10016FF6F /* DrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5B8921C0634D10016FF6F /* DrawerViewController.swift */; };
-		F0C5B89A1C0636D90016FF6F /* APKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0C5B8981C0636D00016FF6F /* APKit.framework */; };
-		F0C5B89B1C0636D90016FF6F /* APKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F0C5B8981C0636D00016FF6F /* APKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F0C5B8A01C0638680016FF6F /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5B89F1C0638680016FF6F /* Colors.swift */; };
 		F0C5B8A31C0638BB0016FF6F /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5B8A21C0638BB0016FF6F /* NavigationBar.swift */; };
 		F0C5B8A51C0640B10016FF6F /* GAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5B8A41C0640B10016FF6F /* GAViewController.swift */; };
@@ -49,7 +52,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F0C5B89B1C0636D90016FF6F /* APKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,11 +82,15 @@
 		F0969D351C11580C009C3B4A /* HandwritingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandwritingViewController.swift; sourceTree = "<group>"; };
 		F0969D371C115815009C3B4A /* HandwritingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandwritingView.swift; sourceTree = "<group>"; };
 		F0BAD9E91C0565AE001AD2AE /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
+		F0BDAA741CAEDA3F0000F481 /* APConstraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APConstraints.swift; sourceTree = "<group>"; };
+		F0BDAA751CAEDA3F0000F481 /* APMultilineLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APMultilineLabel.swift; sourceTree = "<group>"; };
+		F0BDAA761CAEDA3F0000F481 /* APSpringButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APSpringButton.swift; sourceTree = "<group>"; };
+		F0BDAA7A1CAEDABA0000F481 /* APBorderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APBorderView.swift; sourceTree = "<group>"; };
+		F0BDAA7C1CAEDB600000F481 /* APMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APMath.swift; sourceTree = "<group>"; };
 		F0C5B88F1C0634D10016FF6F /* DrawerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerCell.swift; sourceTree = "<group>"; };
 		F0C5B8901C0634D10016FF6F /* DrawerNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerNavigationController.swift; sourceTree = "<group>"; };
 		F0C5B8911C0634D10016FF6F /* DrawerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
 		F0C5B8921C0634D10016FF6F /* DrawerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerViewController.swift; sourceTree = "<group>"; };
-		F0C5B8981C0636D00016FF6F /* APKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = APKit.framework; sourceTree = SOURCE_ROOT; };
 		F0C5B89F1C0638680016FF6F /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		F0C5B8A21C0638BB0016FF6F /* NavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		F0C5B8A41C0640B10016FF6F /* GAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GAViewController.swift; sourceTree = "<group>"; };
@@ -98,7 +104,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0C5B89A1C0636D90016FF6F /* APKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,12 +143,12 @@
 				F0C5B8A91C0645D30016FF6F /* SwiftAI */,
 				F0C5B8971C0634D60016FF6F /* Drawer */,
 				F0C5B89D1C06373F0016FF6F /* Views */,
+				F0BDAA731CAED9F70000F481 /* APKit */,
 				F0C5B8A11C06386B0016FF6F /* Fonts and Colors */,
 				F02FD2151C02B93400A137C2 /* Assets.xcassets */,
 				F02FD2171C02B93400A137C2 /* LaunchScreen.storyboard */,
 				F02FD21A1C02B93400A137C2 /* Info.plist */,
 				F02FD2121C02B93400A137C2 /* Swift_AI_iOS.xcdatamodeld */,
-				F0C5B8981C0636D00016FF6F /* APKit.framework */,
 			);
 			path = "Swift-AI-iOS";
 			sourceTree = "<group>";
@@ -156,6 +161,18 @@
 				F074BC431C2153780061F59A /* handwriting-ffnn */,
 			);
 			name = Handwriting;
+			sourceTree = "<group>";
+		};
+		F0BDAA731CAED9F70000F481 /* APKit */ = {
+			isa = PBXGroup;
+			children = (
+				F0BDAA7A1CAEDABA0000F481 /* APBorderView.swift */,
+				F0BDAA741CAEDA3F0000F481 /* APConstraints.swift */,
+				F0BDAA7C1CAEDB600000F481 /* APMath.swift */,
+				F0BDAA751CAEDA3F0000F481 /* APMultilineLabel.swift */,
+				F0BDAA761CAEDA3F0000F481 /* APSpringButton.swift */,
+			);
+			name = APKit;
 			sourceTree = "<group>";
 		};
 		F0C5B8971C0634D60016FF6F /* Drawer */ = {
@@ -310,12 +327,16 @@
 				F0C5B8A01C0638680016FF6F /* Colors.swift in Sources */,
 				F0C5B8AC1C0645E80016FF6F /* FFNN.swift in Sources */,
 				F0C5B8961C0634D10016FF6F /* DrawerViewController.swift in Sources */,
+				F0BDAA781CAEDA3F0000F481 /* APMultilineLabel.swift in Sources */,
 				F0C5B8941C0634D10016FF6F /* DrawerNavigationController.swift in Sources */,
 				F09470521C0E6695004F4202 /* Fonts.swift in Sources */,
+				F0BDAA7B1CAEDABA0000F481 /* APBorderView.swift in Sources */,
+				F0BDAA771CAEDA3F0000F481 /* APConstraints.swift in Sources */,
 				F094704A1C0D2A2F004F4202 /* InfoView.swift in Sources */,
 				F02FD20E1C02B93400A137C2 /* GraphViewController.swift in Sources */,
 				F0C5B8A51C0640B10016FF6F /* GAViewController.swift in Sources */,
 				F016BF981C24A2EB002E88B1 /* HandwritingLearnView.swift in Sources */,
+				F0BDAA7D1CAEDB600000F481 /* APMath.swift in Sources */,
 				F074BC421C214F120061F59A /* FFNN+Storage.swift in Sources */,
 				F016BF931C24A2B2002E88B1 /* HandwritingLearnViewController.swift in Sources */,
 				F0969D381C115815009C3B4A /* HandwritingView.swift in Sources */,
@@ -326,6 +347,7 @@
 				F0C5B8A81C0640CB0016FF6F /* GAView.swift in Sources */,
 				F0969D361C11580C009C3B4A /* HandwritingViewController.swift in Sources */,
 				F0C5B8931C0634D10016FF6F /* DrawerCell.swift in Sources */,
+				F0BDAA791CAEDA3F0000F481 /* APSpringButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,10 +453,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Swift-AI-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -449,10 +468,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Swift-AI-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

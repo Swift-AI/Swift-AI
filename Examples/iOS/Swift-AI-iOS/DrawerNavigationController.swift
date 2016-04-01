@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import APKit
 
 class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate {
    
@@ -54,23 +53,35 @@ class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate 
         self.view.backgroundColor = .drawerColor()
         
         // Configure nav bar
-        self.navBar.hamburgerButton.addTarget(self, action: "hamburgerTapped", forControlEvents: .TouchUpInside)
+        self.navBar.hamburgerButton.addTarget(self, action: #selector(hamburgerTapped), forControlEvents: .TouchUpInside)
         self.view.addSubview(self.navBar)
-        self.navBar.constrainUsing(constraints: [
-            Constraint.ll : (of: self.view, offset: 0),
-            Constraint.rr : (of: self.view, offset: 0),
-            Constraint.tt : (of: self.view, offset: 0),
-            Constraint.h : (of: nil, offset: 64)])
+        navBar.addConstraints(
+            Constraint.llrr.of(view),
+            Constraint.tt.of(view),
+            Constraint.h.of(64))
+        
+//        self.navBar.constrainUsing(constraints: [
+//            Constraint.ll : (of: self.view, offset: 0),
+//            Constraint.rr : (of: self.view, offset: 0),
+//            Constraint.tt : (of: self.view, offset: 0),
+//            Constraint.h : (of: nil, offset: 64)])
         
         // Configure drawer
         self.drawerViewController = DrawerViewController()
         self.drawerViewController.viewControllers = self.viewControllers
         self.view.addSubview(self.drawerViewController.view)
-        self.drawerViewController.view.constrainUsing(constraints: [
-            Constraint.ll : (of: self.view, offset: 0),
-            Constraint.w : (of: nil, offset: drawerWidth),
-            Constraint.tt : (of: self.view, offset: 64),
-            Constraint.bb : (of: self.view, offset: 0)])
+        
+        drawerViewController.view.addConstraints(
+            Constraint.ll.of(view),
+            Constraint.w.of(drawerWidth),
+            Constraint.tt.of(view, offset: 64),
+            Constraint.bb.of(view))
+        
+//        self.drawerViewController.view.constrainUsing(constraints: [
+//            Constraint.ll : (of: self.view, offset: 0),
+//            Constraint.w : (of: nil, offset: drawerWidth),
+//            Constraint.tt : (of: self.view, offset: 64),
+//            Constraint.bb : (of: self.view, offset: 0)])
         
         // Configure view controllers
         self.views = self.viewControllers.map({ (viewController) -> UIView in
@@ -78,11 +89,15 @@ class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate 
         })
         // Assign first view as initial view
         self.view.addSubview(self.views[0])
-        self.views[0].constrainUsing(constraints: [
-            Constraint.ll : (of: self.view, offset: 0),
-            Constraint.rr : (of: self.view, offset: 0),
-            Constraint.tt : (of: self.view, offset: 64),
-            Constraint.bb : (of: self.view, offset: 0)])
+        views[0].addConstraints(
+            Constraint.llrr.of(view),
+            Constraint.tt.of(view, offset: 64),
+            Constraint.bb.of(view))
+//        self.views[0].constrainUsing(constraints: [
+//            Constraint.ll : (of: self.view, offset: 0),
+//            Constraint.rr : (of: self.view, offset: 0),
+//            Constraint.tt : (of: self.view, offset: 64),
+//            Constraint.bb : (of: self.view, offset: 0)])
         self.currentView = self.views[0]
         self.addShadowToCurrentView()
     }
@@ -242,11 +257,15 @@ class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate 
         }
         view.alpha = 0
         self.view.insertSubview(view, aboveSubview: self.currentView)
-        view.constrainUsing(constraints: [
-            Constraint.ll : (of: self.view, offset: 0),
-            Constraint.rr : (of: self.view, offset: 0),
-            Constraint.tt : (of: self.view, offset: 64),
-            Constraint.bb : (of: self.view, offset: 0)])
+        view.addConstraints(
+            Constraint.llrr.of(self.view),
+            Constraint.tt.of(self.view, offset: 64),
+            Constraint.bb.of(self.view))
+//        view.constrainUsing(constraints: [
+//            Constraint.ll : (of: self.view, offset: 0),
+//            Constraint.rr : (of: self.view, offset: 0),
+//            Constraint.tt : (of: self.view, offset: 64),
+//            Constraint.bb : (of: self.view, offset: 0)])
         view.transform = self.currentView.transform
         self.drawerViewController.drawerView.tableView.userInteractionEnabled = false
         // Swap the views and animate the drawer closed
@@ -305,7 +324,7 @@ class DrawerNavigationController: UIViewController, UIGestureRecognizerDelegate 
         self.infoView = infoView
         self.view.addSubview(infoView)
         infoView.fillSuperview()
-        infoView.dismissButton.addTarget(self, action: "dismissInfoView", forControlEvents: .TouchUpInside)
+        infoView.dismissButton.addTarget(self, action: #selector(dismissInfoView), forControlEvents: .TouchUpInside)
         infoView.transform = CGAffineTransformMakeTranslation(0, UIScreen.mainScreen().bounds.height)
         UIView.animateWithDuration(0.4, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [], animations: { () -> Void in
             infoView.transform = CGAffineTransformIdentity

@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import APKit
 
 class DrawerViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate {
     
@@ -22,7 +21,7 @@ class DrawerViewController: UIViewController, UITableViewDataSource, UITableView
         self.drawerView.tableView.dataSource = self
         self.drawerView.tableView.delegate = self
         
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: "tappedFeedback")
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tappedFeedback))
         self.drawerView.footerView.addGestureRecognizer(tapRecognizer)
     }
     

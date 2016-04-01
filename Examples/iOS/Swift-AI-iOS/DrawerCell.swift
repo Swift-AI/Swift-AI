@@ -5,7 +5,6 @@
 //
 
 import UIKit
-import APKit
 
 class DrawerCell: UITableViewCell {
     
@@ -28,7 +27,7 @@ class DrawerCell: UITableViewCell {
     
     func configureSubviews() {
         // Add Subviews
-        self.contentView.addSubviews([self.titleLabel, self.descriptionLabel])
+        self.contentView.addSubviews(self.titleLabel, self.descriptionLabel)
         
         // Style View
         self.backgroundColor = .drawerColor()
@@ -51,14 +50,22 @@ class DrawerCell: UITableViewCell {
         self.configureSubviews()
         
         // Add Constraints
-        self.titleLabel.constrainUsing(constraints: [
-            Constraint.ll : (of: self.contentView, offset: 15),
-            Constraint.cycy : (of: self.contentView, offset: -12)])
+        titleLabel.addConstraints(
+            Constraint.ll.of(contentView, offset: 15),
+            Constraint.cycy.of(contentView, offset: -12))
         
-        self.descriptionLabel.constrainUsing(constraints: [
-            Constraint.ll : (of: self.titleLabel, offset: 0),
-            Constraint.cycy : (of: self.contentView, offset: 12)])
-                
+//        self.titleLabel.constrainUsing(constraints: [
+//            Constraint.ll : (of: self.contentView, offset: 15),
+//            Constraint.cycy : (of: self.contentView, offset: -12)])
+        
+        descriptionLabel.addConstraints(
+            Constraint.ll.of(titleLabel),
+            Constraint.cycy.of(contentView, offset: 12))
+        
+//        self.descriptionLabel.constrainUsing(constraints: [
+//            Constraint.ll : (of: self.titleLabel, offset: 0),
+//            Constraint.cycy : (of: self.contentView, offset: 12)])
+        
         super.updateConstraints()
     }
 }

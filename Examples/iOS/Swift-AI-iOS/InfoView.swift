@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import APKit
 
 class InfoView: UIView {
     
@@ -23,7 +22,7 @@ class InfoView: UIView {
     
     func configureSubviews() {
         // Add Subviews
-        self.addSubviews([self.blurView, self.label1, self.field1, self.label2, self.field2, self.label3, self.field3, self.dismissArrow, self.dismissButton])
+        self.addSubviews(self.blurView, self.label1, self.field1, self.label2, self.field2, self.label3, self.field3, self.dismissArrow, self.dismissButton)
         
         // Style View
         
@@ -74,40 +73,72 @@ class InfoView: UIView {
         
         self.blurView.fillSuperview()
         
-        self.label1.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 15),
-            Constraint.tt : (of: self, offset: 64)])
+        label1.addConstraints(
+            Constraint.ll.of(self, offset: 15),
+            Constraint.tt.of(self, offset: 64))
         
-        self.field1.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 15),
-            Constraint.rr : (of: self, offset: -15),
-            Constraint.tb : (of: self.label1, offset: 10)])
+//        self.label1.constrainUsing(constraints: [
+//            Constraint.ll : (of: self, offset: 15),
+//            Constraint.tt : (of: self, offset: 64)])
         
-        self.label2.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 15),
-            Constraint.tb : (of: self.field1, offset: 25)])
+        field1.addConstraints(
+            Constraint.llrr.of(self, offset: 15),
+            Constraint.tb.of(label1, offset: 10))
         
-        self.field2.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 15),
-            Constraint.rr : (of: self, offset: -15),
-            Constraint.tb : (of: self.label2, offset: 10)])
+//        self.field1.constrainUsing(constraints: [
+//            Constraint.ll : (of: self, offset: 15),
+//            Constraint.rr : (of: self, offset: -15),
+//            Constraint.tb : (of: self.label1, offset: 10)])
         
-        self.label3.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 15),
-            Constraint.tb : (of: self.field2, offset: 25)])
+        label2.addConstraints(
+            Constraint.ll.of(self, offset: 15),
+            Constraint.tb.of(field1, offset: 25))
         
-        self.field3.constrainUsing(constraints: [
-            Constraint.ll : (of: self, offset: 15),
-            Constraint.rr : (of: self, offset: -15),
-            Constraint.tb : (of: self.label3, offset: 10)])
+//        self.label2.constrainUsing(constraints: [
+//            Constraint.ll : (of: self, offset: 15),
+//            Constraint.tb : (of: self.field1, offset: 25)])
         
-        self.dismissButton.constrainUsing(constraints: [
-            Constraint.cxcx : (of: self, offset: 0),
-            Constraint.bb : (of: self, offset: -20)])
+        field2.addConstraints(
+            Constraint.llrr.of(self, offset: 15),
+            Constraint.tb.of(label2, offset: 10))
         
-        self.dismissArrow.constrainUsing(constraints: [
-            Constraint.cxcx : (of: self, offset: 0),
-            Constraint.tb : (of: self.dismissButton, offset: -5)])
+//        self.field2.constrainUsing(constraints: [
+//            Constraint.ll : (of: self, offset: 15),
+//            Constraint.rr : (of: self, offset: -15),
+//            Constraint.tb : (of: self.label2, offset: 10)])
+        
+        label3.addConstraints(
+            Constraint.ll.of(self, offset: 15),
+            Constraint.tb.of(field2, offset: 25))
+        
+//        self.label3.constrainUsing(constraints: [
+//            Constraint.ll : (of: self, offset: 15),
+//            Constraint.tb : (of: self.field2, offset: 25)])
+        
+        field3.addConstraints(
+            Constraint.llrr.of(self, offset: 15),
+            Constraint.tb.of(label3, offset: 10))
+        
+//        self.field3.constrainUsing(constraints: [
+//            Constraint.ll : (of: self, offset: 15),
+//            Constraint.rr : (of: self, offset: -15),
+//            Constraint.tb : (of: self.label3, offset: 10)])
+        
+        dismissButton.addConstraints(
+            Constraint.cxcx.of(self),
+            Constraint.bb.of(self, offset: -20))
+        
+//        self.dismissButton.constrainUsing(constraints: [
+//            Constraint.cxcx : (of: self, offset: 0),
+//            Constraint.bb : (of: self, offset: -20)])
+        
+        dismissArrow.addConstraints(
+            Constraint.cxcx.of(self),
+            Constraint.tb.of(dismissButton, offset: -5))
+        
+//        self.dismissArrow.constrainUsing(constraints: [
+//            Constraint.cxcx : (of: self, offset: 0),
+//            Constraint.tb : (of: self.dismissButton, offset: -5)])
         
         super.updateConstraints()
     }

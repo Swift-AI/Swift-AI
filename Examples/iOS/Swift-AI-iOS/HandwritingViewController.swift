@@ -31,9 +31,9 @@ class HandwritingViewController: UIViewController {
         let url = NSBundle.mainBundle().URLForResource("handwriting-ffnn", withExtension: nil)!
         self.network = FFNN.fromFile(url)
 
-        self.handwritingView.startPauseButton.addTarget(self, action: "startPause", forControlEvents: .TouchUpInside)
-        self.handwritingView.clearButton.addTarget(self, action: "resetTapped", forControlEvents: .TouchUpInside)
-        self.handwritingView.infoButton.addTarget(self, action: "infoTapped", forControlEvents: .TouchUpInside)
+        self.handwritingView.startPauseButton.addTarget(self, action: #selector(startPause), forControlEvents: .TouchUpInside)
+        self.handwritingView.clearButton.addTarget(self, action: #selector(resetTapped), forControlEvents: .TouchUpInside)
+        self.handwritingView.infoButton.addTarget(self, action: #selector(infoTapped), forControlEvents: .TouchUpInside)
         
     }
     
@@ -103,7 +103,7 @@ class HandwritingViewController: UIViewController {
                 self.drawLine(fromPoint: self.lastDrawPoint, toPoint: self.lastDrawPoint)
             }
         }
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: "timerExpired:", userInfo: nil, repeats: false)
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: #selector(timerExpired), userInfo: nil, repeats: false)
         self.drawing = false
         super.touchesEnded(touches, withEvent: event)
     }
