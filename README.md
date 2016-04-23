@@ -90,6 +90,8 @@ In order to provide support for more platforms (Linux, Windows, etc.), alternati
 ## Using Swift AI?
 If you're using Swift AI in one of your own projects, let me know! I'll add a link to your profile/website/app right here on the front page. Feel free to email me at the address shown below.
 
+- [SwiftOCR](https://github.com/garnele007/SwiftOCR)
+
 ## Contributing
 Contributions to the project are welcome. Please review the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) before submitting a pull request, and strive to maintain consistency with the structure and formatting of existing code. Official guidelines with more details will be provided soon.
 
