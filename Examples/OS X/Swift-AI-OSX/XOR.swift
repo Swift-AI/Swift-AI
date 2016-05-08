@@ -26,8 +26,8 @@ func xorTwoWay() {
     let answers: [[Float]] = [
         [0],
         [1],
-        [0],
-        [1]
+        [1],
+        [0]
     ]
     
     // Train the network
