@@ -9,7 +9,7 @@ import UIKit
 
 class InfoView: UIView {
     
-    let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+    let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
     let label1 = UILabel()
     let field1 = APMultilineLabel()
     let label2 = UILabel()
@@ -28,37 +28,37 @@ class InfoView: UIView {
         
         // Style Subviews
         
-        self.label1.textColor = .whiteColor()
+        self.label1.textColor = .white
         self.label1.font = UIFont.swiftFontOfSize(18)
-        self.label1.backgroundColor = .clearColor()
+        self.label1.backgroundColor = .clear
         
-        self.label2.textColor = .whiteColor()
+        self.label2.textColor = .white
         self.label2.font = UIFont.swiftFontOfSize(18)
-        self.label2.backgroundColor = .clearColor()
+        self.label2.backgroundColor = .clear
         
-        self.label3.textColor = .whiteColor()
+        self.label3.textColor = .white
         self.label3.font = UIFont.swiftFontOfSize(18)
-        self.label3.backgroundColor = .clearColor()
+        self.label3.backgroundColor = .clear
         
-        self.field1.textColor = .whiteColor()
+        self.field1.textColor = .white
         self.field1.font = UIFont.swiftFontOfSize(16)
-        self.field1.backgroundColor = .clearColor()
-        self.field1.userInteractionEnabled = false
+        self.field1.backgroundColor = .clear
+        self.field1.isUserInteractionEnabled = false
         
-        self.field2.textColor = .whiteColor()
+        self.field2.textColor = .white
         self.field2.font = UIFont.swiftFontOfSize(16)
-        self.field2.backgroundColor = .clearColor()
-        self.field2.userInteractionEnabled = false
+        self.field2.backgroundColor = .clear
+        self.field2.isUserInteractionEnabled = false
         
-        self.field3.textColor = .whiteColor()
+        self.field3.textColor = .white
         self.field3.font = UIFont.swiftFontOfSize(16)
-        self.field3.backgroundColor = .clearColor()
-        self.field3.userInteractionEnabled = false
+        self.field3.backgroundColor = .clear
+        self.field3.isUserInteractionEnabled = false
         
-        self.dismissButton.setTitle("Dismiss", forState: .Normal)
-        self.dismissButton.titleLabel?.textColor = .whiteColor()
+        self.dismissButton.setTitle("Dismiss", for: UIControlState())
+        self.dismissButton.titleLabel?.textColor = .white
         self.dismissButton.titleLabel?.font = UIFont.swiftFontOfSize(14)
-        self.dismissButton.backgroundColor = .clearColor()
+        self.dismissButton.backgroundColor = .clear
         
         self.dismissArrow.image = UIImage(named: "dismiss_arrow")
         

@@ -10,7 +10,7 @@ class DrawerViewController: UIViewController, UITableViewDataSource, UITableView
     
     let drawerView = DrawerView()
     var viewControllers = [UIViewController]()
-    let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+    let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
     
     override func loadView() {
         self.view = self.drawerView
@@ -25,14 +25,14 @@ class DrawerViewController: UIViewController, UITableViewDataSource, UITableView
         self.drawerView.footerView.addGestureRecognizer(tapRecognizer)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.viewControllers.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = DrawerCell()
-        cell.titleLabel.text = self.viewControllers[indexPath.row].title!
-        switch indexPath.row {
+        cell.titleLabel.text = self.viewControllers[(indexPath as NSIndexPath).row].title!
+        switch (indexPath as NSIndexPath).row {
         case 0:
             cell.descriptionLabel.text = "Artificial Neural Network"
         case 1:
@@ -46,18 +46,18 @@ class DrawerViewController: UIViewController, UITableViewDataSource, UITableView
         return cell
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        DrawerNavigationController.globalDrawerController().switchToViewAtIndex(indexPath.row, completion: nil)
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        DrawerNavigationController.globalDrawerController().switchToViewAtIndex((indexPath as NSIndexPath).row, completion: nil)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tappedFeedback() {
-        let url = NSURL(string: "https://github.com/collinhundley/Swift-AI/issues/new")!
-        UIApplication.sharedApplication().openURL(url)
+        let url = URL(string: "https://github.com/collinhundley/Swift-AI/issues/new")!
+        UIApplication.shared.openURL(url)
     }
 
 }

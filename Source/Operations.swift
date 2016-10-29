@@ -11,7 +11,7 @@ import Accelerate
 
 /// Vector negation (negates each element of the receiver).
 public prefix func - (m: Vector) -> Vector {
-    var n = [Double](count: m.size, repeatedValue: 0.0)
+    var n = [Double](repeating: 0.0, count: m.size)
     vDSP_vnegD(m.flat, 1, &n, 1, vDSP_Length(m.size))
     let v = Vector(size: m.size)
     v.flat = n
@@ -20,7 +20,7 @@ public prefix func - (m: Vector) -> Vector {
 
 /// Vector addition.
 public func + (lhs: Vector, rhs: Vector) -> Vector {
-    var s = [Double](count: lhs.size, repeatedValue: 0.0)
+    var s = [Double](repeating: 0.0, count: lhs.size)
     vDSP_vaddD(lhs.flat, 1, rhs.flat, 1, &s, 1, vDSP_Length(lhs.size))
     let v = Vector(size: lhs.size)
     v.flat = s
@@ -29,7 +29,7 @@ public func + (lhs: Vector, rhs: Vector) -> Vector {
 
 /// Vector subtraction.
 public func - (lhs: Vector, rhs: Vector) -> Vector {
-    var s = [Double](count: lhs.size, repeatedValue: 0.0)
+    var s = [Double](repeating: 0.0, count: lhs.size)
     vDSP_vsubD(rhs.flat, 1, lhs.flat, 1, &s, 1, vDSP_Length(lhs.size))
     let v = Vector(size: lhs.size)
     v.flat = s
@@ -39,7 +39,7 @@ public func - (lhs: Vector, rhs: Vector) -> Vector {
 /// Element-wise vector addition.
 public func + (lhs: Vector, rhs: Double) -> Vector {
     var scalar = rhs
-    var s = [Double](count: lhs.size, repeatedValue: 0.0)
+    var s = [Double](repeating: 0.0, count: lhs.size)
     vDSP_vsaddD(lhs.flat, 1, &scalar, &s, 1, vDSP_Length(lhs.size))
     let v = Vector(size: lhs.size)
     v.flat = s
@@ -48,7 +48,7 @@ public func + (lhs: Vector, rhs: Double) -> Vector {
 
 /// Element-wise vector subtraction.
 public func - (lhs: Vector, rhs: Double) -> Vector {
-    var s = [Double](count: lhs.size, repeatedValue: 0.0)
+    var s = [Double](repeating: 0.0, count: lhs.size)
     var scalar = -rhs
     vDSP_vsaddD(lhs.flat, 1, &scalar, &s, 1, vDSP_Length(lhs.size))
     let v = Vector(size: lhs.size)
@@ -58,7 +58,7 @@ public func - (lhs: Vector, rhs: Double) -> Vector {
 
 /// Element-wise vector multiplication.
 public func * (lhs: Vector, rhs: Double) -> Vector {
-    var s = [Double](count: lhs.size, repeatedValue: 0.0)
+    var s = [Double](repeating: 0.0, count: lhs.size)
     var scalar = -rhs
     vDSP_vsmulD(lhs.flat, 1, &scalar, &s, 1, vDSP_Length(lhs.size))
     let v = Vector(size: lhs.size)
@@ -68,7 +68,7 @@ public func * (lhs: Vector, rhs: Double) -> Vector {
 
 /// Element-wise vector division.
 public func / (lhs: Vector, rhs: Double) -> Vector {
-    var s = [Double](count: lhs.size, repeatedValue: 0.0)
+    var s = [Double](repeating: 0.0, count: lhs.size)
     var scalar = -rhs
     vDSP_vsdivD(lhs.flat, 1, &scalar, &s, 1, vDSP_Length(lhs.size))
     let v = Vector(size: lhs.size)
@@ -112,7 +112,7 @@ public func * (lhs: Matrix, rhs: Matrix) -> Matrix {
     assert(lhs.columns == rhs.rows, "Matrix sizes don't match")
     let v1 = lhs.flat.flat
     let v2 = rhs.flat.flat
-    var r = [Double](count: lhs.rows * rhs.columns, repeatedValue: 1)
+    var r = [Double](repeating: 1, count: lhs.rows * rhs.columns)
     vDSP_mmulD(v1, 1, v2, 1, &r, 1, vDSP_Length(lhs.rows), vDSP_Length(rhs.columns), vDSP_Length(rhs.rows))
     let m = Matrix(rows: lhs.rows, columns: rhs.columns)
     m.flat.flat = r
