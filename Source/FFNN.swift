@@ -415,7 +415,7 @@ public extension FFNN {
     }
     
     /// Computes the error over the given training set.
-    private func error(result: [[Float]], expected: [[Float]]) throws -> Float {
+    public func error(result: [[Float]], expected: [[Float]]) throws -> Float {
         var errorSum: Float = 0
         switch self.errorFunction {
         case .Default(let average):

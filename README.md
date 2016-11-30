@@ -90,21 +90,25 @@ In order to provide support for more platforms (Linux, Windows, etc.), alternati
 ## Using Swift AI?
 If you're using Swift AI in one of your own projects, let me know! I'll add a link to your profile/website/app right here on the front page. Feel free to email me at the address shown below.
 
+- [SwiftOCR](https://github.com/garnele007/SwiftOCR)
+
 ## Contributing
 Contributions to the project are welcome. Please review the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) before submitting a pull request, and strive to maintain consistency with the structure and formatting of existing code. Official guidelines with more details will be provided soon.
 
 ## Contact
-I develop iOS apps, and have experience in engineering. You can reach me here:
+I do all things Swift - from cloud technologies to iOS apps. You can reach me here:
 
 ![Email](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Email.png?raw=true)
 
+## Become a Sponsor
+
+Due to recent interest, we're now accepting corporate sponsorships. If your company is interested in becoming a sponsor, contact me at the address above.
+
 ## Care Enough to Donate?
 
-Take a little, give a little. More donations = less contract work = more time building great open-source projects!
+Everyone needs to eat, and our amazing supporters are what have made Swift AI possible.
 
->**What good will my money do?**
-
-Your donation will help a college student get through school, and give you a warm, fuzzy feeling. Every contribution is appreciated.
+Your donation will help continue the development of open-source machine learning technologies, benefitting millions of users worldwide!
 
 [![Donate](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/DonateButton.png?raw=true)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3FCBZ7MXZJFG2&lc=US&item_name=Swift%20AI&currency_code=USD&bn=PP%2dDonationsBF%3aDonateButton%2epng%3fraw%3dtrue%3aNonHosted)
 
