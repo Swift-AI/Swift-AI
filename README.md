@@ -78,9 +78,7 @@ Grab the files you need, drag them into your project. That was easy!
 
 >**Why don't we use CocoaPods/Carthage?**
 
-Swift is open-source now, and it remains to be seen how these dependency managers will cooperate with other platforms.
-
-A better alternative will probably be the [Swift Package Manager](https://swift.org/package-manager/).
+Because we're migrating to the [Swift Package Manager](https://swift.org/package-manager/).
 
 ## Compatibility
 Swift AI currently depends on Apple's [Accelerate](https://developer.apple.com/library/mac/documentation/Accelerate/Reference/AccelerateFWRef/) framework for vector/matrix calculations and digital signal processing.
