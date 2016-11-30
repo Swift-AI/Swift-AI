@@ -100,6 +100,10 @@ I do all things Swift - from cloud technologies to iOS apps. You can reach me he
 
 ![Email](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Email.png?raw=true)
 
+## Become a Sponsor
+
+Due to recent interest, we're now accepting corporate sponsorships. If your company is interested in becoming a sponsor, contact me at the address above.
+
 ## Care Enough to Donate?
 
 Everyone needs to eat, and our amazing supporters are what have made Swift AI possible.
