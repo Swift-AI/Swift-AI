@@ -1,5 +1,5 @@
 .DS_Store 
-
+*.xcodeproj
 
 Examples/OS X/Swift-AI-OSX.xcodeproj/project.xcworkspace/xcuserdata/*
 Examples/OS X/Swift-AI-OSX.xcodeproj/xcuserdata/*
