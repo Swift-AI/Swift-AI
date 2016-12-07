@@ -59,7 +59,7 @@ public func - (lhs: Vector, rhs: Double) -> Vector {
 /// Element-wise vector multiplication.
 public func * (lhs: Vector, rhs: Double) -> Vector {
     var s = [Double](repeating: 0.0, count: lhs.size)
-    var scalar = -rhs
+    var scalar = rhs
     vDSP_vsmulD(lhs.flat, 1, &scalar, &s, 1, vDSP_Length(lhs.size))
     let v = Vector(size: lhs.size)
     v.flat = s

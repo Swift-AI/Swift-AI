@@ -75,10 +75,12 @@ public final class FFNN {
     }
     
     /// The activation function to use during update cycles.
-    fileprivate var activationFunction : ActivationFunction = .Sigmoid
+
+    fileprivate var activationFunction: ActivationFunction = .Sigmoid
     
     /// The error function used for training
-    fileprivate var errorFunction : ErrorFunction = .default(average: false)
+    fileprivate var errorFunction: ErrorFunction = .default(average: false)
+
     /**
      The following private properties are allocated once during initializtion, in order to prevent frequent
      memory allocations for temporary variables during the update and backpropagation cycles.
@@ -225,7 +227,7 @@ public final class FFNN {
         // Note: Array elements are shifted one index to the right, in order to efficiently insert the bias node at index 0
         self.activateHidden()
         
-        //  Calculate the weighted sums for the output layer
+        // Calculate the weighted sums for the output layer
         vDSP_mmul(self.outputWeights, 1,
             self.hiddenOutputCache, 1,
             &self.outputCache, 1,
@@ -574,42 +576,44 @@ private func crossEntropy(_ a: Float, b: Float) -> Float {
 
 // MARK: Activation Functions and Derivatives
 
-/// Linear activation function (raw sum)
+
+/// Linear activation function (raw sum).
 private func linear(_ x: Float) -> Float {
     return x
 }
 
-/// Derivative for the linear activation function
+/// Derivative for the linear activation function.
 private func linearDerivative(_ y: Float) -> Float {
     return 1.0
 }
 
-/// Sigmoid activation function
+/// Sigmoid activation function.
 private func sigmoid(_ x: Float) -> Float {
     return 1 / (1 + exp(-x))
 }
-/// Derivative for the sigmoid activation function
+/// Derivative for the sigmoid activation function.
 private func sigmoidDerivative(_ y: Float) -> Float {
     return y * (1 - y)
 }
 
-/// Rational sigmoid activation function
+/// Rational sigmoid activation function.
 private func rationalSigmoid(_ x: Float) -> Float {
     return x / (1.0 + sqrt(1.0 + x * x))
 }
 
-/// Derivative for the rational sigmoid activation function
+/// Derivative for the rational sigmoid activation function.
 private func rationalSigmoidDerivative(_ y: Float) -> Float {
     let x = -(2 * y) / (y * y - 1)
     return 1 / ((x * x) + sqrt((x * x) + 1) + 1)
 }
 
-/// Hyperbolic tangent activation function
+
+/// Hyperbolic tangent activation function.
 private func hyperbolicTangent(_ x: Float) -> Float {
     return tanh(x)
 }
 
-/// Derivative for the hyperbolic tangent activation function
+/// Derivative for the hyperbolic tangent activation function.
 private func hyperbolicTangentDerivative(_ y: Float) -> Float {
     return 1 - (y * y)
 }

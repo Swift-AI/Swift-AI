@@ -11,7 +11,7 @@ Creating an `FFNN` instance is easy...
 ```
 let network = FFNN(inputs: 100, hidden: 64, outputs: 10,
 learningRate: 0.7, momentum: 0.4, weights: nil,
-activationFunction : .Sigmoid, errorFunction: .CrossEntropy)
+activationFunction : .Sigmoid, errorFunction: .CrossEntropy(average: false))
 ```
 You must provide eight parameters to the initializer:
 - `inputs`: The number of input nodes (aka 'neurons'). This number corresponds to the dimensionality of the data that you plan to feed the network. If the above example were to be used for handwriting recognition, `100` might be the number of pixels in each image being processed.
