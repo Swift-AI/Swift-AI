@@ -81,6 +81,7 @@ public final class FFNN {
     /// The error function used for training
     fileprivate var errorFunction: ErrorFunction = .default(average: false)
 
+
     /**
      The following private properties are allocated once during initializtion, in order to prevent frequent
      memory allocations for temporary variables during the update and backpropagation cycles.
@@ -576,9 +577,9 @@ private func crossEntropy(_ a: Float, b: Float) -> Float {
 
 // MARK: Activation Functions and Derivatives
 
-
 /// Linear activation function (raw sum).
 private func linear(_ x: Float) -> Float {
+
     return x
 }
 
@@ -606,7 +607,6 @@ private func rationalSigmoidDerivative(_ y: Float) -> Float {
     let x = -(2 * y) / (y * y - 1)
     return 1 / ((x * x) + sqrt((x * x) + 1) + 1)
 }
-
 
 /// Hyperbolic tangent activation function.
 private func hyperbolicTangent(_ x: Float) -> Float {
