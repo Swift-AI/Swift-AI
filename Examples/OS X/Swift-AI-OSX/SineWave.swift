@@ -7,12 +7,12 @@
 
 import Foundation
 
-func sineWave(errorThreshold errorThreshold: Float) {
+func sineWave(errorThreshold: Float) {
     
     print("******** Feed-Forward Neural Network: Sine Wave Example ********")
 
     // Initialize network
-    let network = FFNN(inputs: 1, hidden: 8, outputs: 1, learningRate: 0.7, momentum: 0.2, weights: nil, activationFunction: .Sigmoid, errorFunction: .Default(average: false))
+    let network = FFNN(inputs: 1, hidden: 8, outputs: 1, learningRate: 0.7, momentum: 0.2, weights: nil, activationFunction: .Sigmoid, errorFunction: .default(average: false))
         
     // Create training data
     // Note: Each input 'set' is an array with a single x-coordinate
@@ -21,7 +21,7 @@ func sineWave(errorThreshold errorThreshold: Float) {
     for i in -500...500 {
         let x = Float(i) / 1000
         inputs.append([x])
-        answers.append([sineFunc(x)])
+        answers.append([sineFunc(x: x)])
     }
     
     // Create a validation set
@@ -32,7 +32,7 @@ func sineWave(errorThreshold errorThreshold: Float) {
     for j in -300...300 {
         let x = Float(j) / 600
         testInputs.append([x])
-        testAnswers.append([sineFunc(x)])
+        testAnswers.append([sineFunc(x: x)])
     }
     
     // Train the network

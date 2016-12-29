@@ -1,6 +1,6 @@
 import XCTest
 
-public enum BuilderError: ErrorType {
+public enum BuilderError: Error {
 	case CountMismatchError(String)
 }
 
@@ -58,7 +58,7 @@ class Builder {
 			let errors: [Float] = try computeErrors()
 			return errors.reduce(0) { $0 + abs($1) }
 		} catch {
-			return Float.NaN
+			return Float.nan
 		}
 	}
 	
@@ -73,29 +73,29 @@ class Builder {
 			}
 		}
 		s.append("absolute error: \(absoluteError)")
-		print(s.joinWithSeparator("\n"))
+		print(s.joined(separator: "\n"))
 	}
 }
 
 extension Builder {
 	func xor2way() {
 		name = "XOR gate with 2 inputs"
-		append([0, 0], [0])
-		append([0, 1], [1])
-		append([1, 0], [1])
-		append([1, 1], [0])
+		append(input:[0, 0], [0])
+		append(input:[0, 1], [1])
+		append(input:[1, 0], [1])
+		append(input:[1, 1], [0])
 	}
 
 	func xor3way() {
 		name = "XOR gate with 3 inputs"
-		append([0, 0, 0], [0])
-		append([0, 0, 1], [0])
-		append([0, 1, 0], [1])
-		append([0, 1, 1], [1])
-		append([1, 0, 0], [0])
-		append([1, 0, 1], [1])
-		append([1, 1, 0], [0])
-		append([1, 1, 1], [1])
+		append(input:[0, 0, 0], [0])
+		append(input:[0, 0, 1], [0])
+		append(input:[0, 1, 0], [1])
+		append(input:[0, 1, 1], [1])
+		append(input:[1, 0, 0], [0])
+		append(input:[1, 0, 1], [1])
+		append(input:[1, 1, 0], [0])
+		append(input:[1, 1, 1], [1])
 	}
 	
 	func sinus() {
@@ -105,7 +105,7 @@ extension Builder {
 			let input: Float = Float(i) / Float(n)
 			let rad: Float = Float(M_PI * 2) * input
 			let output: Float = (sin(rad) + 1) / 2
-			append([input], [output])
+			append(input:[input], [output])
 		}
 	}
 }

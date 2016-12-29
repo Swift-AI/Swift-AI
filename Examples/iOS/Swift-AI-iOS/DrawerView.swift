@@ -20,9 +20,9 @@ class DrawerView: UIView {
     let footerLabel = APMultilineLabel()
     
     convenience init() {
-        self.init(frame: CGRectZero)
-        self.headerView = APBorderView(border: .Bottom, color: .whiteColor(), weight: 1)
-        self.footerView = APBorderView(border: .Top, color: .whiteColor(), weight: 1)
+        self.init(frame: CGRect.zero)
+        self.headerView = APBorderView(border: .bottom, color: .white, weight: 1)
+        self.footerView = APBorderView(border: .top, color: .white, weight: 1)
     }
     
     override init(frame: CGRect) {
@@ -44,24 +44,24 @@ class DrawerView: UIView {
         self.backgroundColor = .drawerColor()
         
         // Style Subviews
-        self.headerView.backgroundColor = .clearColor()
+        self.headerView.backgroundColor = .clear
 
         self.headerLabel.text = "Example Projects"
         self.headerLabel.font = UIFont.swiftFontOfSize(18)
         self.headerLabel.textColor = .swiftLightGray()
         
         self.tableView.backgroundColor = .drawerColor()
-        self.tableView.scrollEnabled = false
+        self.tableView.isScrollEnabled = false
         
-        self.footerView.backgroundColor = .clearColor()
+        self.footerView.backgroundColor = .clear
         
         let text = NSMutableAttributedString(string: "Feedback or ideas?\nLet us know on Github")
-        text.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.StyleSingle.rawValue, range: NSMakeRange(text.length - 6, 6))
+        text.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: NSMakeRange(text.length - 6, 6))
         self.footerLabel.attributedText = text
 //        self.footerLabel.text = "Feedback or ideas?\nLet us know on Github"
         self.footerLabel.font = UIFont.swiftFontOfSize(13)
         self.footerLabel.textColor = .swiftLightGray()
-        self.footerLabel.textAlignment = .Center
+        self.footerLabel.textAlignment = .center
     }
     
     override func updateConstraints() {
@@ -86,7 +86,7 @@ class DrawerView: UIView {
         tableView.addConstraints(
             Constraint.llrr.of(self),
             Constraint.tb.of(headerView),
-            Constraint.h.of(CGFloat(tableView.numberOfRowsInSection(0) * 70)))
+            Constraint.h.of(CGFloat(tableView.numberOfRows(inSection: 0) * 70)))
         
 //        self.tableView.constrainUsing(constraints: [
 //            Constraint.ll : (of: self, offset: 0),

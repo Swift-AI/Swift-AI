@@ -21,20 +21,20 @@ class HandwritingLearnViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let url = NSBundle.mainBundle().URLForResource("handwriting-learn-ffnn", withExtension: nil)!
+        let url = Bundle.main.url(forResource: "handwriting-learn-ffnn", withExtension: nil)!
         self.network = FFNN.fromFile(url)
         
         self.handwritingLearnView.textField.delegate = self
-        self.handwritingLearnView.textField.addTarget(self, action: #selector(textChanged), forControlEvents: .EditingChanged)
+        self.handwritingLearnView.textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         
     }
     
-    override func viewDidAppear(animated: Bool) {
-        self.handwritingLearnView.textField.keyboardType = .NumberPad
+    override func viewDidAppear(_ animated: Bool) {
+        self.handwritingLearnView.textField.keyboardType = .numberPad
         self.handwritingLearnView.textField.becomeFirstResponder()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         self.handwritingLearnView.textField.resignFirstResponder()
     }
     
@@ -44,7 +44,7 @@ class HandwritingLearnViewController: UIViewController {
 
 extension HandwritingLearnViewController {
     
-    private func generateCharacter(digit: Int) {
+    fileprivate func generateCharacter(_ digit: Int) {
         guard let inputArray = self.digitToArray(digit) else {
             print("Error: Invalid digit: \(digit)")
             return
@@ -58,7 +58,7 @@ extension HandwritingLearnViewController {
         }
     }
     
-    private func pixelsToImage(pixelFloats: [Float]) -> UIImage? {
+    fileprivate func pixelsToImage(_ pixelFloats: [Float]) -> UIImage? {
         guard pixelFloats.count == 784 else {
             print("Error: Invalid number of pixels given: \(pixelFloats.count). Expected: 784")
             return nil
@@ -75,19 +75,24 @@ extension HandwritingLearnViewController {
         }
         
         let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedFirst.rawValue)
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
         var data = pixels
-        let providerRef = CGDataProviderCreateWithCFData(NSData(bytes: &data, length: data.count * sizeof(PixelData)))
-        let cgim = CGImageCreate(28, 28, 8, 32, 28 * sizeof(PixelData), rgbColorSpace, bitmapInfo, providerRef, nil, true, CGColorRenderingIntent.RenderingIntentDefault)
-        return UIImage(CGImage: cgim!)
+        
+        let databytespointer = withUnsafePointer(to: &data, {$0})
+        let providerRef = CGDataProvider(data: Data(bytes:databytespointer , count: data.count * MemoryLayout<PixelData>.size) as CFData)
+        
+        
+        
+        let cgim = CGImage(width: 28, height: 28, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: 28 * MemoryLayout<PixelData>.size, space: rgbColorSpace, bitmapInfo: bitmapInfo, provider: providerRef!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+        return UIImage(cgImage: cgim!)
     }
     
     
-    private func digitToArray(digit: Int) -> [Float]? {
+    fileprivate func digitToArray(_ digit: Int) -> [Float]? {
         guard digit >= 0 && digit <= 9 else {
             return nil
         }
-        var array = [Float](count: 10, repeatedValue: 0)
+        var array = [Float](repeating: 0, count: 10)
         array[digit] = 1
         return array
     }
@@ -98,12 +103,12 @@ extension HandwritingLearnViewController {
 
 extension HandwritingLearnViewController: UITextFieldDelegate {
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.handwritingLearnView.textField.text = ""
         return true
     }
     
-    func textChanged(sender: UITextField) {
+    func textChanged(_ sender: UITextField) {
         if let digit = Int(self.handwritingLearnView.textField.text!) {
             self.generateCharacter(digit)
         }
