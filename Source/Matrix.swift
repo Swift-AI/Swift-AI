@@ -52,9 +52,7 @@ public class Matrix {
             self.flat.flat[row * self.columns + column] = newValue
         }
     }
-    
-    // TODO: Guard against invalid indices for row/column accessors.
-    
+        
     /// Returns the receiver's row at the given index.
     public func row(index: Int) -> Vector {
         assert(index <= rows, "Matrix sizes don't match")
