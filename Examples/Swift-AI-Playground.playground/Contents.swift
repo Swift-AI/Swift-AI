@@ -22,7 +22,7 @@ func plotSineWave() {
         let x = Float(i) / 1000
         let output = try! network.update(inputs: [x]).first!
         
-        //MARK: Playground problem
+        //FIXME: Playground problem
         // Swift Playgrounds no longer has this, it has been depricated without any alternative solutions
         // http://stackoverflow.com/questions/36305877/swift-playgrounds-replacement-for-capturevalue-withidentifier
         XCPlaygroundPage.currentPage.captureValue(value: output, withIdentifier: "Sine Wave")
