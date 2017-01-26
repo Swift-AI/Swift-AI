@@ -8,11 +8,11 @@ import UIKit
     /// A subclass of UILabel that automatically wraps text to width of its own frame.
     /// May be used with AutoLayout without providing a preferredMaxLayoutWidth.
     /// IMPORTANT: Do not assign a height constraint to APMultiLineLabels
-public class APMultilineLabel: UILabel {
+open class APMultilineLabel: UILabel {
     
     public init() {
-        super.init(frame: CGRectZero)
-        self.lineBreakMode = .ByWordWrapping
+        super.init(frame: CGRect.zero)
+        self.lineBreakMode = .byWordWrapping
         self.numberOfLines = 0
     }
     
@@ -20,7 +20,7 @@ public class APMultilineLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public func layoutSubviews() {
+    override open func layoutSubviews() {
         super.layoutSubviews()
         self.preferredMaxLayoutWidth = self.bounds.size.width
     }

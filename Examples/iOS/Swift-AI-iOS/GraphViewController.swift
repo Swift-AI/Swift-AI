@@ -15,26 +15,26 @@ class GraphViewController: UIViewController {
     /// Array of all points to display in the graph
     var points = [CALayer]()
     /// Our neural network
-    private var network = FFNN(inputs: 1, hidden: 8, outputs: 1, learningRate: 0.6, momentum: 0.8, weights: nil, activationFunction: .Sigmoid, errorFunction: .Default(average: false))
+    fileprivate var network = FFNN(inputs: 1, hidden: 8, outputs: 1, learningRate: 0.6, momentum: 0.8, weights: nil, activationFunction: .Sigmoid, errorFunction: .default(average: false))
     /// Serial queue for synchronizing access to neural network from multiple threads
-    private let networkQueue = dispatch_queue_create("com.SwiftAI.networkQueue", DISPATCH_QUEUE_SERIAL)
+    fileprivate let networkQueue = DispatchQueue(label: "com.SwiftAI.networkQueue", attributes: [])
     /// A multiplier, for altering the target function
-    private var functionMultiplier: Float = 1.5 {
+    fileprivate var functionMultiplier: Float = 1.5 {
         didSet {
             self.updateFunctionLabel()
             self.updateTarget()
         }
     }
-    private var functionOffset: Float = 0.0 {
+    fileprivate var functionOffset: Float = 0.0 {
         didSet {
             self.updateFunctionLabel()
             self.updateTarget()
         }
     }
     /// State variable to start/stop the network's training when needed
-    private var paused = true
+    fileprivate var paused = true
     /// State variable to resume trainig after a reset, if needed
-    private var toContinue = false
+    fileprivate var toContinue = false
     
     override func loadView() {
         self.view = self.graphView
@@ -44,26 +44,26 @@ class GraphViewController: UIViewController {
         super.viewDidLoad()
 
         // Configure buttons
-        self.graphView.startPauseButton.addTarget(self, action: #selector(startPause), forControlEvents: .TouchUpInside)
-        self.graphView.infoButton.addTarget(self, action: #selector(infoTapped), forControlEvents: .TouchUpInside)
-        self.graphView.resetButton.addTarget(self, action: #selector(resetAll), forControlEvents: .TouchUpInside)
+        self.graphView.startPauseButton.addTarget(self, action: #selector(startPause), for: .touchUpInside)
+        self.graphView.infoButton.addTarget(self, action: #selector(infoTapped), for: .touchUpInside)
+        self.graphView.resetButton.addTarget(self, action: #selector(resetAll), for: .touchUpInside)
         // Configure slider for multiplier
-        self.graphView.frequencySlider.addTarget(self, action: #selector(frequencySliderMoved), forControlEvents: .ValueChanged)
-        self.graphView.offsetSlider.addTarget(self, action: #selector(offsetSliderMoved), forControlEvents: .ValueChanged)
+        self.graphView.frequencySlider.addTarget(self, action: #selector(frequencySliderMoved), for: .valueChanged)
+        self.graphView.offsetSlider.addTarget(self, action: #selector(offsetSliderMoved), for: .valueChanged)
         // Set function label text
-        self.graphView.functionLabel.setTitle("y = sin (\(self.functionMultiplier)x)", forState: .Normal)
+        self.graphView.functionLabel.setTitle("y = sin (\(self.functionMultiplier)x)", for: UIControlState())
         // Calculate number of points to plot, based on screen size (#hack)
-        self.numPoints = Int((UIScreen.mainScreen().bounds.width - 20))// / 2) // -20 for margins
+        self.numPoints = Int((UIScreen.main.bounds.width - 20))// / 2) // -20 for margins
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         // Happens here so we have a frame for our CGContext to draw curves
         self.resetAll()
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        self.graphView.startPauseButton.setImage(UIImage(named: "play"), forState: .Normal)
-        self.graphView.startPauseButton.setImage(UIImage(named: "play_highlighted"), forState: .Highlighted)
+    override func viewWillDisappear(_ animated: Bool) {
+        self.graphView.startPauseButton.setImage(UIImage(named: "play"), for: UIControlState())
+        self.graphView.startPauseButton.setImage(UIImage(named: "play_highlighted"), for: .highlighted)
         self.graphView.startPauseButton.backgroundColor = UIColor.swiftGreen()
         self.pauseTraining()
     }
@@ -71,30 +71,30 @@ class GraphViewController: UIViewController {
     func startPause() {
         switch self.paused {
         case true:
-            self.graphView.startPauseButton.setImage(UIImage(named: "pause"), forState: .Normal)
-            self.graphView.startPauseButton.setImage(UIImage(named: "pause_highlighted"), forState: .Highlighted)
+            self.graphView.startPauseButton.setImage(UIImage(named: "pause"), for: UIControlState())
+            self.graphView.startPauseButton.setImage(UIImage(named: "pause_highlighted"), for: .highlighted)
             self.graphView.startPauseButton.backgroundColor = UIColor.swiftDarkOrange()
             self.startTraining()
         case false:
-            self.graphView.startPauseButton.setImage(UIImage(named: "play"), forState: .Normal)
-            self.graphView.startPauseButton.setImage(UIImage(named: "play_highlighted"), forState: .Highlighted)
+            self.graphView.startPauseButton.setImage(UIImage(named: "play"), for: UIControlState())
+            self.graphView.startPauseButton.setImage(UIImage(named: "play_highlighted"), for: .highlighted)
             self.graphView.startPauseButton.backgroundColor = UIColor.swiftGreen()
             self.pauseTraining()
         }
     }
     
-    func frequencySliderMoved(sender: UISlider) {
+    func frequencySliderMoved(_ sender: UISlider) {
         self.functionMultiplier = sender.value
     }
     
-    func offsetSliderMoved(sender: UISlider) {
+    func offsetSliderMoved(_ sender: UISlider) {
         self.functionOffset = sender.value
     }
     
     func startTraining() {
         self.paused = false
         // Dispatches training process to background thread
-        dispatch_async(self.networkQueue) {
+        self.networkQueue.async {
             var epoch = 0
             while !self.paused {
                 for index in 0..<self.numPoints {
@@ -105,7 +105,7 @@ class GraphViewController: UIViewController {
                 }
                 if epoch % 2 == 0 {
                     let ys = self.computePoints()
-                    dispatch_sync(dispatch_get_main_queue()) {
+                    DispatchQueue.main.sync {
                         self.updatePoints(ys)
                     }
                 }
@@ -145,14 +145,14 @@ class GraphViewController: UIViewController {
     // MARK:- Private methods
     
     /// Update Function Label
-    private func updateFunctionLabel() {
+    fileprivate func updateFunctionLabel() {
         let frequencyString = Double(self.functionMultiplier).toString(decimalPlaces: 1)
         let phaseString =  (self.functionOffset > 0.0) ? " + " + Double(self.functionOffset).toString(decimalPlaces: 1) + "π" : ""
-        self.graphView.functionLabel.setTitle("y = sin (\(frequencyString)x\(phaseString))", forState: .Normal)
+        self.graphView.functionLabel.setTitle("y = sin (\(frequencyString)x\(phaseString))", for: UIControlState())
     }
     
     /// Creates a new set of points to plot on screen
-    private func initPoints() {
+    fileprivate func initPoints() {
         // Remove all points first, in case this is a reset
         for point in self.points {
             point.removeFromSuperlayer()
@@ -162,11 +162,11 @@ class GraphViewController: UIViewController {
             // Create a point
             let point = CALayer()
             // Calculate position to place point
-            let xPos = CGFloat(index) * ((UIScreen.mainScreen().bounds.width - 20) / CGFloat(self.numPoints)) - 3 // *.99 so points don't overflow
-            let yPos = (UIScreen.mainScreen().bounds.width - 20) / 2 - 4 // -20 for gray margins; -4 to offset point height
+            let xPos = CGFloat(index) * ((UIScreen.main.bounds.width - 20) / CGFloat(self.numPoints)) - 3 // *.99 so points don't overflow
+            let yPos = (UIScreen.main.bounds.width - 20) / 2 - 4 // -20 for gray margins; -4 to offset point height
             // Add point to view
             point.frame = CGRect(x: xPos, y: yPos, width: 6, height: 6)
-            point.backgroundColor = UIColor.swiftDarkOrange().CGColor
+            point.backgroundColor = UIColor.swiftDarkOrange().cgColor
             point.cornerRadius = 3
             // Remove implicit transform animations
             point.actions = ["transform" : NSNull()]
@@ -176,38 +176,38 @@ class GraphViewController: UIViewController {
         }
         
         // Update the points on screen
-        dispatch_async(self.networkQueue) {
+        self.networkQueue.async {
             let ys = self.computePoints()
-            dispatch_sync(dispatch_get_main_queue()) {
+            DispatchQueue.main.sync {
                 self.updatePoints(ys)
             }
         }
     }
 
-    private func updateTarget() {
+    fileprivate func updateTarget() {
         // Begin context
         UIGraphicsBeginImageContext(self.graphView.graphTargetView.frame.size)
         let context = UIGraphicsGetCurrentContext()
         // Set initial drawing position
         let startY = self.sineFunc(-5) // Our graph starts at '-5'
-        let yOrigin = (UIScreen.mainScreen().bounds.width - 20) / 2 - 4
+        let yOrigin = (UIScreen.main.bounds.width - 20) / 2 - 4
         let yPos = yOrigin + (CGFloat(startY * -250) + 125) // Offset
-        CGContextMoveToPoint(context, 0, CGFloat(yPos))
+        context?.move(to: CGPoint(x: 0, y: CGFloat(yPos)))
         for index in 0..<self.numPoints {
             // Append new line to curve
             let x = (-500 + (Float(index) * 1000) / Float(self.numPoints)) / 100
             let y = self.sineFunc(x)
-            let xPos = CGFloat(index) * ((UIScreen.mainScreen().bounds.width - 20) / CGFloat(self.numPoints)) * 0.99
+            let xPos = CGFloat(index) * ((UIScreen.main.bounds.width - 20) / CGFloat(self.numPoints)) * 0.99
             let yPos = yOrigin + CGFloat(y * -250) + 125
-            CGContextAddLineToPoint(context, CGFloat(xPos), CGFloat(yPos))
+            context?.addLine(to: CGPoint(x: CGFloat(xPos), y: CGFloat(yPos)))
         }
         // Set line properties
-        CGContextSetLineCap(context, CGLineCap.Round)
-        CGContextSetLineWidth(context, 2)
+        context?.setLineCap(CGLineCap.round)
+        context?.setLineWidth(2)
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0
         UIColor.swiftGreen().getRed(&red, green: &green, blue: &blue, alpha: nil)
-        CGContextSetRGBStrokeColor(context, red, green, blue, 1)
-        CGContextStrokePath(context)
+        context?.setStrokeColor(red: red, green: green, blue: blue, alpha: 1)
+        context?.strokePath()
         // Store modified image back to imageView
         self.graphView.graphTargetView.image = UIGraphicsGetImageFromCurrentImageContext()
         // End context
@@ -215,12 +215,12 @@ class GraphViewController: UIViewController {
     }
     
     /// Resets the neural network, with new random weights.
-    private func resetNetwork() {
-        dispatch_async(self.networkQueue) { () -> Void in
-            self.network = FFNN(inputs: 1, hidden: 10, outputs: 1, learningRate: 0.6, momentum: 0.8, weights: nil, activationFunction: .Sigmoid, errorFunction: .Default(average: false))
+    fileprivate func resetNetwork() {
+        self.networkQueue.async { () -> Void in
+            self.network = FFNN(inputs: 1, hidden: 10, outputs: 1, learningRate: 0.6, momentum: 0.8, weights: nil, activationFunction: .Sigmoid, errorFunction: .default(average: false))
             if self.toContinue {
                 // Continue training if it was previously running
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     self.startTraining()
                 })
                 self.toContinue = false
@@ -230,7 +230,7 @@ class GraphViewController: UIViewController {
     
     /// Returns new y coordinates for each point from the network.
     /// Note: must be called from the network queue.
-    private func computePoints() -> [CGFloat] {
+    fileprivate func computePoints() -> [CGFloat] {
         return (0..<self.numPoints).map { index -> CGFloat in
             let x = (-500 + (Float(index) * 1000) / Float(self.numPoints)) / 100
             let networkY = try! self.network.update(inputs: [x]).first!
@@ -240,14 +240,14 @@ class GraphViewController: UIViewController {
     
     /// Updates the points on screen with the given y coordinates.
     /// Note: must be called from the main queue
-    private func updatePoints(ys: [CGFloat]) {
+    fileprivate func updatePoints(_ ys: [CGFloat]) {
         for index in 0..<self.numPoints {
             self.points[index].transform = CATransform3DMakeTranslation(0, ys[index], 0)
         }
     }
     
     /// The sine wave function for regression
-    private func sineFunc(x: Float) -> Float {
+    fileprivate func sineFunc(_ x: Float) -> Float {
         return (0.5 * sin(self.functionMultiplier * x + functionOffset * Float(M_PI))) + 0.5
     }
 }

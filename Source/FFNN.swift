@@ -203,6 +203,9 @@ public final class FFNN {
     /// Propagates the given inputs through the neural network, returning the network's output.
     /// - Parameter inputs: An array of `Float`s, each element corresponding to one input node.
     /// - Returns: The network's output after applying the given inputs, as an array of `Float`s.
+    /// # discardable result: in many cases the ouput of this function is unused, adding this stops the compiler warnings
+    @discardableResult
+    // @discardableResult: in many cases the ouput of this function is unused, adding this stops the compiler warnings    
     public func update(inputs: [Float]) throws -> [Float] {
         // Ensure that the correct number of inputs is given
         guard inputs.count == self.numInputs else {
@@ -242,6 +245,8 @@ public final class FFNN {
     /// Trains the network by comparing its most recent output to the given 'answers', adjusting the network's weights as needed.
     /// - Parameter answer: The 'correct' desired output for the most recent update to the network, as an array of `Float`s.
     /// - Returns: The total calculated error from the most recent update.
+    @discardableResult
+    // @discardableResult: in many cases the ouput of this function is unused, adding this stops the compiler warnings
     public func backpropagate(answer: [Float]) throws -> Float {
         // Verify valid answer
         guard answer.count == self.numOutputs else {

@@ -13,11 +13,11 @@ class HandwritingViewController: UIViewController {
     let brushWidth: CGFloat = 20
     
     // Drawing state variables
-    private var lastDrawPoint = CGPointZero
-    private var boundingBox: CGRect?
-    private var swiped = false
-    private var drawing = false
-    private var timer = NSTimer()
+    fileprivate var lastDrawPoint = CGPoint.zero
+    fileprivate var boundingBox: CGRect?
+    fileprivate var swiped = false
+    fileprivate var drawing = false
+    fileprivate var timer = Timer()
     
     let handwritingView = HandwritingView()
     
@@ -28,31 +28,31 @@ class HandwritingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let url = NSBundle.mainBundle().URLForResource("handwriting-ffnn", withExtension: nil)!
+        let url = Bundle.main.url(forResource: "handwriting-ffnn", withExtension: nil)!
         self.network = FFNN.fromFile(url)
 
-        self.handwritingView.startPauseButton.addTarget(self, action: #selector(startPause), forControlEvents: .TouchUpInside)
-        self.handwritingView.clearButton.addTarget(self, action: #selector(resetTapped), forControlEvents: .TouchUpInside)
-        self.handwritingView.infoButton.addTarget(self, action: #selector(infoTapped), forControlEvents: .TouchUpInside)
+        self.handwritingView.startPauseButton.addTarget(self, action: #selector(startPause), for: .touchUpInside)
+        self.handwritingView.clearButton.addTarget(self, action: #selector(resetTapped), for: .touchUpInside)
+        self.handwritingView.infoButton.addTarget(self, action: #selector(infoTapped), for: .touchUpInside)
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first  else {
             return
         }
         self.swiped = false
-        guard CGRectContainsPoint(self.handwritingView.canvas.frame, touch.locationInView(self.handwritingView)) else {
-            super.touchesBegan(touches, withEvent: event)
+        guard self.handwritingView.canvas.frame.contains(touch.location(in: self.handwritingView)) else {
+            super.touchesBegan(touches, with: event)
             return
         }
         self.timer.invalidate()
-        let location = touch.locationInView(self.handwritingView.canvas)
+        let location = touch.location(in: self.handwritingView.canvas)
         if self.boundingBox == nil {
             self.boundingBox = CGRect(x: location.x - self.brushWidth / 2,
                 y: location.y - self.brushWidth / 2,
@@ -63,16 +63,16 @@ class HandwritingViewController: UIViewController {
         self.drawing = true
     }
 
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first  else {
             return
         }
-        guard CGRectContainsPoint(self.handwritingView.canvas.frame, touch.locationInView(self.handwritingView)) else {
-            super.touchesMoved(touches, withEvent: event)
+        guard self.handwritingView.canvas.frame.contains(touch.location(in: self.handwritingView)) else {
+            super.touchesMoved(touches, with: event)
             self.swiped = false
             return
         }
-        let currentPoint = touch.locationInView(self.handwritingView.canvas)
+        let currentPoint = touch.location(in: self.handwritingView.canvas)
         if self.swiped {
             self.drawLine(fromPoint: self.lastDrawPoint, toPoint: currentPoint)
         } else {
@@ -93,19 +93,19 @@ class HandwritingViewController: UIViewController {
         self.timer.invalidate()
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first  else {
             return
         }
-        if CGRectContainsPoint(self.handwritingView.canvas.frame, touch.locationInView(self.handwritingView)) {
+        if self.handwritingView.canvas.frame.contains(touch.location(in: self.handwritingView)) {
             if !self.swiped {
                 // Draw dot
                 self.drawLine(fromPoint: self.lastDrawPoint, toPoint: self.lastDrawPoint)
             }
         }
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: #selector(timerExpired), userInfo: nil, repeats: false)
+        self.timer = Timer.scheduledTimer(timeInterval: 0.4, target: self, selector: #selector(timerExpired), userInfo: nil, repeats: false)
         self.drawing = false
-        super.touchesEnded(touches, withEvent: event)
+        super.touchesEnded(touches, with: event)
     }
     
     func startPause() {
@@ -121,7 +121,7 @@ class HandwritingViewController: UIViewController {
         DrawerNavigationController.globalDrawerController().presentInfoView(infoView)
     }
     
-    func timerExpired(sender: NSTimer) {
+    func timerExpired(_ sender: Timer) {
         self.classifyImage()
         self.boundingBox = nil
     }
@@ -132,7 +132,7 @@ class HandwritingViewController: UIViewController {
 
 extension HandwritingViewController {
     
-    private func classifyImage() {
+    fileprivate func classifyImage() {
         // Extract and resize image from drawing canvas
         guard let imageArray = self.scanImage() else {
             self.clearCanvas()
@@ -153,27 +153,27 @@ extension HandwritingViewController {
         self.clearCanvas()
     }
     
-    private func updateOutputLabels(output: String, confidence: String) {
-        UIView.animateWithDuration(0.1, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [], animations: { () -> Void in
-            self.handwritingView.outputLabel.transform = CGAffineTransformMakeScale(1.1, 1.1)
+    fileprivate func updateOutputLabels(_ output: String, confidence: String) {
+        UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+            self.handwritingView.outputLabel.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
             self.handwritingView.outputLabel.text = output
-            self.handwritingView.confidenceLabel.transform = CGAffineTransformMakeScale(1.1, 1.1)
+            self.handwritingView.confidenceLabel.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
             self.handwritingView.confidenceLabel.text = confidence
         }, completion: nil)
-        UIView.animateWithDuration(0.3, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [], animations: { () -> Void in
-            self.handwritingView.outputLabel.transform = CGAffineTransformIdentity
-            self.handwritingView.confidenceLabel.transform = CGAffineTransformIdentity
+        UIView.animate(withDuration: 0.3, delay: 0.1, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+            self.handwritingView.outputLabel.transform = CGAffineTransform.identity
+            self.handwritingView.confidenceLabel.transform = CGAffineTransform.identity
             }, completion: nil)
     }
     
-    private func outputToLabel(output: [Float]) -> (label: Int, confidence: Double)? {
-        guard let max = output.maxElement() else {
+    fileprivate func outputToLabel(_ output: [Float]) -> (label: Int, confidence: Double)? {
+        guard let max = output.max() else {
             return nil
         }
-        return (output.indexOf(max)!, Double(max / 1.0))
+        return (output.index(of: max)!, Double(max / 1.0))
     }
     
-    private func scanImage() -> [Float]? {
+    fileprivate func scanImage() -> [Float]? {
         var pixelsArray = [Float]()
         guard let image = self.handwritingView.canvas.image else {
             return nil
@@ -187,10 +187,10 @@ extension HandwritingViewController {
         
         self.handwritingView.imageView.image = character
         
-        let pixelData = CGDataProviderCopyData(CGImageGetDataProvider(character.CGImage))
+        let pixelData = character.cgImage?.dataProvider?.data
         let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
-        let bytesPerRow = CGImageGetBytesPerRow(character.CGImage)
-        let bytesPerPixel = (CGImageGetBitsPerPixel(character.CGImage) / 8)
+        let bytesPerRow = character.cgImage?.bytesPerRow
+        let bytesPerPixel = ((character.cgImage?.bitsPerPixel)! / 8)
         var position = 0
         for _ in 0..<Int(character.size.height) {
             for _ in 0..<Int(character.size.width) {
@@ -198,57 +198,57 @@ extension HandwritingViewController {
                 pixelsArray.append(alpha / 255)
                 position += bytesPerPixel
             }
-            if position % bytesPerRow != 0 {
-                position += (bytesPerRow - (position % bytesPerRow))
+            if position % bytesPerRow! != 0 {
+                position += (bytesPerRow! - (position % bytesPerRow!))
             }
         }
         return pixelsArray
     }
     
-    private func cropImage(image: UIImage, toRect: CGRect) -> UIImage {
-        let imageRef = CGImageCreateWithImageInRect(image.CGImage!, toRect)
-        let newImage = UIImage(CGImage: imageRef!)
+    fileprivate func cropImage(_ image: UIImage, toRect: CGRect) -> UIImage {
+        let imageRef = image.cgImage!.cropping(to: toRect)
+        let newImage = UIImage(cgImage: imageRef!)
         return newImage
     }
     
-    private func scaleImageToSize(image: UIImage, maxLength: CGFloat) -> UIImage {
+    fileprivate func scaleImageToSize(_ image: UIImage, maxLength: CGFloat) -> UIImage {
         let size = CGSize(width: min(20 * image.size.width / image.size.height, 20), height: min(20 * image.size.height / image.size.width, 20))
-        let newRect = CGRectIntegral(CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let newRect = CGRect(x: 0, y: 0, width: size.width, height: size.height).integral
         UIGraphicsBeginImageContextWithOptions(size, false, 1.0)
         let context = UIGraphicsGetCurrentContext()
-        CGContextSetInterpolationQuality(context, CGInterpolationQuality.None)
-        image.drawInRect(newRect)
-        let newImageRef = CGBitmapContextCreateImage(context)! as CGImage
-        let newImage = UIImage(CGImage: newImageRef, scale: 1.0, orientation: UIImageOrientation.Up)
+        context!.interpolationQuality = CGInterpolationQuality.none
+        image.draw(in: newRect)
+        let newImageRef = (context?.makeImage()!)! as CGImage
+        let newImage = UIImage(cgImage: newImageRef, scale: 1.0, orientation: UIImageOrientation.up)
         UIGraphicsEndImageContext()
         return newImage
     }
     
-    private func addBorderToImage(image: UIImage) -> UIImage {
+    fileprivate func addBorderToImage(_ image: UIImage) -> UIImage {
         UIGraphicsBeginImageContext(CGSize(width: 28, height: 28))
         let white = UIImage(named: "white")!
-        white.drawAtPoint(CGPointZero)
-        image.drawAtPoint(CGPointMake((28 - image.size.width) / 2, (28 - image.size.height) / 2))
+        white.draw(at: CGPoint.zero)
+        image.draw(at: CGPoint(x: (28 - image.size.width) / 2, y: (28 - image.size.height) / 2))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return newImage
+        return newImage!
     }
     
-    private func clearCanvas() {
+    fileprivate func clearCanvas() {
         // Show snapshot box
         if let box = self.boundingBox {
             self.handwritingView.snapshotBox.frame = box
-            self.handwritingView.snapshotBox.transform = CGAffineTransformMakeScale(0.96, 0.96)
-            UIView.animateWithDuration(0.1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+            self.handwritingView.snapshotBox.transform = CGAffineTransform(scaleX: 0.96, y: 0.96)
+            UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: [], animations: { () -> Void in
                 self.handwritingView.snapshotBox.alpha = 1
-                self.handwritingView.snapshotBox.transform = CGAffineTransformMakeScale(1.06, 1.06)
+                self.handwritingView.snapshotBox.transform = CGAffineTransform(scaleX: 1.06, y: 1.06)
             }, completion: nil)
-            UIView.animateWithDuration(0.3, delay: 0.1, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: [], animations: { () -> Void in
-                self.handwritingView.snapshotBox.transform = CGAffineTransformIdentity
+            UIView.animate(withDuration: 0.3, delay: 0.1, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: [], animations: { () -> Void in
+                self.handwritingView.snapshotBox.transform = CGAffineTransform.identity
             }, completion: nil)
         }
         
-        UIView.animateWithDuration(0.1, delay: 0.4, options: [.CurveEaseIn], animations: { () -> Void in
+        UIView.animate(withDuration: 0.1, delay: 0.4, options: [.curveEaseIn], animations: { () -> Void in
             self.handwritingView.canvas.alpha = 0
             self.handwritingView.snapshotBox.alpha = 0
         }) { (Bool) -> Void in
@@ -257,27 +257,27 @@ extension HandwritingViewController {
         }
     }
     
-    private func drawLine(fromPoint fromPoint: CGPoint, toPoint: CGPoint) {
+    fileprivate func drawLine(fromPoint: CGPoint, toPoint: CGPoint) {
         // Begin context
         UIGraphicsBeginImageContext(self.handwritingView.canvas.frame.size)
         let context = UIGraphicsGetCurrentContext()
         // Store current image (lines drawn) in context
-        self.handwritingView.canvas.image?.drawInRect(CGRect(x: 0, y: 0, width: self.handwritingView.canvas.frame.width, height: self.handwritingView.canvas.frame.height))
+        self.handwritingView.canvas.image?.draw(in: CGRect(x: 0, y: 0, width: self.handwritingView.canvas.frame.width, height: self.handwritingView.canvas.frame.height))
         // Append new line to image
-        CGContextMoveToPoint(context, fromPoint.x, fromPoint.y)
-        CGContextAddLineToPoint(context, toPoint.x, toPoint.y)
-        CGContextSetLineCap(context, CGLineCap.Round)
-        CGContextSetLineWidth(context, self.brushWidth)
-        CGContextSetRGBStrokeColor(context, 0, 0, 0, 1.0)
-        CGContextSetBlendMode(context, CGBlendMode.Normal)
-        CGContextStrokePath(context)
+        context?.move(to: CGPoint(x: fromPoint.x, y: fromPoint.y))
+        context?.addLine(to: CGPoint(x: toPoint.x, y: toPoint.y))
+        context?.setLineCap(CGLineCap.round)
+        context?.setLineWidth(self.brushWidth)
+        context?.setStrokeColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+        context?.setBlendMode(CGBlendMode.normal)
+        context?.strokePath()
         // Store modified image back to imageView
         self.handwritingView.canvas.image = UIGraphicsGetImageFromCurrentImageContext()
         // End context
         UIGraphicsEndImageContext()
     }
     
-    private func updateRect(inout rect: CGRect, minX: CGFloat?, maxX: CGFloat?, minY: CGFloat?, maxY: CGFloat?) {
+    fileprivate func updateRect(_ rect: inout CGRect, minX: CGFloat?, maxX: CGFloat?, minY: CGFloat?, maxY: CGFloat?) {
         rect = CGRect(x: minX ?? rect.minX,
             y: minY ?? rect.minY,
             width: (maxX ?? rect.maxX) - (minX ?? rect.minX),
