@@ -21,12 +21,16 @@ func plotSineWave() {
     for i in -500...500 {
         let x = Float(i) / 1000
         let output = try! network.update(inputs: [x]).first!
-        XCPlaygroundPage.currentPage.captureValue(output, withIdentifier: "Sine Wave")
+        
+        //MARK: Playground problem
+        // Swift Playgrounds no longer has this, it has been depricated without any alternative solutions
+        // http://stackoverflow.com/questions/36305877/swift-playgrounds-replacement-for-capturevalue-withidentifier
+        XCPlaygroundPage.currentPage.captureValue(value: output, withIdentifier: "Sine Wave")
     }
 }
 
 // ** UNCOMMENT THIS LINE TO RUN **
-//plotSineWave()
+plotSineWave()
 
 
 func sine() {
@@ -38,7 +42,7 @@ func sine() {
         for i in -500...500 {
             let x = Float(i) / 1000
             try! network.update(inputs: [x])
-            let answer = sineFunc(x)
+            let answer = sineFunc(x: x)
             try! network.backpropagate(answer: [answer])
         }
     }
