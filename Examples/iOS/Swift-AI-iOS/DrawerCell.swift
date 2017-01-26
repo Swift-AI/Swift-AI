@@ -10,10 +10,10 @@ class DrawerCell: UITableViewCell {
     
     let titleLabel = UILabel()
     let descriptionLabel = UILabel()
-    private let selectionView = UIView()
+    fileprivate let selectionView = UIView()
     
     convenience init() {
-        self.init(style: .Default, reuseIdentifier: nil)
+        self.init(style: .default, reuseIdentifier: nil)
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
