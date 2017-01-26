@@ -52,11 +52,10 @@ public class Matrix {
             self.flat.flat[row * self.columns + column] = newValue
         }
     }
-    
-    // TODO: Guard against invalid indices for row/column accessors.
-    
+        
     /// Returns the receiver's row at the given index.
     public func row(index: Int) -> Vector {
+        assert(index <= rows, "Matrix sizes don't match")
         var v = self.flat.flat
         var r = [Double](count: self.columns, repeatedValue: 0)
         for column in 0..<self.columns {
@@ -70,6 +69,7 @@ public class Matrix {
     
     /// Select column vector from matrix
     public func column(index: Int) -> Vector{
+        assert(index <= columns, "Matrix sizes don't match")
         var v = self.flat.flat
         var c = [Double](count: self.rows, repeatedValue: 0)
         for row in 0..<self.rows {
@@ -87,5 +87,6 @@ public class Matrix {
         c.flat = self.flat.copy()
         return c
     }
+    
     
 }

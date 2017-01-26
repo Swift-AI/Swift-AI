@@ -16,25 +16,25 @@ extension FFNN: Storage {
 
     /// Reads a FFNN from file.
     /// - Parameter filename: The name of the file, located in the default Documents directory.
-    public static func fromFile(filename: String) -> FFNN? {
+    public static func fromFile(_ filename: String) -> FFNN? {
         return self.read(self.getFileURL(filename))
     }
 
     /// Reads a FFNN from file.
     /// - Parameter url: The `NSURL` for the file to read.
-    public static func fromFile(url: NSURL) -> FFNN? {
+    public static func fromFile(_ url: URL) -> FFNN? {
         return self.read(url)
     }
 
     /// Writes the FFNN to file.
     /// - Parameter filename: The name of the file to write to. This file will be written to the default Documents directory.
-    public func writeToFile(filename: String) {
+    public func writeToFile(_ filename: String) {
         self.write(FFNN.getFileURL(filename))
     }
 
     /// Writes the FFNN to file.
     /// - Parameter url: The `NSURL` to write the file to.
-    public func writeToFile(url: NSURL) {
+    public func writeToFile(_ url: URL) {
         self.write(url)
     }
 

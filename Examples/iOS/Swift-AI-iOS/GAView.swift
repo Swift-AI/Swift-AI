@@ -12,7 +12,7 @@ class GAView: UIView {
     let tempLabel = UILabel()
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
     
     override init(frame: CGRect) {
@@ -29,7 +29,7 @@ class GAView: UIView {
         self.addSubview(self.tempLabel)
         
         // Style View
-        self.backgroundColor = .whiteColor()
+        self.backgroundColor = .white
         
         // Style Subviews
         self.tempLabel.text = "Genetic Algorithm example coming soon!"
