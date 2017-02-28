@@ -12,49 +12,49 @@ import UIKit
 /// - parameter releaseSpringDamping: The damping parameter for the spring animation used when the button is released. Default 0.35
 /// - parameter pressSpringDuration: The duration of the spring animation used when the button is pressed. Default 0.4
 /// - parameter releaseSpringDuration: The duration of the spring animation used when the button is reloeased. Default 0.5
-public class APSpringButton: UIButton {
+open class APSpringButton: UIButton {
     
-    public var minimumScale: CGFloat = 0.95
-    public var pressSpringDamping: CGFloat = 0.4
-    public var releaseSpringDamping: CGFloat = 0.35
-    public var pressSpringDuration = 0.4
-    public var releaseSpringDuration = 0.5
+    open var minimumScale: CGFloat = 0.95
+    open var pressSpringDamping: CGFloat = 0.4
+    open var releaseSpringDamping: CGFloat = 0.35
+    open var pressSpringDuration = 0.4
+    open var releaseSpringDuration = 0.5
     
     public init() {
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesBegan(touches, withEvent: event)
-        UIView.animateWithDuration(self.pressSpringDuration, delay: 0, usingSpringWithDamping: self.pressSpringDamping, initialSpringVelocity: 0, options: [.CurveLinear, .AllowUserInteraction], animations: { () -> Void in
-            self.transform = CGAffineTransformMakeScale(self.minimumScale, self.minimumScale)
+    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        UIView.animate(withDuration: self.pressSpringDuration, delay: 0, usingSpringWithDamping: self.pressSpringDamping, initialSpringVelocity: 0, options: [.curveLinear, .allowUserInteraction], animations: { () -> Void in
+            self.transform = CGAffineTransform(scaleX: self.minimumScale, y: self.minimumScale)
             }, completion: nil)
     }
     
-    override public func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesEnded(touches, withEvent: event)
-        UIView.animateWithDuration(self.releaseSpringDuration, delay: 0, usingSpringWithDamping: self.releaseSpringDamping, initialSpringVelocity: 0, options: [.CurveLinear, .AllowUserInteraction], animations: { () -> Void in
-            self.transform = CGAffineTransformIdentity
+    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        UIView.animate(withDuration: self.releaseSpringDuration, delay: 0, usingSpringWithDamping: self.releaseSpringDamping, initialSpringVelocity: 0, options: [.curveLinear, .allowUserInteraction], animations: { () -> Void in
+            self.transform = CGAffineTransform.identity
             }, completion: nil)
     }
     
-    override public func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let location = touches.first!.locationInView(self)
-        if !CGRectContainsPoint(self.bounds, location) {
-            UIView.animateWithDuration(self.releaseSpringDuration, delay: 0, usingSpringWithDamping: self.releaseSpringDamping, initialSpringVelocity: 0, options: [.CurveLinear, .AllowUserInteraction], animations: { () -> Void in
-                self.transform = CGAffineTransformIdentity
+    override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let location = touches.first!.location(in: self)
+        if !self.bounds.contains(location) {
+            UIView.animate(withDuration: self.releaseSpringDuration, delay: 0, usingSpringWithDamping: self.releaseSpringDamping, initialSpringVelocity: 0, options: [.curveLinear, .allowUserInteraction], animations: { () -> Void in
+                self.transform = CGAffineTransform.identity
                 }, completion: nil)
         }
     }
     
-    override public func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
-        super.touchesCancelled(touches, withEvent: event)
-        UIView.animateWithDuration(self.releaseSpringDuration, delay: 0, usingSpringWithDamping: self.releaseSpringDamping, initialSpringVelocity: 0, options: [.CurveLinear, .AllowUserInteraction], animations: { () -> Void in
-            self.transform = CGAffineTransformIdentity
+    override open func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+        UIView.animate(withDuration: self.releaseSpringDuration, delay: 0, usingSpringWithDamping: self.releaseSpringDamping, initialSpringVelocity: 0, options: [.curveLinear, .allowUserInteraction], animations: { () -> Void in
+            self.transform = CGAffineTransform.identity
             }, completion: nil)
     }
     

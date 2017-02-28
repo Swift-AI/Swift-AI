@@ -275,7 +275,9 @@
 				TargetAttributes = {
 					F02FD2071C02B93400A137C2 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = 4Z58733BBB;
+						DevelopmentTeam = 22AFPHX3AU;
+						LastSwiftMigration = 0820;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -453,12 +455,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 22AFPHX3AU;
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Swift-AI-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Appsidian.Swift-AI-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.slon.testapp;
 				PRODUCT_NAME = "Swift AI";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -468,12 +473,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 22AFPHX3AU;
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "Swift-AI-iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Appsidian.Swift-AI-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.slon.testapp;
 				PRODUCT_NAME = "Swift AI";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

@@ -30,7 +30,7 @@ class GraphView: UIView {
     let infoButton = APSpringButton()
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
     
     override init(frame: CGRect) {
@@ -45,8 +45,8 @@ class GraphView: UIView {
     func configureSubviews() {
         // Add Subviews
         self.addSubviews(self.graphContainer, self.sliderContainer, self.buttonContainer)
-        self.graphContainer.insertSubview(self.xAxis, atIndex: 0)
-        self.graphContainer.insertSubview(self.yAxis, atIndex: 1)
+        self.graphContainer.insertSubview(self.xAxis, at: 0)
+        self.graphContainer.insertSubview(self.yAxis, at: 1)
         self.graphContainer.addSubviews(self.graphTargetView, self.negXLabel, self.posXLabel, self.negYLabel, self.posYLabel)
         self.sliderContainer.addSubviews(self.functionLabel, self.frequencySlider, self.offsetSlider)
         self.buttonContainer.addSubviews(self.startPauseButton, self.infoButton, self.resetButton)
@@ -55,9 +55,9 @@ class GraphView: UIView {
         self.backgroundColor = UIColor.swiftLightGray()
         
         // Style Subviews
-        self.graphContainer.backgroundColor = .whiteColor()
+        self.graphContainer.backgroundColor = .white
         self.graphContainer.layer.cornerRadius = 4
-        self.graphContainer.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.graphContainer.layer.shadowColor = UIColor.swiftMediumGray().cgColor
         self.graphContainer.layer.shadowOpacity = 0.3
         self.graphContainer.layer.shadowOffset = CGSize(width: 1, height: 3)
         
@@ -69,15 +69,15 @@ class GraphView: UIView {
         self.negYLabel.text = "-1"
         self.posYLabel.text = "1"
         
-        self.sliderContainer.backgroundColor = .whiteColor()
+        self.sliderContainer.backgroundColor = .white
         self.sliderContainer.layer.cornerRadius = 4
-        self.sliderContainer.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.sliderContainer.layer.shadowColor = UIColor.swiftMediumGray().cgColor
         self.sliderContainer.layer.shadowOpacity = 0.3
         self.sliderContainer.layer.shadowOffset = CGSize(width: 1, height: 3)
         
         self.functionLabel.titleLabel?.font = UIFont.swiftFontOfSize(18)
-        self.functionLabel.setTitleColor(UIColor.swiftGreen(), forState: .Normal)
-        self.functionLabel.backgroundColor = UIColor.clearColor()
+        self.functionLabel.setTitleColor(UIColor.swiftGreen(), for: UIControlState())
+        self.functionLabel.backgroundColor = UIColor.clear
         self.functionLabel.layer.cornerRadius = 6
         self.functionLabel.minimumScale = 0.92
         
@@ -91,26 +91,26 @@ class GraphView: UIView {
         self.offsetSlider.value = 0.0
         self.offsetSlider.tintColor = UIColor.swiftGreen()
     
-        self.buttonContainer.backgroundColor = .whiteColor()
+        self.buttonContainer.backgroundColor = .white
         self.buttonContainer.layer.cornerRadius = 4
-        self.buttonContainer.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.buttonContainer.layer.shadowColor = UIColor.swiftMediumGray().cgColor
         self.buttonContainer.layer.shadowOpacity = 0.3
         self.buttonContainer.layer.shadowOffset = CGSize(width: 1, height: 3)
         
-        self.startPauseButton.setImage(UIImage(named: "play"), forState: .Normal)
-        self.startPauseButton.setImage(UIImage(named: "play_highlighted"), forState: .Highlighted)
+        self.startPauseButton.setImage(UIImage(named: "play"), for: UIControlState())
+        self.startPauseButton.setImage(UIImage(named: "play_highlighted"), for: .highlighted)
         self.startPauseButton.backgroundColor = UIColor.swiftGreen()
         self.startPauseButton.layer.cornerRadius = 6
         self.startPauseButton.minimumScale = 0.92
         
-        self.resetButton.setImage(UIImage(named: "reset"), forState: .Normal)
-        self.resetButton.setImage(UIImage(named: "reset_highlighted"), forState: .Highlighted)
+        self.resetButton.setImage(UIImage(named: "reset"), for: UIControlState())
+        self.resetButton.setImage(UIImage(named: "reset_highlighted"), for: .highlighted)
         self.resetButton.backgroundColor = UIColor.swiftLightOrange()
         self.resetButton.layer.cornerRadius = 6
         self.resetButton.minimumScale = 0.92
         
-        self.infoButton.setImage(UIImage(named: "info"), forState: .Normal)
-        self.infoButton.setImage(UIImage(named: "info_highlighted"), forState: .Highlighted)
+        self.infoButton.setImage(UIImage(named: "info"), for: UIControlState())
+        self.infoButton.setImage(UIImage(named: "info_highlighted"), for: .highlighted)
         self.infoButton.backgroundColor = UIColor.swiftDarkOrange()
         self.infoButton.layer.cornerRadius = 6
         self.infoButton.minimumScale = 0.92
@@ -286,9 +286,9 @@ class GraphView: UIView {
     // Note: Shadow paths defined here where views have frames
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.graphContainer.layer.shadowPath = UIBezierPath(roundedRect: self.graphContainer.bounds, cornerRadius: self.graphContainer.layer.cornerRadius).CGPath
-        self.sliderContainer.layer.shadowPath = UIBezierPath(roundedRect: self.sliderContainer.bounds, cornerRadius: self.sliderContainer.layer.cornerRadius).CGPath
-        self.buttonContainer.layer.shadowPath = UIBezierPath(roundedRect: self.buttonContainer.bounds, cornerRadius: self.buttonContainer.layer.cornerRadius).CGPath
+        self.graphContainer.layer.shadowPath = UIBezierPath(roundedRect: self.graphContainer.bounds, cornerRadius: self.graphContainer.layer.cornerRadius).cgPath
+        self.sliderContainer.layer.shadowPath = UIBezierPath(roundedRect: self.sliderContainer.bounds, cornerRadius: self.sliderContainer.layer.cornerRadius).cgPath
+        self.buttonContainer.layer.shadowPath = UIBezierPath(roundedRect: self.buttonContainer.bounds, cornerRadius: self.buttonContainer.layer.cornerRadius).cgPath
     }
 
 }

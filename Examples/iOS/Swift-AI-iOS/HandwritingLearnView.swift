@@ -20,7 +20,7 @@ class HandwritingLearnView: UIView {
     let infoButton = APSpringButton()
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
     
     override init(frame: CGRect) {
@@ -42,43 +42,43 @@ class HandwritingLearnView: UIView {
         self.backgroundColor = UIColor.swiftLightGray()
         
         // Style Subviews
-        self.textField.backgroundColor = .whiteColor()
-        self.textField.textAlignment = .Center
+        self.textField.backgroundColor = .white
+        self.textField.textAlignment = .center
         self.textField.font = UIFont.swiftFontOfSize(60)
-        self.textField.keyboardType = .NumberPad
+        self.textField.keyboardType = .numberPad
         self.textField.layer.cornerRadius = 3
-        self.textField.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.textField.layer.shadowColor = UIColor.swiftMediumGray().cgColor
         self.textField.layer.shadowOpacity = 0.4
         self.textField.layer.shadowOffset = CGSize(width: 1, height: 3)
         
-        self.canvasContainer.backgroundColor = .whiteColor()
+        self.canvasContainer.backgroundColor = .white
         self.canvasContainer.layer.cornerRadius = 3
-        self.canvasContainer.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.canvasContainer.layer.shadowColor = UIColor.swiftMediumGray().cgColor
         self.canvasContainer.layer.shadowOpacity = 0.4
         self.canvasContainer.layer.shadowOffset = CGSize(width: 1, height: 3)
         
-        self.canvas.backgroundColor = .clearColor()
+        self.canvas.backgroundColor = .clear
         
-        self.buttonContainer.backgroundColor = .whiteColor()
+        self.buttonContainer.backgroundColor = .white
         self.buttonContainer.layer.cornerRadius = 4
-        self.buttonContainer.layer.shadowColor = UIColor.swiftMediumGray().CGColor
+        self.buttonContainer.layer.shadowColor = UIColor.swiftMediumGray().cgColor
         self.buttonContainer.layer.shadowOpacity = 0.3
         self.buttonContainer.layer.shadowOffset = CGSize(width: 1, height: 3)
         
-        self.startPauseButton.setImage(UIImage(named: "play"), forState: .Normal)
-        self.startPauseButton.setImage(UIImage(named: "play_highlighted"), forState: .Highlighted)
+        self.startPauseButton.setImage(UIImage(named: "play"), for: UIControlState())
+        self.startPauseButton.setImage(UIImage(named: "play_highlighted"), for: .highlighted)
         self.startPauseButton.backgroundColor = UIColor.swiftGreen()
         self.startPauseButton.layer.cornerRadius = 6
         self.startPauseButton.minimumScale = 0.92
         
-        self.clearButton.setImage(UIImage(named: "reset"), forState: .Normal)
-        self.clearButton.setImage(UIImage(named: "reset_highlighted"), forState: .Highlighted)
+        self.clearButton.setImage(UIImage(named: "reset"), for: UIControlState())
+        self.clearButton.setImage(UIImage(named: "reset_highlighted"), for: .highlighted)
         self.clearButton.backgroundColor = UIColor.swiftLightOrange()
         self.clearButton.layer.cornerRadius = 6
         self.clearButton.minimumScale = 0.92
         
-        self.infoButton.setImage(UIImage(named: "info"), forState: .Normal)
-        self.infoButton.setImage(UIImage(named: "info_highlighted"), forState: .Highlighted)
+        self.infoButton.setImage(UIImage(named: "info"), for: UIControlState())
+        self.infoButton.setImage(UIImage(named: "info_highlighted"), for: .highlighted)
         self.infoButton.backgroundColor = UIColor.swiftDarkOrange()
         self.infoButton.layer.cornerRadius = 6
         self.infoButton.minimumScale = 0.92
@@ -159,8 +159,8 @@ class HandwritingLearnView: UIView {
     // Note: Shadow paths defined here where views have frames
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.textField.layer.shadowPath = UIBezierPath(roundedRect: self.textField.bounds, cornerRadius: self.textField.layer.cornerRadius).CGPath
-        self.canvasContainer.layer.shadowPath = UIBezierPath(roundedRect: self.canvasContainer.bounds, cornerRadius: self.canvasContainer.layer.cornerRadius).CGPath
-        self.buttonContainer.layer.shadowPath = UIBezierPath(roundedRect: self.buttonContainer.bounds, cornerRadius: self.buttonContainer.layer.cornerRadius).CGPath
+        self.textField.layer.shadowPath = UIBezierPath(roundedRect: self.textField.bounds, cornerRadius: self.textField.layer.cornerRadius).cgPath
+        self.canvasContainer.layer.shadowPath = UIBezierPath(roundedRect: self.canvasContainer.bounds, cornerRadius: self.canvasContainer.layer.cornerRadius).cgPath
+        self.buttonContainer.layer.shadowPath = UIBezierPath(roundedRect: self.buttonContainer.bounds, cornerRadius: self.buttonContainer.layer.cornerRadius).cgPath
     }
 }

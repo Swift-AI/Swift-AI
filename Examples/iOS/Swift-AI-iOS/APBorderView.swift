@@ -6,9 +6,9 @@
 import UIKit
 
 public enum BorderPosition {
-    case Top
-    case Bottom
-    case TopBottom
+    case top
+    case bottom
+    case topBottom
 }
 
 /** 
@@ -18,7 +18,7 @@ public enum BorderPosition {
     :param: border The position of the border(s)
     :param: color The color of the border(s)
 */
-public class APBorderView: UIView {
+open class APBorderView: UIView {
     
     // Data
     var position: BorderPosition!
@@ -30,7 +30,7 @@ public class APBorderView: UIView {
     let bottomBorder = UIView()
     
     convenience public init(border: BorderPosition, color: UIColor, weight: CGFloat) {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
         self.position = border
         self.borderColor = color
         self.borderWeight = weight
@@ -49,11 +49,11 @@ public class APBorderView: UIView {
         
         // Add Subviews
         switch self.position! {
-        case .Top:
+        case .top:
             self.addSubview(self.topBorder)
-        case .Bottom:
+        case .bottom:
             self.addSubview(self.bottomBorder)
-        case .TopBottom:
+        case .topBottom:
             self.addSubview(self.topBorder)
             self.addSubview(self.bottomBorder)
         }
@@ -64,14 +64,14 @@ public class APBorderView: UIView {
         
     }
     
-    override public func updateConstraints() {
+    override open func updateConstraints() {
         
         // Configure Subviews
         self.configureSubviews()
         
         // Add Constraints
         switch self.position! {
-        case .Top:
+        case .top:
             topBorder.addConstraints(
                 Constraint.llrr.of(self),
                 Constraint.tt.of(self),
@@ -83,7 +83,7 @@ public class APBorderView: UIView {
 //                Constraint.TopToTop : (of: self, offset: 0),
 //                Constraint.Height : (of: nil, offset: self.borderWeight)])
 
-        case .Bottom:
+        case .bottom:
             bottomBorder.addConstraints(
                 Constraint.llrr.of(self),
                 Constraint.bb.of(self),
@@ -95,7 +95,7 @@ public class APBorderView: UIView {
 //                Constraint.BottomToBottom : (of: self, offset: 0),
 //                Constraint.Height : (of: nil, offset: self.borderWeight)])
 
-        case .TopBottom:
+        case .topBottom:
             topBorder.addConstraints(
                 Constraint.llrr.of(self),
                 Constraint.tt.of(self),
@@ -123,35 +123,35 @@ public class APBorderView: UIView {
         super.updateConstraints()
     }
     
-    public func hideBorders() {
+    open func hideBorders() {
         self.topBorder.alpha = 0
         self.bottomBorder.alpha = 0
     }
     
-    public func showBorders() {
+    open func showBorders() {
         self.topBorder.alpha = 1
         self.bottomBorder.alpha = 1
     }
     
-    public func hideBorder(border: BorderPosition) {
+    open func hideBorder(_ border: BorderPosition) {
         switch border {
-        case .Top:
+        case .top:
             self.topBorder.alpha = 0
-        case .Bottom:
+        case .bottom:
             self.bottomBorder.alpha = 0
-        case .TopBottom:
+        case .topBottom:
             self.topBorder.alpha = 0
             self.bottomBorder.alpha = 0
         }
     }
     
-    public func showBorder(border: BorderPosition) {
+    open func showBorder(_ border: BorderPosition) {
         switch border {
-        case .Top:
+        case .top:
             self.topBorder.alpha = 1
-        case .Bottom:
+        case .bottom:
             self.bottomBorder.alpha = 1
-        case .TopBottom:
+        case .topBottom:
             self.topBorder.alpha = 1
             self.bottomBorder.alpha = 1
         }
