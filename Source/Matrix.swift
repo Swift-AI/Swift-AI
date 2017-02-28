@@ -58,7 +58,7 @@ public class Matrix {
     /// Returns the receiver's row at the given index.
     public func row(index: Int) -> Vector {
         var v = self.flat.flat
-        var r = [Double](count: self.columns, repeatedValue: 0)
+        var r = [Double](repeating: 0, count: self.columns)
         for column in 0..<self.columns {
             let position = index * self.columns + column
             r[column] = v[position]
@@ -71,7 +71,7 @@ public class Matrix {
     /// Select column vector from matrix
     public func column(index: Int) -> Vector{
         var v = self.flat.flat
-        var c = [Double](count: self.rows, repeatedValue: 0)
+        var c = [Double](repeating: 0, count: self.rows)
         for row in 0..<self.rows {
             let position = index + row * self.columns
             c[row] = v[position]

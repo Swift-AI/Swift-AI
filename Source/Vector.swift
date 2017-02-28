@@ -37,7 +37,7 @@ public class Vector {
     }
     
     public init(size: Int) {
-        self.flat = [Double](count: size, repeatedValue: 0.0)
+        self.flat = [Double](repeating: 0.0, count: size)
     }
     
     /// Returns/sets the element value at the given index.
