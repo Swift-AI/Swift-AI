@@ -14,7 +14,7 @@ class NavigationBar: UIView {
     let gradient = CAGradientLayer()
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
     
     override init(frame: CGRect) {
@@ -29,23 +29,23 @@ class NavigationBar: UIView {
     func configureSubviews() {
         // Add Subviews
         self.addSubviews(self.titleLabel, self.hamburgerButton)
-        self.layer.insertSublayer(self.gradient, atIndex: 0)
+        self.layer.insertSublayer(self.gradient, at: 0)
         
         // Style View
         
         
         // Style Subviews
         self.titleLabel.text = "Swift AI"
-        self.titleLabel.textColor = .whiteColor()
+        self.titleLabel.textColor = .white
         self.titleLabel.font = UIFont.swiftFontOfSize(20)
         
-        self.hamburgerButton.setImage(UIImage(named: "hamburger"), forState: .Normal)
-        self.hamburgerButton.setImage(UIImage(named: "hamburger_highlighted"), forState: .Highlighted)
+        self.hamburgerButton.setImage(UIImage(named: "hamburger"), for: UIControlState())
+        self.hamburgerButton.setImage(UIImage(named: "hamburger_highlighted"), for: .highlighted)
         self.hamburgerButton.imageEdgeInsets = UIEdgeInsets(top: 12.5, left: 10, bottom: 12.5, right: 30)
         
-        self.gradient.colors = [UIColor.swiftDarkOrange().CGColor, UIColor.swiftLightOrange().CGColor]
-        self.gradient.startPoint = CGPointZero
-        self.gradient.endPoint = CGPointMake(1, 0)
+        self.gradient.colors = [UIColor.swiftDarkOrange().cgColor, UIColor.swiftLightOrange().cgColor]
+        self.gradient.startPoint = CGPoint.zero
+        self.gradient.endPoint = CGPoint(x: 1, y: 0)
         
     }
     
