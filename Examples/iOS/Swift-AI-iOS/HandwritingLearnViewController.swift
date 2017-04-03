@@ -58,40 +58,93 @@ extension HandwritingLearnViewController {
         }
     }
     
-    fileprivate func pixelsToImage(_ pixelFloats: [Float]) -> UIImage? {
-        guard pixelFloats.count == 784 else {
-            print("Error: Invalid number of pixels given: \(pixelFloats.count). Expected: 784")
-            return nil
-        }
-        struct PixelData {
-            let a: UInt8
-            let r: UInt8
-            let g: UInt8
-            let b: UInt8
-        }
-        var pixels = [PixelData]()
-        for pixelFloat in pixelFloats {
-            pixels.append(PixelData(a: UInt8(pixelFloat * 255), r: 0, g: 0, b: 0))
-        }
-        
-        let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
-        var data = pixels
-        
-        var pointer = UnsafeMutableBufferPointer(start: &data, count: data.count * MemoryLayout<PixelData>.size)
-        
-        var dataFromPointer = Data.init(buffer: pointer)
-        
-        let dataValue = NSData(bytes: &dataFromPointer, length: MemoryLayout<sockaddr_in>.size) as CFData
-        
-            //CFDataCreate(kCFAllocatorDefault, UnsafePointer<UInt8>(data.bytes), data.length)
-
-        
-        let providerRef = CGDataProvider(data: dataValue)
-        let cgim = CGImage(width: 28, height: 28, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: 28 * MemoryLayout<PixelData>.size, space: rgbColorSpace, bitmapInfo: bitmapInfo, provider: providerRef!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
-        return UIImage.init(cgImage: cgim!)
+    struct PixelData {
+        var a: UInt8 = 0
+        var r: UInt8 = 0
+        var g: UInt8 = 0
+        var b: UInt8 = 0
     }
     
+    func pixelsToImage(_ pixels: [Float]) -> UIImage? {
+        let width = 28, height = 28
+        
+        assert(width > 0)
+        
+        assert(height > 0)
+        
+        var pixelsArray = [PixelData]()
+        for pixelFloat in pixels {
+            pixelsArray.append(PixelData(a: UInt8(pixelFloat * 255), r: 0, g: 0, b: 0))
+        }
+        
+        let pixelDataSize = MemoryLayout<PixelData>.size
+        assert(pixelDataSize == 4)
+        
+        assert(pixelsArray.count == Int(width * height))
+        
+        let data: Data = pixelsArray.withUnsafeBufferPointer {
+            return Data(buffer: $0)
+        }
+        
+        let cfdata = NSData(data: data) as CFData
+        let provider: CGDataProvider! = CGDataProvider(data: cfdata)
+        if provider == nil {
+            print("CGDataProvider is not supposed to be nil")
+            return nil
+        }
+        let cgimage: CGImage! = CGImage(
+            width: width,
+            height: height,
+            bitsPerComponent: 8,
+            bitsPerPixel: 32,
+            bytesPerRow: width * pixelDataSize,
+            space: CGColorSpaceCreateDeviceRGB(),
+            bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue),
+            provider: provider,
+            decode: nil,
+            shouldInterpolate: true,
+            intent: .defaultIntent
+        )
+        if cgimage == nil {
+            print("CGImage is not supposed to be nil")
+            return nil
+        }
+        return UIImage(cgImage: cgimage)
+    }
+//    fileprivate func pixelsToImage(_ pixelFloats: [Float]) -> UIImage? {
+//        guard pixelFloats.count == 784 else {
+//            print("Error: Invalid number of pixels given: \(pixelFloats.count). Expected: 784")
+//            return nil
+//        }
+//        struct PixelData {
+//            let a: UInt8
+//            let r: UInt8
+//            let g: UInt8
+//            let b: UInt8
+//        }
+//        var pixels = [PixelData]()
+//        for pixelFloat in pixelFloats {
+//            pixels.append(PixelData(a: UInt8(pixelFloat * 255), r: 0, g: 0, b: 0))
+//        }
+//        
+//        let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
+//        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
+//        var data = pixels
+//        
+//        var pointer = UnsafeMutableBufferPointer(start: &data, count: data.count * MemoryLayout<PixelData>.size)
+//        
+//        var dataFromPointer = Data.init(buffer: pointer)
+//        
+//        let dataValue = NSData(bytes: &dataFromPointer, length: MemoryLayout<sockaddr_in>.size) as CFData
+//        
+//            //CFDataCreate(kCFAllocatorDefault, UnsafePointer<UInt8>(data.bytes), data.length)
+//
+//        
+//        let providerRef = CGDataProvider(data: dataValue)
+//        let cgim = CGImage(width: 28, height: 28, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: 28 * MemoryLayout<PixelData>.size, space: rgbColorSpace, bitmapInfo: bitmapInfo, provider: providerRef!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+//        return UIImage.init(cgImage: cgim!)
+//    }
+//    
     
     fileprivate func digitToArray(_ digit: Int) -> [Float]? {
         guard digit >= 0 && digit <= 9 else {
