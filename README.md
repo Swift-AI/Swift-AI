@@ -1,7 +1,12 @@
 [![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Banner.png?raw=true)](https://github.com/collinhundley/Swift-AI#care-enough-to-donate)
 
 Swift AI is a high-performance machine learning library written entirely in Swift.
-We currently support iOS and OS X, with support for more platforms coming soon!
+We currently support macOS, iOS and tvOS, with support for more platforms coming soon!
+
+## Update 4/4/17
+I'm in the process of bringing some major updates to Swift AI, but in the meantime you might find some inconsistencies in this documentation. These will all be resolved when we migrate to a GitHub Organization account, at which point we can properly restructure the documentation, examples and individual modules.
+
+I appreciate all your help and patience! If you'd like to help make these changes possible, consider making a [donation](https://github.com/collinhundley/Swift-AI#care-enough-to-donate).
 
 
 ## Features
@@ -104,9 +109,7 @@ Due to recent interest, we're now accepting corporate sponsorships. If your comp
 
 ## Care Enough to Donate?
 
-Everyone needs to eat, and our amazing supporters are what have made Swift AI possible.
-
-Your donation will help continue the development of open-source machine learning technologies, benefitting millions of users worldwide!
+Swift AI needs an organization account! We're currently raising the funds to make this possible, and if you contribute we'll gladly feature you as a sponsor on the front page.
 
 [![Donate](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/DonateButton.png?raw=true)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3FCBZ7MXZJFG2&lc=US&item_name=Swift%20AI&currency_code=USD&bn=PP%2dDonationsBF%3aDonateButton%2epng%3fraw%3dtrue%3aNonHosted)
 
