@@ -14,7 +14,7 @@ Swift AI includes a set of common tools used for machine learning and artificial
 
 - [x] [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/NeuralNet.md#multi-layer-feed-forward-neural-network)
     * 3-layer network with options for customization.
-    * [Example projects](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) for iOS and OS X.
+    * [Example projects](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/Examples.md) for iOS and OS X.
 - [ ] Recurrent Neural Network
 - [ ] Convolutional Network
 - [ ] GPU-Accelerated Networks
