@@ -3,6 +3,9 @@
 # Examples
 This collection of example projects has been prepared to demonstrate real-world usage of Swift AI.  If you have more ideas, open an [issue](https://github.com/collinhundley/Swift-AI/issues) or submit a [pull request](https://github.com/collinhundley/Swift-AI/pulls).  I'd love to hear your feedback!
 
+## Update 4/4/17
+The code for the example projects is no longer found in this repository. As we migrate to an organization account, we will be making some structural changes and appreciate your patience.
+
 ## iOS
 The Swift AI iOS app serves two purposes:
 - Provide visual representations of the "learning" process involved in machine learning.
