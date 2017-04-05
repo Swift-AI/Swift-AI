@@ -15,7 +15,7 @@ The Swift AI iOS app serves two purposes:
 ### Regression
 ##### Feed-Forward Neural Network
 
-A neural network can perform a regression for any arbitrary function. This example shows how [FFNN](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#multi-layer-feed-forward-neural-network) can "learn" the sine function using backpropagation.
+A neural network can perform a regression for any arbitrary function. This example shows how [NeuralNet](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/NeuralNet.md#multi-layer-feed-forward-neural-network) can "learn" the sine function using backpropagation.
 
 ![Sine.gif](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Sine.gif?raw=true)
 
@@ -38,7 +38,7 @@ You can control the target function by adjusting the slider:
 
 Initially, you're given a randomly-generated neural network. Tapping 'Start' initiates a training process, which consists of two phases:
 - **Update**: For every `x` position on the graph, the neural network is asked to make its 'best guess' for the corresponding `y` value. These points are plotted in red on the screen.
-- **Backpropagation**: For every `x` position, the network's output `y` is compared to the 'target' value. The resulting error is propagated through the network and its weights are adjusted accordingly (more details in the [documentation](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#training)).
+- **Backpropagation**: For every `x` position, the network's output `y` is compared to the 'target' value. The resulting error is propagated through the network and its weights are adjusted accordingly (more details in the [documentation](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/NeuralNet.md#training)).
 
 Within a few seconds, the network is able to "learn" a good approximation of the target function. Note that the target values are never actually stored by the neural network - rather, it uses them to learn by example.
 
@@ -48,7 +48,7 @@ Yeah, that can happen. It's called a local minimum:
 
 ![LocalMinimum](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/LocalMinima.png?raw=true).
 
-A good [learning rate and momentum factor](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#standard) can help prevent that, but for this simple example it's best to just reset the network.
+A good [learning rate and momentum factor](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/NeuralNet.md#standard) can help prevent that, but for this simple example it's best to just reset the network.
 
 ### Handwriting
 ##### Feed-Forward Neural Network
@@ -73,13 +73,13 @@ The less information you feed a neural network, the less prone it is to error. I
 
 The app has been packaged with a pre-trained neural network. It was trained with the [MNIST dataset](http://yann.lecun.com/exdb/mnist/), and as such it can only recognize **handwritten digits (0-9)**. It could easily be trained to recognize alphabetic characters, symbols, emojis, etc., but the MNIST data was readily available and it's sufficient for this small demonstration.
 
-The trainer for this neural network is included in the [OS X app](https://github.com/collinhundley/Swift-AI/tree/master/Examples#os-x), so you're free to train it again yourself and even use a different set of data.
+The trainer for this neural network is included in the [macOS app](https://github.com/collinhundley/Swift-AI/tree/master/Documentation/Examples.md#macos), so you're free to train it again yourself and even use a different set of data.
 
 **Note:** For each drawing given, the neural network is *forced* to classify it as a number between 0 and 9. So of course, sketching a letter, a smiley-face or an octopus isn't going to give you good results. With each classification, the level of confidence is shown beneath the output.
 
 > **How accurate is it?**
 
-The database used to train this network includes a total of 70,000 handwriting samples from 500 different people. 60,000 samples were used for training and 10,000 *unseen* samples were used for validation, as discussed in the [documentation](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#training). The training was halted when accuracy on the validation set reached 98%.
+The database used to train this network includes a total of 70,000 handwriting samples from 500 different people. 60,000 samples were used for training and 10,000 *unseen* samples were used for validation, as discussed in the [documentation](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/NeuralNet.md#training). The training was halted when accuracy on the validation set reached 98%.
 
 You might not experience 98% accuracy with your own handwriting. This is primarily because the images produced by the digital canvas don't *quite* look the same as the pen-drawn images from the database. The size of your drawing and thickness of the brush also have an impact on image recognition, although I've tried to ship the app with good settings.
 
@@ -91,14 +91,6 @@ You might not experience 98% accuracy with your own handwriting. This is primari
 
 Genetic algorithm example coming soon!
 
+## macOS
 
-### Additional Notes
-
-> **What's this 'APKit' framework?**
-
-APKit is a framework for creating views programmatically using Auto Layout, and contains abstractions for many common animation tasks.  It has no direct effect on Swift AI's implementation.
-
-
-## OS X
-
-Some information about the OS X project will go here :)
+Some information about the macOS project will go here :)
