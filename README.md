@@ -12,14 +12,14 @@ I appreciate all your help and patience! If you'd like to help make these change
 ## Features
 Swift AI includes a set of common tools used for machine learning and artificial intelligence research. These tools are designed to be flexible, powerful and suitable for a wide range of applications.
 
-- [x] [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/FFNN.md#multi-layer-feed-forward-neural-network)
+- [x] [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/NeuralNet.md#multi-layer-feed-forward-neural-network)
     * 3-layer network with options for customization.
     * [Example projects](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) for iOS and OS X.
 - [ ] Recurrent Neural Network
 - [ ] Convolutional Network
 - [ ] GPU-Accelerated Networks
 - [ ] Genetic Algorithms
-- [x] [Fast Matrix Library](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/Matrix.md#matrix)
+- [ ] Fast Matrix Library
     * Matrix class supporting common operators
     * SIMD-accelerated operations
 - [ ] Fourier Transform Functions
@@ -65,12 +65,12 @@ Here are a few ideas to get you started:
 
 Please see the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) for detailed instructions on how to use the various components of Swift AI.
 
-We've also created [example projects](https://github.com/collinhundley/Swift-AI/tree/master/Examples#swift-ai-examples) to demonstrate the usage and potential applications of this library:
-- [iOS](https://github.com/collinhundley/Swift-AI/tree/master/Examples#ios):
+We've also created [example projects](https://github.com/collinhundley/Swift-AI/tree/master/Documentation/Examples.md) to demonstrate the usage and potential applications of this library:
+- [iOS](https://github.com/collinhundley/Swift-AI/tree/master/Documentation/Examples.md#ios):
     * 2D function regression (feed-forward neural network)
     * Handwriting recognition (feed-forward neural network)
     * Evolution simulation (genetic algorithm)
-- [OS X](https://github.com/collinhundley/Swift-AI/tree/master/Examples#os-x):
+- [OS X](https://github.com/collinhundley/Swift-AI/tree/master/Documentation/Examples#os-x):
     * XOR logic gate modeling (feed-forward neural network)
     * 2D function regression (feed-forward neural network)
     * Trainer for iOS handwriting recognizer (feed-forward neural network)
@@ -103,11 +103,7 @@ I do all things Swift - from cloud technologies to iOS apps. You can reach me he
 
 ![Email](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Email.png?raw=true)
 
-## Become a Sponsor
-
-Due to recent interest, we're now accepting corporate sponsorships. If your company is interested in becoming a sponsor, contact me at the address above.
-
-## Care Enough to Donate?
+## Help us grow!
 
 Swift AI needs an organization account! We're currently raising the funds to make this possible, and if you contribute we'll gladly feature you as a sponsor on the front page.
 
