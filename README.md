@@ -1,4 +1,4 @@
-[![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Banner.png?raw=true)](https://github.com/collinhundley/Swift-AI#care-enough-to-donate)
+[![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Banner.png?raw=true)](https://github.com/collinhundley/Swift-AI#help-us-grow)
 
 Swift AI is a high-performance machine learning library written entirely in Swift.
 We currently support macOS, iOS and tvOS, with support for more platforms coming soon!
@@ -6,7 +6,7 @@ We currently support macOS, iOS and tvOS, with support for more platforms coming
 ## Update 4/4/17
 I'm in the process of bringing some major updates to Swift AI, but in the meantime you might find some inconsistencies in this documentation. These will all be resolved when we migrate to a GitHub Organization account, at which point we can properly restructure the documentation, examples and individual modules.
 
-I appreciate all your help and patience! If you'd like to help make these changes possible, consider making a [donation](https://github.com/collinhundley/Swift-AI#care-enough-to-donate).
+I appreciate all your help and patience! If you'd like to help make these changes possible, consider making a [donation](https://github.com/collinhundley/Swift-AI#help-us-grow).
 
 
 ## Features
@@ -14,7 +14,7 @@ Swift AI includes a set of common tools used for machine learning and artificial
 
 - [x] [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/NeuralNet.md#multi-layer-feed-forward-neural-network)
     * 3-layer network with options for customization.
-    * [Example projects](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/Examples.md) for iOS and OS X.
+    * [Example projects](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/Examples.md) for iOS and macOS.
 - [ ] Recurrent Neural Network
 - [ ] Convolutional Network
 - [ ] GPU-Accelerated Networks
@@ -43,7 +43,7 @@ if /* massive function for checking the letter A */ {
 } else if ...
 ```
 
-Hopefully you've realized by now that this method simply isn't feasible. In the best case scenario, you might end up with thousands of lines of very unreliable code for recognizing only *your* exact handwriting. In comparison, Swift AI's [iOS example app](https://github.com/collinhundley/Swift-AI/tree/master/Examples#ios) demonstrates how far superior functionality can be accomplished with very few lines of code, using machine learning. And requiring exactly *zero* explicit rules to be written by the developer.
+Hopefully you've realized by now that this method simply isn't feasible. In the best case scenario, you might end up with thousands of lines of very unreliable code for recognizing only *your* exact handwriting. In comparison, Swift AI's [iOS example app](https://github.com/collinhundley/Swift-AI/tree/master/Documentation/Examples.md#ios) demonstrates how far superior functionality can be accomplished with very few lines of code, using machine learning. And requiring exactly *zero* explicit rules to be written by the developer.
 
 >**So how can Swift AI be used in the real world?**
 
@@ -70,12 +70,12 @@ We've also created [example projects](https://github.com/collinhundley/Swift-AI/
     * 2D function regression (feed-forward neural network)
     * Handwriting recognition (feed-forward neural network)
     * Evolution simulation (genetic algorithm)
-- [OS X](https://github.com/collinhundley/Swift-AI/tree/master/Documentation/Examples#os-x):
+- [macOS](https://github.com/collinhundley/Swift-AI/tree/master/Documentation/Examples.md#macos):
     * XOR logic gate modeling (feed-forward neural network)
     * 2D function regression (feed-forward neural network)
     * Trainer for iOS handwriting recognizer (feed-forward neural network)
 - Swift Playground:
-    * Graphing - used in conjunction with OS X regression examples
+    * Graphing - used in conjunction with macOS regression examples
 
 
 ## Installation
