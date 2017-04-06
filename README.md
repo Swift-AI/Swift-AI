@@ -1,20 +1,19 @@
-[![Swift AI Banner](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Banner.png?raw=true)](https://github.com/collinhundley/Swift-AI#help-us-grow)
+[![Swift AI Banner](https://github.com/
+hundley/Swift-AI/blob/master/SiteAssets/Banner.png?raw=true)](https://github.com/Swift-AI/Swift-AI#help-us-grow)
 
 Swift AI is a high-performance machine learning library written entirely in Swift.
 We currently support macOS, iOS and tvOS, with support for more platforms coming soon!
 
 ## Update 4/4/17
-I'm in the process of bringing some major updates to Swift AI, but in the meantime you might find some inconsistencies in this documentation. These will all be resolved when we migrate to a GitHub Organization account, at which point we can properly restructure the documentation, examples and individual modules.
-
-I appreciate all your help and patience! If you'd like to help make these changes possible, consider making a [donation](https://github.com/collinhundley/Swift-AI#help-us-grow).
+I'm in the process of bringing some major updates to Swift AI, but in the meantime you might find some inconsistencies in this documentation. I appreciate all your help and patience! If you'd like to help make these changes possible, consider making a [donation](https://github.com/Swift-AI/Swift-AI#help-us-grow).
 
 
 ## Features
-Swift AI includes a set of common tools used for machine learning and artificial intelligence research. These tools are designed to be flexible, powerful and suitable for a wide range of applications.
+Swift AI includes a set of common tools used for machine learning and artificial intelligence. These tools are designed to be flexible, powerful and suitable for a wide range of applications.
 
-- [x] [Feed-Forward Neural Network](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/NeuralNet.md#multi-layer-feed-forward-neural-network)
+- [x] [Feed-Forward Neural Network](https://github.com/Swift-AI/NeuralNet)
     * 3-layer network with options for customization.
-    * [Example projects](https://github.com/collinhundley/Swift-AI/blob/master/Documentation/Examples.md) for iOS and macOS.
+    * [Example projects](https://github.com/Swift-AI/Swift-AI/blob/master/Documentation/Examples.md) for iOS and macOS.
 - [ ] Recurrent Neural Network
 - [ ] Convolutional Network
 - [ ] GPU-Accelerated Networks
@@ -43,7 +42,7 @@ if /* massive function for checking the letter A */ {
 } else if ...
 ```
 
-Hopefully you've realized by now that this method simply isn't feasible. In the best case scenario, you might end up with thousands of lines of very unreliable code for recognizing only *your* exact handwriting. In comparison, Swift AI's [iOS example app](https://github.com/collinhundley/Swift-AI/tree/master/Documentation/Examples.md#ios) demonstrates how far superior functionality can be accomplished with very few lines of code, using machine learning. And requiring exactly *zero* explicit rules to be written by the developer.
+Hopefully you've realized by now that this method simply isn't feasible. In the best case scenario, you might end up with thousands of lines of very unreliable code for recognizing only *your* exact handwriting. In comparison, Swift AI's [iOS example app](https://github.com/Swift-AI/Swift-AI/tree/master/Documentation/Examples.md#ios) demonstrates how far superior functionality can be accomplished with very few lines of code, using machine learning. And requiring exactly *zero* explicit rules to be written by the developer.
 
 >**So how can Swift AI be used in the real world?**
 
@@ -53,7 +52,7 @@ Here are a few ideas to get you started:
 - Facial detection
 - Drone stabilization and navigation systems
 - Predicting and identifying medical conditions
-- Song identification (e.g., Shazam)
+- Song identification
 - Speech recognition
 - Video game AI
 - Weather forecasting
@@ -63,14 +62,14 @@ Here are a few ideas to get you started:
 
 ## Usage and Examples
 
-Please see the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) for detailed instructions on how to use the various components of Swift AI.
+Please see the [documentation](https://github.com/Swift-AI/Swift-AI/tree/master/Documentation) for detailed instructions on how to use the various components of Swift AI.
 
-We've also created [example projects](https://github.com/collinhundley/Swift-AI/tree/master/Documentation/Examples.md) to demonstrate the usage and potential applications of this library:
-- [iOS](https://github.com/collinhundley/Swift-AI/tree/master/Documentation/Examples.md#ios):
+We've also created [example projects](https://github.com/Swift-AI/Swift-AI/tree/master/Documentation/Examples.md) to demonstrate the usage and potential applications of this library:
+- [iOS](https://github.com/Swift-AI/Swift-AI/tree/master/Documentation/Examples.md#ios):
     * 2D function regression (feed-forward neural network)
     * Handwriting recognition (feed-forward neural network)
     * Evolution simulation (genetic algorithm)
-- [macOS](https://github.com/collinhundley/Swift-AI/tree/master/Documentation/Examples.md#macos):
+- [macOS](https://github.com/Swift-AI/Swift-AI/tree/master/Documentation/Examples.md#macos):
     * XOR logic gate modeling (feed-forward neural network)
     * 2D function regression (feed-forward neural network)
     * Trainer for iOS handwriting recognizer (feed-forward neural network)
@@ -96,16 +95,16 @@ If you're using Swift AI in one of your own projects, let me know! I'll add a li
 - [SwiftOCR](https://github.com/garnele007/SwiftOCR)
 
 ## Contributing
-Contributions to the project are welcome. Please review the [documentation](https://github.com/collinhundley/Swift-AI/tree/master/Documentation) before submitting a pull request, and strive to maintain consistency with the structure and formatting of existing code. Official guidelines with more details will be provided soon.
+Contributions to the project are welcome. Please review the [documentation](https://github.com/Swift-AI/Swift-AI/tree/master/Documentation) before submitting a pull request, and strive to maintain consistency with the structure and formatting of existing code. Official guidelines with more details will be provided soon.
 
 ## Contact
-I build all things Swift - from iOS apps to machine learning and cloud computing. You can reach me here:
+I build all things Swift - from iOS apps to cloud computing. You can reach me here:
 
-![Email](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/Email.png?raw=true)
+![Email](https://github.com/Swift-AI/Swift-AI/blob/master/SiteAssets/Email.png?raw=true)
 
 ## Help us grow!
 Building free software isn't always free. All contributions are greatly appreciated.
 
-[![Donate](https://github.com/collinhundley/Swift-AI/blob/master/SiteAssets/DonateButton.png?raw=true)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3FCBZ7MXZJFG2&lc=US&item_name=Swift%20AI&currency_code=USD&bn=PP%2dDonationsBF%3aDonateButton%2epng%3fraw%3dtrue%3aNonHosted)
+[![Donate](https://github.com/Swift-AI/Swift-AI/blob/master/SiteAssets/DonateButton.png?raw=true)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3FCBZ7MXZJFG2&lc=US&item_name=Swift%20AI&currency_code=USD&bn=PP%2dDonationsBF%3aDonateButton%2epng%3fraw%3dtrue%3aNonHosted)
 
 
