@@ -1,5 +1,5 @@
 # Design of the Swift AI logo.
-
+![Branding Preview](preview.jpg )
 ### Branding Info
 - An artificial brain is embraced by Swift's swallow bird.
 - The bird is leading the frontal lobe, and is flying in the same direction as Swift's swallow bird.
