@@ -6,6 +6,8 @@ We currently support macOS, iOS and tvOS, with support for more platforms coming
 ## Update 4/4/17
 I'm in the process of bringing some major updates to Swift AI, but in the meantime you might find some inconsistencies in this documentation. I appreciate all your help and patience! If you'd like to help make these changes possible, consider making a [donation](https://github.com/Swift-AI/Swift-AI#help-us-grow).
 
+[![codebeat](https://codebeat.co/badges/3c04a12d-7355-4b4f-bddf-a563fd5a005d)](https://codebeat.co/projects/github-com-collinhundley-swift-ai)
+
 
 ## Features
 Swift AI includes a set of common tools used for machine learning and artificial intelligence. These tools are designed to be flexible, powerful and suitable for a wide range of applications.
