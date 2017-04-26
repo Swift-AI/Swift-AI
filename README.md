@@ -1,4 +1,4 @@
-![Banner](https://github.com/Swift-AI/Swift-AI/blob/master/SiteAssets/logo/banner.png)
+![Banner](https://github.com/Swift-AI/Swift-AI/blob/master/SiteAssets/banner.png)
 
 Swift AI is a high-performance deep learning library written entirely in Swift. We currently offer support for all Apple platforms, with Linux support coming soon.
 
@@ -47,4 +47,4 @@ If you have a question about this library or are looking for guidance, we recomm
 ## Donating
 Your donation to Swift AI will help us continue building excellent open-source tools. All contributions are appreciated!
 
-[![Donate](https://github.com/Swift-AI/Swift-AI/blob/master/SiteAssets/DonateButton.png?raw=true)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3FCBZ7MXZJFG2&lc=US&item_name=Swift%20AI&currency_code=USD&bn=PP%2dDonationsBF%3aDonateButton%2epng%3fraw%3dtrue%3aNonHosted)
+[![Donate](https://github.com/Swift-AI/Swift-AI/blob/master/SiteAssets/donate.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3FCBZ7MXZJFG2&lc=US&item_name=Swift%20AI&currency_code=USD&bn=PP%2dDonationsBF%3aDonateButton%2epng%3fraw%3dtrue%3aNonHosted)
