@@ -7,6 +7,7 @@ Swift AI includes a collection of common tools used for artificial intelligence 
 
  - [x] [NeuralNet](https://github.com/Swift-AI/NeuralNet)
     * A flexible, fully-connected neural network with support for deep learning
+    * Optimized specifically for Apple hardware, using advanced parallel processing techniques
  - [ ] Convolutional Neural Network
  - [ ] Recurrent Neural Network
  - [ ] Genetic Algorithm Library
@@ -20,6 +21,10 @@ We've created some example projects to demonstrate the usage of Swift AI. Each r
     * A [NeuralNet](https://github.com/Swift-AI/NeuralNet) training example for the [MNIST](http://yann.lecun.com/exdb/mnist/) handwriting database
     * Trains a neural network to recognize handwritten digits
     * Built for macOS
+ - [NeuralNet-Handwriting-iOS](https://github.com/Swift-AI/NeuralNet-Handwriting-iOS)
+    * A demo for handwriting recognition using [NeuralNet](https://github.com/Swift-AI/NeuralNet)
+    * Pre-trained; just download and run
+    * Built for iOS
 
 ## Usage
 Each module now contains its own documentation. We recommend that you read the docs carefully for detailed instructions on using the various components of Swift AI.
@@ -43,6 +48,9 @@ Contributions to the project are welcome. We simply ask that you strive to maint
 [Collin Hundley](https://github.com/collinhundley) is the author and maintainer of Swift AI. Feel free contact him directly via [email](mailto:collinhundley@gmail.com).
 
 If you have a question about this library or are looking for guidance, we recommend [opening an issue](https://github.com/Swift-AI/Swift-AI/issues/new) so a member of the community can help!
+
+## Consulting
+If you're looking for for help with deep learning, computer vision, signal processing or other AI applications, you've come to the right place! Contact [Collin](https://github.com/collinhundley) for more information about consulting/contracting.
 
 ## Donating
 Your donation to Swift AI will help us continue building excellent open-source tools. All contributions are appreciated!
