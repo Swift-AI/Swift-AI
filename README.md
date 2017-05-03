@@ -31,11 +31,6 @@ Each module now contains its own documentation. We recommend that you read the d
 
 The example projects are another great resource for seeing real-world usage of these tools.
 
-## People Using Swift AI
-- [SwiftOCR](https://github.com/garnele007/SwiftOCR)
-
-If you're using Swift AI in one of your own projects, let us know! We'll add a link to your profile/website/app right here on the front page. Feel free to [open an issue](https://github.com/Swift-AI/Swift-AI/issues/new) or submit a pull request.
-
 ## Compatibility
 Swift AI currently depends on Apple's [Accelerate](https://developer.apple.com/library/mac/documentation/Accelerate/Reference/AccelerateFWRef/) framework for vector/matrix calculations and digital signal processing.
 
